@@ -5,13 +5,13 @@
 <title>Verallia Turnos 2026 • Fontela</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,sans-serif;margin:0;padding-bottom:70px}
-.header{padding:12px 16px;background:#1e2937;display:flex;justify-content:space-between;align-items:center;font-size:19px;font-weight:700}
-.tabs{display:flex;gap:5px;padding:8px 16px;background:#1e2937;overflow-x:auto}
+body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,sans-serif;margin:0}
+.header{padding:12px 16px;background:#1e2937;display:flex;justify-content:space-between;font-size:19px;font-weight:700}
+.tabs{display:flex;gap:6px;padding:8px 16px;background:#1e2937;overflow-x:auto}
 .tab{padding:10px 20px;border-radius:999px;background:#334155;color:#cbd5e1;font-weight:700}
 .tab.active{background:#60a5fa;color:#0f172a}
 .today-card{margin:12px 16px;padding:18px;background:#1e2937;border-radius:22px}
-.shift-badge{font-size:42px;font-weight:900;padding:8px 28px;border-radius:999px;background:#60a5fa;color:#0f172a;display:inline-block}
+.shift-badge{font-size:48px;font-weight:900;padding:8px 32px;border-radius:999px;background:#60a5fa;color:#0f172a}
 .calendar{margin:0 16px;background:#1e2937;border-radius:22px;padding:16px}
 table{width:100%;border-collapse:separate;border-spacing:5px}
 .day{background:#475569;border-radius:12px;padding:8px;text-align:center;font-weight:600;min-height:64px}
@@ -30,64 +30,17 @@ table{width:100%;border-collapse:separate;border-spacing:5px}
 
 <div class="tabs" id="tabs"></div>
 
-<div class="today-card" id="today-card">Carregando dados...</div>
+<div class="today-card" id="today-card"></div>
 
 <div class="calendar">
   <div style="text-align:center;font-size:19px;font-weight:700;margin-bottom:12px" id="mes">Maio 2026</div>
   <table id="cal"></table>
 </div>
 
-<div style="text-align:center;margin:15px 0;font-size:13px">
-  🔵 05h 🟢 13h 🟣 21h 🟡 Feriado ⚪ Folga
-</div>
+<div style="text-align:center;margin:15px 0">🔵 05h 🟢 13h 🟣 21h 🟡 Feriado ⚪ Folga</div>
 
-<script src="schedule-data.js"></script>
 <script>
-let curTeam = 'A', curMonth = 4;
-
-['A','B','C','D','E'].forEach(t => {
-  const btn = document.createElement('button');
-  btn.className = `tab ${t==='A'?'active':''}`;
-  btn.textContent = t;
-  btn.onclick = () => { curTeam = t; document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); render(); };
-  document.getElementById('tabs').appendChild(btn);
-});
-
-function getShift(day) {
-  const data = SCHEDULE[curTeam] ? SCHEDULE[curTeam][curMonth] : [];
-  const row = data.find(r => r[0] === day);
-  return row ? row[2] : 'F';
-}
-
-function render() {
-  // Hoje
-  const s = getShift(30);
-  const label = s==='5'?'05h':s==='13'?'13h':s==='21'?'21h':s==='X'?'FERIADO':'FOLGA';
-  document.getElementById('today-card').innerHTML = `
-    HOJE • Equipa <b>${curTeam}</b><br>
-    Sábado, 30 Maio — <span class="shift-badge">${label}</span><br>
-    Amanhã: 31 Maio — 05h
-  `;
-
-  // Calendário
-  let html = `<tr><th>D</th><th>S</th><th>T</th><th>Q</th><th>Q</th><th>S</th><th>S</th></tr><tr>`;
-  for(let d=1; d<=31; d++){
-    const shift = getShift(d);
-    let cls = 'day';
-    if(shift==='5') cls += ' m';
-    else if(shift==='13') cls += ' t';
-    else if(shift==='21') cls += ' n';
-    else if(shift==='X') cls += ' x';
-    else cls += ' f';
-    const txt = shift==='5'?'05h':shift==='13'?'13h':shift==='21'?'21h':shift==='X'?'X': 'FOLGA';
-    html += `<td><div class="${cls}">${d}<br><small>${txt}</small></div></td>`;
-    if(d%7===0) html += '</tr><tr>';
-  }
-  document.getElementById('cal').innerHTML = html + '</tr>';
-  document.getElementById('mes').textContent = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"][curMonth] + " 2026";
-}
-
-render();
-</script>
-</body>
-</html>
+// === DADOS COMPLETOS EMBUTIDOS ===
+const SCHEDULE = {
+  A: [[1,"Q","F"],[2,"S","F"],[3,"S","F"],[4,"D","F"],[5,"S","5"],[6,"T","5"],[7,"Q","5"],[8,"Q","5"],[9,"S","F"],[10,"S","21"],[11,"D","21"],[12,"S","21"],[13,"T","21"],[14,"Q","F"],[15,"Q","F"],[16,"S","13"],[17,"S","13"],[18,"D","13"],[19,"S","F"],[20,"T","5"],[21,"Q","5"],[22,"Q","5"],[23,"S","5"],[24,"S","F"],[25,"D","F"],[26,"S","21"],[27,"T","21"],[28,"Q","21"],[29,"Q","21"],[30,"S","F"],[31,"S","13"]],
+  B: [[1,"Q","13"],[2,"S","13"],[3,"S","13"],[4,"D","13"],[5,"S","F"],[6,"T","F
