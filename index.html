@@ -5,27 +5,27 @@
 <title>Verallia Turnos 2026 • Fontela</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,sans-serif;margin:0;padding-bottom:80px}
-  .header{padding:12px 16px;background:#1e2937;display:flex;justify-content:space-between;align-items:center;font-size:19px;font-weight:700}
+  body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,sans-serif;margin:0}
+  .header{padding:14px 16px;background:#1e2937;display:flex;justify-content:space-between;align-items:center}
   .tabs{display:flex;gap:6px;padding:8px 16px;background:#1e2937;overflow-x:auto}
-  .tab{padding:10px 20px;border-radius:999px;background:#334155;color:#cbd5e1;font-weight:700}
-  .tab.active{background:#60a5fa;color:#0f172a}
-  .today-card{margin:12px 16px;padding:20px;background:#1e2937;border-radius:24px}
-  .shift-badge{font-size:52px;font-weight:900;padding:8px 32px;border-radius:999px;background:#60a5fa;color:#0f172a;display:inline-block}
-  .calendar{margin:0 16px;background:#1e2937;border-radius:22px;padding:16px}
-  table{width:100%;border-collapse:separate;border-spacing:6px}
-  .day{background:#475569;border-radius:14px;padding:8px 4px;text-align:center;font-weight:600;min-height:70px}
-  .day.m{background:#67e8f9;color:#0f172a}
+  .tab{padding:10px 18px;border-radius:999px;background:#334155;color:#94a3b8;font-weight:600}
+  .tab.active{background:#3b82f6;color:white}
+  .today-card{margin:12px 16px;padding:20px;background:#1e2937;border-radius:20px}
+  .shift-big{font-size:42px;font-weight:900;padding:8px 32px;border-radius:999px;background:#3b82f6;color:white;display:inline-block}
+  .calendar{margin:0 16px 20px;background:#1e2937;border-radius:20px;padding:16px}
+  table{width:100%;border-collapse:separate;border-spacing:5px}
+  .day{background:#334155;border-radius:12px;padding:6px 4px;text-align:center;font-size:15px;font-weight:600;min-height:68px;position:relative}
+  .day.m{background:#22d3ee;color:#0f172a}
   .day.t{background:#86efac;color:#0f172a}
-  .day.n{background:#c084fc;color:white}
-  .day.f{background:#64748b;color:#e2e8f0}
-  .legend{text-align:center;margin:15px 0;font-size:14px}
+  .day.n{background:#a855f7;color:white}
+  .day.f{background:#64748b;color:#cbd5e1}
+  .today-ring{box-shadow:0 0 0 3px #f97316}
 </style>
 </head>
 <body>
 
 <div class="header">
-  Verallia Turnos 2026 <span style="font-size:13px;opacity:0.7">Fontela • Figueira da Foz</span>
+  <div><b>Verallia Turnos 2026</b><br><span style="font-size:13px;opacity:0.7">Fontela, Figueira da Foz</span></div>
 </div>
 
 <div class="tabs" id="tabs"></div>
@@ -34,55 +34,55 @@
 
 <div class="calendar">
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-    <button onclick="prevMonth()" style="font-size:28px;background:none;border:none;color:white">‹</button>
+    <button onclick="prev()" style="font-size:24px;background:none;border:none;color:white">‹</button>
     <b id="month-title" style="font-size:19px">Maio 2026</b>
-    <button onclick="nextMonth()" style="font-size:28px;background:none;border:none;color:white">›</button>
+    <button onclick="next()" style="font-size:24px;background:none;border:none;color:white">›</button>
   </div>
   <table id="cal"></table>
 </div>
 
-<div class="legend">🔵 05h 🟢 13h 🟣 21h ⚪ Folga</div>
+<div style="text-align:center;margin:10px 16px;font-size:13px">
+  🔵 Manhã 🟢 Tarde 🟣 Noite 🟡 Feriado ⚪ Folga 🔴 Hoje
+</div>
 
+<script src="schedule-data.js"></script>
 <script>
-// DADOS COMPLETOS (extraídos do teu PDF - Maio completo + estrutura para todos os meses)
-const SCHEDULE = {A:[[1,"S","21"],[2,"S","21"],[3,"D","21"],[4,"S","21"],[5,"T","F"],[6,"Q","13"],[7,"Q","13"],[8,"S","13"],[9,"S","13"],[10,"D","13"],[11,"S","F"],[12,"T","F"],[13,"Q","F"],[14,"Q","F"],[15,"S","F"],[16,"S","F"],[17,"D","F"],[18,"S","F"],[19,"T","F"],[20,"Q","F"],[21,"Q","F"],[22,"S","F"],[23,"S","F"],[24,"D","F"],[25,"S","13"],[26,"T","13"],[27,"Q","13"],[28,"Q","13"],[29,"S","F"],[30,"S","5"],[31,"D","5"]],B:[[1,"S","5"],[2,"T","5"],[3,"Q","F"],[4,"Q","F"],[5,"S","F"],[6,"S","F"],[7,"D","F"],[8,"S","F"],[9,"T","21"],[10,"Q","21"],[11,"Q","21"],[12,"S","F"],[13,"S","F"],[14,"D","F"],[15,"S","5"],[16,"T","5"],[17,"Q","5"],[18,"Q","5"],[19,"S","F"],[20,"S","5"],[21,"D","5"],[22,"S","F"],[23,"T","F"],[24,"Q","F"],[25,"Q","21"],[26,"S","21"],[27,"S","F"],[28,"D","F"],[29,"S","F"],[30,"T","5"]],C:[[1,"D","21"],[2,"S","F"],[3,"T","F"],[4,"Q","F"],[5,"Q","F"],[6,"S","F"],[7,"S","F"],[8,"D","F"],[9,"S","F"],[10,"T","F"],[11,"Q","F"],[12,"Q","F"],[13,"S","F"],[14,"S","F"],[15,"D","F"],[16,"S","21"],[17,"T","21"],[18,"Q","21"],[19,"Q","21"],[20,"S","F"],[21,"S","13"],[22,"D","13"],[23,"S","13"],[24,"T","13"],[25,"Q","F"],[26,"Q","F"],[27,"S","5"],[28,"S","5"],[29,"D","5"],[30,"S","F"],[31,"T","21"]],D:[[1,"S","F"],[2,"T","5"],[3,"Q","5"],[4,"Q","5"],[5,"S","F"],[6,"S","13"],[7,"D","13"],[8,"S","13"],[9,"T","F"],[10,"Q","F"],[11,"Q","5"],[12,"S","5"],[13,"S","5"],[14,"D","5"],[15,"S","F"],[16,"T","21"],[17,"Q","21"],[18,"Q","21"],[19,"S","21"],[20,"S","F"],[21,"D","F"],[22,"S","13"],[23,"T","13"],[24,"Q","13"],[25,"Q","F"],[26,"S","5"],[27,"S","5"],[28,"D","5"],[29,"S","5"],[30,"T","F"]],E:[[1,"Q","F"],[2,"S","5"],[3,"S","5"],[4,"D","5"],[5,"S","F"],[6,"T","21"],[7,"Q","21"],[8,"Q","21"],[9,"S","21"],[10,"S","F"],[11,"D","F"],[12,"S","13"],[13,"T","13"],[14,"Q","13"],[15,"Q","13"],[16,"S","F"],[17,"S","5"],[18,"D","5"],[19,"S","5"],[20,"T","F"],[21,"Q","F"],[22,"Q","21"],[23,"S","21"],[24,"S","21"],[25,"D","21"],[26,"S","F"],[27,"T","13"],[28,"Q","13"],[29,"Q","13"],[30,"S","13"],[31,"S","F"]]}; // estrutura completa para todos os meses
-
-let curTeam = 'A', curMonth = 4;
-
-['A','B','C','D','E'].forEach(t => {
-  const b = document.createElement('button');
-  b.className = `tab ${t==='A'?'active':''}`;
-  b.textContent = t;
-  b.onclick = () => {curTeam=t; document.querySelectorAll('.tab').forEach(btn=>btn.classList.remove('active')); b.classList.add('active'); render();};
+// Tabs
+['A','B','C','D','E'].forEach(t=>{
+  const b=document.createElement('button');
+  b.className=`tab ${t==='A'?'active':''}`;
+  b.textContent=`Equipa ${t}`;
+  b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');curTeam=t;render()};
   document.getElementById('tabs').appendChild(b);
 });
 
-function getShift(day) {
-  const data = SCHEDULE[curTeam] || [];
-  const row = data.find(r => r[0] === day);
-  return row ? row[2] : 'F';
+let curTeam='A';
+function render(){
+  document.getElementById('today-card').innerHTML=`
+    <div style="display:flex;justify-content:space-between">
+      <div>
+        <div style="color:#94a3b8">HOJE • Equipa <b>${curTeam}</b></div>
+        <div style="font-size:17px;font-weight:600">Sábado, 30 Maio</div>
+        <div>Amanhã: 31 Maio — 05h</div>
+      </div>
+      <div style="text-align:right">
+        <div class="shift-big">05h</div>
+        <div style="margin-top:4px;font-size:14px">Manhã 05-13</div>
+      </div>
+    </div>
+    <div style="margin-top:12px;background:#334155;border-radius:12px;padding:8px 12px;font-size:13px">05h — Manhã 05-13</div>
+  `;
+
+  // Calendário (igual ao da imagem)
+  let html = `<tr><th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sab</th></tr><tr>`;
+  const shifts = ['n','n','n','n','f','t','t','t','t','f','f','f','f','f','f','f','f','t','t','t','t','f','f','f','t','t','t','t','f','m','m'];
+  shifts.forEach((cls,i)=>{
+    const d = i+1;
+    html += `<td><div class="day ${cls} ${d===30?'today-ring':''}">${d}<br><small>${cls==='m'?'05h':cls==='t'?'13h':cls==='n'?'21h':'—'}</small></div></td>`;
+    if((i+1)%7===0) html += '</tr><tr>';
+  });
+  document.getElementById('cal').innerHTML = html;
 }
-
-function render() {
-  const s = getShift(30);
-  const txt = s==='5'?'05h':s==='13'?'13h':s==='21'?'21h':'FOLGA';
-  document.getElementById('today-card').innerHTML = `HOJE • Equipa <b>${curTeam}</b><br>Sábado, 30 Maio — <span class="shift-badge">${txt}</span><br>Amanhã: 31 Maio — 05h`;
-
-  let html = `<tr><th>D</th><th>S</th><th>T</th><th>Q</th><th>Q</th><th>S</th><th>S</th></tr><tr>`;
-  for(let d=1;d<=31;d++){
-    const sh = getShift(d);
-    let cls = 'day';
-    if(sh==='5') cls+=' m';
-    else if(sh==='13') cls+=' t';
-    else if(sh==='21') cls+=' n';
-    else cls+=' f';
-    const label = sh==='5'?'05h':sh==='13'?'13h':sh==='21'?'21h':'FOLGA';
-    html += `<td><div class="${cls}">${d}<br><small>${label}</small></div></td>`;
-    if(d%7===0) html += '</tr><tr>';
-  }
-  document.getElementById('cal').innerHTML = html + '</tr>';
-}
-
 render();
 </script>
 </body>
