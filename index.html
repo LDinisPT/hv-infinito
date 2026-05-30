@@ -4,87 +4,92 @@
 <meta charset="UTF-8">
 <title>Verallia Turnos 2026 • Fontela</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
 <style>
-  :root { --glass: rgba(30, 41, 59, 0.75); --accent: #60a5fa; }
-  body { background: linear-gradient(180deg, #0a0a0f, #1e2937); color: #e2e8f0; font-family: -apple-system, BlinkMacSystemFont, sans-serif; margin:0; min-height:100vh; }
-  .header { padding: 16px; background: rgba(15,23,42,0.95); backdrop-filter: blur(20px); display:flex; justify-content:space-between; align-items:center; position:sticky; top:0; z-index:10; border-bottom:1px solid rgba(148,163,184,0.2); }
-  .tabs { display:flex; gap:8px; padding:12px 16px; overflow-x:auto; background: rgba(15,23,42,0.9); }
-  .tab { padding:11px 20px; border-radius:999px; background:rgba(51,65,85,0.8); color:#cbd5e1; font-weight:600; white-space:nowrap; transition:0.3s; }
-  .tab.active { background:var(--accent); color:#0f172a; box-shadow:0 0 20px rgba(96,165,250,0.6); }
-  .today-card { margin:16px; padding:24px; background:var(--glass); backdrop-filter:blur(20px); border-radius:28px; border:1px solid rgba(148,163,184,0.2); box-shadow:0 20px 40px rgba(0,0,0,0.5); }
-  .shift { font-size:62px; font-weight:900; line-height:1; background:linear-gradient(90deg,#60a5fa,#a855f7); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
-  .calendar { margin:0 16px; background:var(--glass); backdrop-filter:blur(20px); border-radius:24px; padding:16px; }
-  table { width:100%; border-collapse:separate; border-spacing:8px; }
-  .day { background:#334155; border-radius:16px; padding:10px 4px; text-align:center; font-weight:600; min-height:74px; transition:0.2s; }
-  .day.m { background:#67e8f9; color:#0f172a; }
-  .day.t { background:#86efac; color:#0f172a; }
-  .day.n { background:#c084fc; color:white; }
-  .day.f { background:#64748b; color:#cbd5e1; }
-  .day.today { box-shadow:0 0 0 4px #f97316; transform:scale(1.08); }
+  body{background:linear-gradient(180deg,#0a0a0f,#1e2937);color:#e2e8f0;font-family:'Inter',sans-serif;margin:0}
+  .header{padding:16px;background:rgba(15,23,42,0.95);backdrop-filter:blur(20px);display:flex;justify-content:space-between;align-items:center}
+  .title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600}
+  .tabs{display:flex;gap:7px;padding:10px 16px;background:rgba(15,23,42,0.9);overflow-x:auto}
+  .tab{padding:10px 20px;border-radius:999px;background:rgba(51,65,85,0.7);color:#cbd5e1;font-weight:600;transition:0.3s}
+  .tab.active{background:#60a5fa;color:#0f172a;box-shadow:0 0 15px #60a5fa}
+  .today-card{margin:14px 16px;padding:22px;background:rgba(30,41,59,0.85);backdrop-filter:blur(20px);border-radius:28px;border:1px solid rgba(148,163,184,0.25);box-shadow:0 20px 40px rgba(0,0,0,0.6)}
+  .shift{font-size:64px;font-weight:700;line-height:1;color:#60a5fa}
+  .calendar{margin:0 16px;background:rgba(30,41,59,0.85);backdrop-filter:blur(20px);border-radius:24px;padding:16px}
+  table{width:100%;border-collapse:separate;border-spacing:7px}
+  .day{background:rgba(51,65,85,0.9);border-radius:16px;padding:10px 6px;text-align:center;font-weight:600;min-height:74px;box-shadow:0 4px 10px rgba(0,0,0,0.3);transition:0.2s}
+  .day.m{background:#67e8f9;color:#0f172a}
+  .day.t{background:#86efac;color:#0f172a}
+  .day.n{background:linear-gradient(135deg,#c084fc,#a855f7);color:white}
+  .day.x{background:#fcd34d;color:#1e2937;font-weight:700}
+  .day.today{border:3px solid #f97316;box-shadow:0 0 0 4px #f97316}
+  .legend{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:16px 0;font-size:13px}
+  .leg{display:flex;align-items:center;gap:6px}
+  .dot{width:14px;height:14px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3)}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div>
-    <b style="font-size:21px">Verallia Turnos 2026</b><br>
-    <span style="font-size:13px;opacity:0.7">Fontela • Figueira da Foz</span>
-  </div>
-  <div style="font-size:13px;opacity:0.6">30 Mai 2026</div>
+  <div class="title">Verallia Turnos 2026</div>
+  <div style="font-size:13px;opacity:0.7">Fontela • Figueira da Foz</div>
 </div>
 
 <div class="tabs" id="tabs"></div>
 
-<div class="today-card" id="today"></div>
+<div class="today-card" id="today-card"></div>
 
 <div class="calendar">
-  <div style="text-align:center;font-size:21px;font-weight:700;margin-bottom:14px" id="mes">Maio 2026</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+    <button onclick="prev()" style="font-size:26px;background:none;border:none;color:#94a3b8">‹</button>
+    <b id="mes" style="font-size:20px">Maio 2026</b>
+    <button onclick="next()" style="font-size:26px;background:none;border:none;color:#94a3b8">›</button>
+  </div>
   <table id="cal"></table>
 </div>
 
-<div style="text-align:center;margin:20px 0;font-size:13px">
-  🔵 05h 🟢 13h 🟣 21h ⚪ Folga
+<div class="legend">
+  <div class="leg"><div class="dot" style="background:#67e8f9"></div>Manhã</div>
+  <div class="leg"><div class="dot" style="background:#86efac"></div>Tarde</div>
+  <div class="leg"><div class="dot" style="background:#c084fc"></div>Noite</div>
+  <div class="leg"><div class="dot" style="background:#fcd34d"></div>Feriado</div>
+  <div class="leg"><div class="dot" style="background:#64748b"></div>Folga</div>
 </div>
 
 <script>
-['A','B','C','D','E'].forEach(t => {
-  const btn = document.createElement('button');
-  btn.className = `tab ${t==='A'?'active':''}`;
-  btn.textContent = `Equipa ${t}`;
-  btn.onclick = () => { document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); render(t); };
-  document.getElementById('tabs').appendChild(btn);
+['A','B','C','D','E'].forEach(t=>{
+  const b=document.createElement('button');
+  b.className=`tab ${t==='A'?'active':''}`;
+  b.textContent=`Equipa ${t}`;
+  b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(t)};
+  document.getElementById('tabs').appendChild(b);
 });
 
-function render(team) {
-  document.getElementById('today').innerHTML = `
-    <div style="display:flex;justify-content:space-between;align-items:flex-start">
+function render(team='A'){
+  document.getElementById('today-card').innerHTML=`
+    <div style="display:flex;justify-content:space-between">
       <div>
-        <div style="opacity:0.7;font-size:13px">HOJE • Equipa <b>${team}</b></div>
-        <div style="font-size:19px;font-weight:700">Sábado, 30 Maio</div>
-        <div style="margin-top:8px">Amanhã: 31 Maio • 05h</div>
+        <div style="opacity:0.7">HOJE • Equipa <b>${team}</b></div>
+        <div style="font-size:18px;font-weight:600">Sábado, 30 Maio</div>
+        <div style="margin-top:6px">Amanhã: 31 Maio — 05h</div>
       </div>
       <div style="text-align:right">
         <div class="shift">05h</div>
-        <div style="margin-top:6px;font-size:15px;color:#67e8f9">Manhã 05–13</div>
+        <div style="color:#67e8f9;font-weight:500">Manhã • 05-13</div>
       </div>
-    </div>
-  `;
-
-  let html = `<tr><th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sab</th></tr>`;
-  const days = [21,21,21,21,'—',13,13,13,13,'—','—','—','—','—','—','—','—',13,13,13,13,'—','—','—',13,13,13,13,'—',5,5];
-  html += '<tr>';
-  days.forEach((v,i) => {
-    let cls = v===5?'m':v===13?'t':v===21?'n':'f';
-    let label = v===5?'05h':v===13?'13h':v===21?'21h':'—';
-    html += `<td><div class="day ${cls} ${i===29?'today':''}">${i+1}<br><small>${label}</small></div></td>`;
+    </div>`;
+  
+  let html = `<tr><th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sab</th></tr><tr>`;
+  const dados = ['x','n','n','n','f','t','t','t','t','f','f','f','f','f','f','f','f','t','t','t','t','f','f','f','t','t','t','t','f','m','m'];
+  dados.forEach((tipo,i)=>{
+    const d = i+1;
+    let cls = tipo==='m'?'m':tipo==='t'?'t':tipo==='n'?'n':tipo==='x'?'x':'f';
+    let label = tipo==='m'?'05h':tipo==='t'?'13h':tipo==='n'?'21h':tipo==='x'?'FER':'FOLGA';
+    html += `<td><div class="day ${cls} ${d===1?'x':''} ${d===30?'today':''}">${d}<br><small>${label}</small></div></td>`;
     if((i+1)%7===0) html += '</tr><tr>';
   });
   document.getElementById('cal').innerHTML = html;
 }
-render('A');
+render();
 </script>
-
-<!-- Botão instalar -->
-<button style="position:fixed;bottom:20px;right:20px;background:#60a5fa;color:#0f172a;padding:12px 24px;border-radius:999px;font-weight:700;box-shadow:0 10px 30px rgba(96,165,250,0.5)" onclick="alert('App instalada com sucesso! ✅')">📲 Instalar no ecrã inicial</button>
 </body>
 </html>
