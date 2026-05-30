@@ -5,33 +5,34 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Verallia Turnos 2026 • Fontela</title>
 <style>
-:root{--bg:#0a0a0f;--card:#16161f;--accent:#60a5fa;--m:#60a5fa;--t:#4ade80;--c:#f87171;--n:#c084fc;--x:#fbbf24}
+:root{--bg:#0f172a;--card:#1e2937;--accent:#60a5fa}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:#f1f5f9;font-family:-apple-system,system-ui,sans-serif;min-height:100vh;padding-bottom:90px}
-.header{padding:14px 16px;background:rgba(22,22,31,0.98);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(255,255,255,0.1)}
-.tabs{display:flex;gap:6px;overflow-x:auto;padding:8px 0}
-.tab{padding:10px 22px;border-radius:999px;font-weight:700;background:#1e2937;color:#94a3b8;transition:.3s}
-.tab.active{background:var(--accent);color:#fff;box-shadow:0 0 20px rgba(96,165,250,0.6)}
-.today-card{margin:16px;background:linear-gradient(145deg,#1e2937,#0f172a);border-radius:28px;padding:20px;box-shadow:0 20px 30px rgba(0,0,0,0.6);border:1px solid rgba(148,163,184,0.2)}
-.shift-big{font-size:2.8rem;font-weight:900;padding:6px 32px;border-radius:999px;background:#60a5fa;color:#0f172a;display:inline-block}
-.calendar{margin:0 16px;background:#1e2937;border-radius:24px;padding:18px;overflow:hidden}
-table{width:100%;border-collapse:separate;border-spacing:5px}
-.day{background:#334155;border-radius:14px;padding:10px 4px;font-weight:700;min-height:68px;position:relative}
-.day.today{box-shadow:0 0 0 4px #60a5fa;background:#3b82f6;color:white}
+body{background:var(--bg);color:#e2e8f0;font-family:-apple-system,system-ui,sans-serif;min-height:100vh}
+.header{padding:12px 16px 8px;background:rgba(15,23,42,0.98);backdrop-filter:blur(20px);position:sticky;top:0;z-index:100}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:6px 0}
+.tab{padding:9px 18px;border-radius:999px;font-weight:700;background:#334155;color:#cbd5e1}
+.tab.active{background:#60a5fa;color:#0f172a;box-shadow:0 0 15px #60a5fa}
+.today-card{margin:12px 16px;padding:18px;background:#1e2937;border-radius:22px;box-shadow:0 10px 20px rgba(0,0,0,0.5)}
+.shift-badge{font-size:2.4rem;font-weight:900;padding:8px 26px;border-radius:999px;background:#60a5fa;color:#0f172a;display:inline-block}
+.calendar{margin:0 16px 20px;background:#1e2937;border-radius:22px;padding:16px}
+table{width:100%;border-collapse:separate;border-spacing:4px}
+.day{background:#334155;border-radius:14px;padding:6px 2px;text-align:center;font-size:15px;font-weight:600;min-height:54px}
 .day.m{background:#67e8f9;color:#0f172a}
 .day.t{background:#86efac;color:#0f172a}
 .day.n{background:#c084fc;color:white}
 .day.x{background:#fcd34d;color:#1e2937}
-.day.f{background:#64748b;color:#cbd5e1}
-.btn-today{position:fixed;bottom:90px;right:20px;width:64px;height:64px;background:#60a5fa;border-radius:50%;font-size:28px;box-shadow:0 10px 20px rgba(96,165,250,0.5);display:flex;align-items:center;justify-content:center}
+.day.f{background:#64748b;color:#e2e8f0}
+.legend{text-align:center;margin:15px 0;font-size:13px}
+.legend span{margin:0 8px}
+.btn-today{position:fixed;bottom:85px;right:20px;width:62px;height:62px;background:#60a5fa;border-radius:50%;font-size:26px;box-shadow:0 8px 20px rgba(96,165,250,0.6);display:flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
 
 <div class="header">
   <div style="display:flex;justify-content:space-between;align-items:center">
-    <div style="font-size:20px;font-weight:700">Verallia Turnos 2026</div>
-    <div style="font-size:13px;opacity:0.7">Fontela • Figueira da Foz</div>
+    <div style="font-size:19px;font-weight:700">Verallia Turnos 2026</div>
+    <div style="font-size:13px;opacity:0.8">Fontela • Figueira da Foz</div>
   </div>
   <div class="tabs" id="tabs">
     <button class="tab active" data-team="A">A</button>
@@ -42,50 +43,98 @@ table{width:100%;border-collapse:separate;border-spacing:5px}
   </div>
 </div>
 
-<div class="today-card" id="today"></div>
+<div class="today-card" id="today-card">
+  <!-- JS vai preencher -->
+</div>
 
 <div class="calendar">
-  <div style="text-align:center;font-size:19px;font-weight:700;margin-bottom:12px" id="month">Maio 2026</div>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <button onclick="prevMonth()" style="font-size:24px;background:none;border:none;color:white">‹</button>
+    <div style="font-size:19px;font-weight:700" id="month-title">Maio 2026</div>
+    <button onclick="nextMonth()" style="font-size:24px;background:none;border:none;color:white">›</button>
+  </div>
   <table id="cal-body"></table>
 </div>
 
-<div style="text-align:center;margin:20px 0;font-size:13px">
+<div class="legend">
   🔵 Manhã 🟢 Tarde 🟣 Noite 🟡 Feriado ⚪ Folga
 </div>
 
-<button class="btn-today" onclick="goToday()">📍</button>
+<button class="btn-today" onclick="goToToday()">📍</button>
 
 <script src="schedule-data.js"></script>
 <script>
-let curTeam = localStorage.getItem('team') || 'A';
-document.querySelectorAll('.tab').forEach(t=>{
-  t.onclick = ()=>{ 
-    document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
-    t.classList.add('active');
-    curTeam = t.dataset.team;
-    localStorage.setItem('team', curTeam);
-    render();
-  };
+// Configuração
+let curTeam = 'A';
+let curMonth = 4; // Maio = 4 (0=Janeiro)
+
+// Mudar equipa
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    curTeam = btn.dataset.team;
+    renderAll();
+  });
 });
 
-function render(){
-  // Card Hoje (atualizado com dados reais)
-  document.getElementById('today').innerHTML = `
+function getShift(day) {
+  const data = SCHEDULE[curTeam]?.[curMonth];
+  if (!data) return 'F';
+  const row = data.find(r => r[0] === day);
+  return row ? row[2] : 'F';
+}
+
+function renderToday() {
+  document.getElementById('today-card').innerHTML = `
     <div style="display:flex;justify-content:space-between">
       <div>
-        <div style="opacity:0.7">HOJE • Equipa <b>${curTeam}</b></div>
+        <div style="color:#94a3b8;font-size:13px">HOJE • Equipa <b>${curTeam}</b></div>
         <div style="font-size:17px;font-weight:600">Sábado, 30 Maio</div>
-        <div>Amanhã: 31 Maio — 05h</div>
+        <div style="margin-top:4px">Amanhã: 31 Maio — 05h</div>
       </div>
       <div style="text-align:right">
-        <div class="shift-big">05h</div>
-        <div style="margin-top:4px">Manhã 05–13</div>
+        <div class="shift-badge">05h</div>
+        <div style="margin-top:4px;font-size:14px">Manhã 05–13</div>
       </div>
     </div>`;
-  // Calendário renderizado (funciona com o teu schedule-data.js)
-  console.log('✅ Design Premium carregado - Equipa', curTeam);
 }
-render();
+
+function renderCalendar() {
+  const title = document.getElementById('month-title');
+  title.textContent = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"][curMonth] + " 2026";
+
+  const tbody = document.createElement('tbody');
+  const table = document.getElementById('cal-body');
+  table.innerHTML = `<tr><th>D</th><th>S</th><th>T</th><th>Q</th><th>Q</th><th>S</th><th>S</th></tr>`;
+  
+  let html = '';
+  for (let d = 1; d <= 31; d++) {
+    if (d % 7 === 1) html += '<tr>';
+    const s = getShift(d);
+    let cls = 'day';
+    if (s === '5') cls += ' m';
+    else if (s === '13') cls += ' t';
+    else if (s === '21') cls += ' n';
+    else if (s === 'X') cls += ' x';
+    else cls += ' f';
+    html += `<td><div class="${cls}">${d}<br><small>${s === 'F' ? '—' : s+'h'}</small></div></td>`;
+    if (d % 7 === 0) html += '</tr>';
+  }
+  table.innerHTML += html;
+}
+
+function renderAll() {
+  renderToday();
+  renderCalendar();
+}
+
+function prevMonth() { if(curMonth > 0) {curMonth--; renderAll();} }
+function nextMonth() { if(curMonth < 11) {curMonth++; renderAll();} }
+function goToToday() { curMonth = 4; renderAll(); alert("Voltaste ao mês atual ✅"); }
+
+// Iniciar
+renderAll();
 </script>
 </body>
 </html>
