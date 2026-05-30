@@ -1,4 +1,4 @@
-const CACHE = 'verallia-2026-v3';
+const CACHE = 'verallia-2026-v4';
 const FILES = ['/', '/index.html', '/schedule-data.js', '/manifest.json', '/verallia_logo.avif'];
 
 self.addEventListener('install', e => {

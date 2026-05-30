@@ -91,6 +91,14 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .leg-dot{width:10px;height:10px;border-radius:3px;border:1.5px solid;}
 
 /* INSTALL BANNER */
+.fer-list{margin:0 12px 8px;padding:10px 14px;border-radius:10px;background:#1a1a2e;border:1px solid #ffffff10;display:none;}
+.fer-list.show{display:block;}
+.fer-list-title{font-size:10px;color:#a0a0c0;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.fer-item{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #ffffff08;font-size:13px;}
+.fer-item:last-child{border-bottom:none;}
+.fer-day{font-weight:600;color:#d9a030;min-width:28px;}
+.fer-name{color:#e8e8f0;}
+.fer-shift{font-size:11px;color:#a0a0c0;margin-left:auto;}
 .install-banner{margin:0 12px 12px;padding:12px 14px;background:var(--bg2);border-radius:var(--radius);border:1px solid #ffffff10;display:none;align-items:center;gap:10px;}
 .install-banner.show{display:flex;}
 .install-txt{flex:1;font-size:12px;color:var(--text2);}
@@ -121,6 +129,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <div class="today-card" id="today-card"></div>
 
+<div class="fer-list" id="fer-list"><div class="fer-list-title">Feriados este mes</div><div id="fer-items"></div></div>
 <div class="legend">
   <div class="leg"><div class="leg-dot" style="background:#0d2340;border-color:#4a90d9;"></div><span style="color:#4a90d9">Manha</span></div>
   <div class="leg"><div class="leg-dot" style="background:#0d2414;border-color:#4aab5a;"></div><span style="color:#4aab5a">Tarde</span></div>
@@ -237,6 +246,30 @@ function renderCalendar() {
   }
 }
 
+
+function renderFeriados() {
+  const daysInMonth = new Date(curYear, curMonth+1, 0).getDate();
+  const items = [];
+  const shiftColors = {'5':'color:#4a90d9','13':'color:#4aab5a','21':'color:#8a60d9','F':'color:#606080'};
+  const shiftLabels = {'5':'Manha 05-13','13':'Tarde 13-21','21':'Noite 21-05','F':'Folga'};
+  for(let d=1;d<=daysInMonth;d++){
+    const date = new Date(curYear, curMonth, d);
+    const ferKey = `${d}-${curMonth+1}`;
+    const fer = FERIADOS[ferKey] || '';
+    if(fer){
+      const s = getShift(curTeam, date);
+      items.push(`<div class="fer-item">
+        <span class="fer-day">${d}</span>
+        <span class="fer-name">${fer}</span>
+        <span class="fer-shift" style="${shiftColors[s]||''}">${shiftLabels[s]||''}</span>
+      </div>`);
+    }
+  }
+  const list = document.getElementById('fer-list');
+  document.getElementById('fer-items').innerHTML = items.join('');
+  list.classList.toggle('show', items.length > 0);
+}
+
 function setTeam(t) {
   curTeam = t;
   localStorage.setItem('team', t);
@@ -245,13 +278,14 @@ function setTeam(t) {
   });
   renderTodayCard();
   renderCalendar();
+  renderFeriados();
 }
 
 document.getElementById('tabs').addEventListener('click', e => {
   if(e.target.dataset.team) setTeam(e.target.dataset.team);
 });
-document.getElementById('prev').onclick = () => { if(curMonth>0){curMonth--;renderCalendar();}};
-document.getElementById('next').onclick = () => { if(curMonth<11){curMonth++;renderCalendar();}};
+document.getElementById('prev').onclick = () => { if(curMonth>0){curMonth--;renderCalendar();renderFeriados();}};
+document.getElementById('next').onclick = () => { if(curMonth<11){curMonth++;renderCalendar();renderFeriados();}};
 
 // PWA install
 let deferredPrompt;
