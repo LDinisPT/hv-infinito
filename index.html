@@ -5,69 +5,113 @@
 <title>Verallia Turnos 2026 • Fontela</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-body{background:#0f172a;color:#e2e8f0;font-family:-apple-system,sans-serif;margin:0}
-.header{padding:12px 16px;background:#1e2937;display:flex;justify-content:space-between}
-.tabs{display:flex;gap:6px;padding:8px;overflow-x:auto;background:#1e2937}
-.tab{padding:10px 20px;border-radius:999px;background:#334155;color:#cbd5e1;font-weight:700}
-.tab.active{background:#60a5fa;color:#0f172a}
-.today-card{margin:12px 16px;padding:20px;background:#1e2937;border-radius:24px}
-.shift-big{font-size:52px;font-weight:900;background:#60a5fa;color:#0f172a;padding:8px 32px;border-radius:999px;display:inline-block}
-.calendar{margin:0 16px 20px;background:#1e2937;border-radius:22px;padding:16px}
-table{width:100%;border-collapse:separate;border-spacing:5px}
-.day{background:#475569;border-radius:14px;padding:8px 4px;text-align:center;font-weight:600;min-height:62px}
-.day.m{background:#67e8f9;color:#0f172a}
-.day.t{background:#86efac;color:#0f172a}
-.day.n{background:#c084fc;color:white}
-.day.x{background:#fcd34d;color:#1e2937}
-.day.f{background:#64748b;color:#e2e8f0}
+  body {background:#0f172a; color:#e2e8f0; font-family:-apple-system,sans-serif; margin:0; padding-bottom:80px;}
+  .header {padding:12px 16px; background:#1e2937; display:flex; justify-content:space-between; align-items:center;}
+  .tabs {display:flex; gap:6px; padding:8px 16px; overflow-x:auto; background:#1e2937;}
+  .tab {padding:10px 22px; border-radius:999px; background:#334155; color:#cbd5e1; font-weight:700; white-space:nowrap;}
+  .tab.active {background:#60a5fa; color:#0f172a;}
+  .today-card {margin:12px 16px; padding:18px; background:#1e2937; border-radius:24px;}
+  .shift-big {font-size:48px; font-weight:900; background:#60a5fa; color:#0f172a; padding:6px 24px; border-radius:999px; display:inline-block;}
+  .calendar {margin:0 16px; background:#1e2937; border-radius:22px; padding:16px;}
+  table {width:100%; border-collapse:separate; border-spacing:5px;}
+  th {color:#94a3b8; font-weight:normal; padding:4px;}
+  .day {background:#334155; border-radius:14px; padding:6px 4px; text-align:center; font-size:15px; min-height:66px; font-weight:600;}
+  .day.m {background:#67e8f9; color:#0f172a;}
+  .day.t {background:#86efac; color:#0f172a;}
+  .day.n {background:#c084fc; color:white;}
+  .day.x {background:#fcd34d; color:#1e2937;}
+  .day.f {background:#64748b; color:#e2e8f0;}
 </style>
 </head>
 <body>
 
 <div class="header">
-  <div style="font-weight:700;font-size:20px">Verallia Turnos 2026</div>
-  <div>Fontela • Figueira da Foz</div>
+  <div style="font-size:20px;font-weight:700">Verallia Turnos 2026</div>
+  <div style="font-size:13px">Fontela • Figueira da Foz</div>
 </div>
 
-<div class="tabs">
-  <button class="tab active" onclick="setTeam('A')">A</button>
-  <button class="tab" onclick="setTeam('B')">B</button>
-  <button class="tab" onclick="setTeam('C')">C</button>
-  <button class="tab" onclick="setTeam('D')">D</button>
-  <button class="tab" onclick="setTeam('E')">E</button>
-</div>
+<div class="tabs" id="tabs"></div>
 
-<div class="today-card" id="today">
-  HOJE • Equipa <b>A</b><br>
-  Sábado, 30 Maio — <span class="shift-big">05h</span><br>
-  Amanhã: 31 Maio — 05h
-</div>
+<div class="today-card" id="today-card">Carregando...</div>
 
 <div class="calendar">
-  <div style="text-align:center;font-size:19px;font-weight:700" id="mes">Maio 2026</div>
-  <table id="cal"></table>
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+    <button onclick="prev()" style="font-size:28px;background:none;border:none;color:white">‹</button>
+    <b id="month-title" style="font-size:19px">Maio 2026</b>
+    <button onclick="next()" style="font-size:28px;background:none;border:none;color:white">›</button>
+  </div>
+  <table id="calendar"></table>
+</div>
+
+<div style="text-align:center;margin:20px 0;color:#94a3b8">
+  🔵 Manhã 🟢 Tarde 🟣 Noite 🟡 Feriado ⚪ Folga
 </div>
 
 <script src="schedule-data.js"></script>
 <script>
 let curTeam = 'A';
-function setTeam(t) {
+let curMonth = 4; // Maio
+
+const tabsHTML = ['A','B','C','D','E'].map(t => 
+  `<button class="tab ${t==='A'?'active':''}" onclick="changeTeam('${t}')">${t}</button>`
+).join('');
+document.getElementById('tabs').innerHTML = tabsHTML;
+
+function changeTeam(t) {
   curTeam = t;
   document.querySelectorAll('.tab').forEach(b => b.classList.toggle('active', b.textContent === t));
-  alert('✅ Equipa ' + t + ' carregada!\n\nCalendário completo de 2026 visível para todas as equipas.');
+  render();
+}
+
+function getShift(day) {
+  const data = SCHEDULE[curTeam]?.[curMonth];
+  if (!data) return 'F';
+  const row = data.find(r => r && r[0] === day);
+  return row ? row[2] : 'F';
+}
+
+function renderToday() {
+  const s = getShift(30);
+  document.getElementById('today-card').innerHTML = `
+    HOJE • Equipa <b>${curTeam}</b><br>
+    Sábado, 30 Maio — <span class="shift-big">${s === '5' ? '05h' : s === '13' ? '13h' : s === '21' ? '21h' : s === 'X' ? 'FER' : 'FOLGA'}</span><br>
+    Amanhã: 31 Maio — 05h
+  `;
+}
+
+function renderCalendar() {
+  const months = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+  document.getElementById('month-title').textContent = months[curMonth] + " 2026";
+
+  let html = `<tr><th>D</th><th>S</th><th>T</th><th>Q</th><th>Q</th><th>S</th><th>S</th></tr><tr>`;
+  for (let d = 1; d <= 31; d++) {
+    const shift = getShift(d);
+    let cls = 'day';
+    if (shift === '5') cls += ' m';
+    else if (shift === '13') cls += ' t';
+    else if (shift === '21') cls += ' n';
+    else if (shift === 'X') cls += ' x';
+    else cls += ' f';
+
+    const label = shift === '5' ? '05h' : shift === '13' ? '13h' : shift === '21' ? '21h' : shift === 'X' ? 'FER' : 'FOLGA';
+
+    html += `<td><div class="${cls}">${d}<br><small>${label}</small></div></td>`;
+    if (d % 7 === 0) html += '</tr><tr>';
+  }
+  html += '</tr>';
+  document.getElementById('calendar').innerHTML = html;
+}
+
+function render() {
+  renderToday();
   renderCalendar();
 }
-function renderCalendar() {
-  let html = '<tr><th>D</th><th>S</th><th>T</th><th>Q</th><th>Q</th><th>S</th><th>S</th></tr><tr>';
-  for(let d=1; d<=31; d++) {
-    let cls = 'day';
-    if(d%7===1) cls += ' n'; else if(d%7===2) cls += ' m'; else if(d%7===3) cls += ' t';
-    html += `<td><div class="${cls}">${d}<br><small>05h</small></div></td>`;
-    if(d%7===0) html += '</tr><tr>';
-  }
-  document.getElementById('cal').innerHTML = html + '</tr>';
-}
-renderCalendar();
+
+function prev() { if(curMonth>0){curMonth--; render();} }
+function next() { if(curMonth<11){curMonth++; render();} }
+
+// Iniciar
+render();
 </script>
 </body>
 </html>
