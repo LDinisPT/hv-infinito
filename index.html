@@ -2,94 +2,324 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<title>Verallia Turnos 2026 • Fontela</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1a1a2e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Verallia Turnos">
+<link rel="manifest" href="manifest.json">
+<title>Verallia Turnos 2026</title>
 <style>
-  body{background:linear-gradient(180deg,#0a0a0f,#1e2937);color:#e2e8f0;font-family:'Inter',sans-serif;margin:0}
-  .header{padding:16px;background:rgba(15,23,42,0.95);backdrop-filter:blur(20px);display:flex;justify-content:space-between;align-items:center}
-  .title{font-family:'Space Grotesk',sans-serif;font-size:22px;font-weight:600}
-  .tabs{display:flex;gap:7px;padding:10px 16px;background:rgba(15,23,42,0.9);overflow-x:auto}
-  .tab{padding:10px 20px;border-radius:999px;background:rgba(51,65,85,0.7);color:#cbd5e1;font-weight:600;transition:0.3s}
-  .tab.active{background:#60a5fa;color:#0f172a;box-shadow:0 0 15px #60a5fa}
-  .today-card{margin:14px 16px;padding:22px;background:rgba(30,41,59,0.85);backdrop-filter:blur(20px);border-radius:28px;border:1px solid rgba(148,163,184,0.25);box-shadow:0 20px 40px rgba(0,0,0,0.6)}
-  .shift{font-size:64px;font-weight:700;line-height:1;color:#60a5fa}
-  .calendar{margin:0 16px;background:rgba(30,41,59,0.85);backdrop-filter:blur(20px);border-radius:24px;padding:16px}
-  table{width:100%;border-collapse:separate;border-spacing:7px}
-  .day{background:rgba(51,65,85,0.9);border-radius:16px;padding:10px 6px;text-align:center;font-weight:600;min-height:74px;box-shadow:0 4px 10px rgba(0,0,0,0.3);transition:0.2s}
-  .day.m{background:#67e8f9;color:#0f172a}
-  .day.t{background:#86efac;color:#0f172a}
-  .day.n{background:linear-gradient(135deg,#c084fc,#a855f7);color:white}
-  .day.x{background:#fcd34d;color:#1e2937;font-weight:700}
-  .day.today{border:3px solid #f97316;box-shadow:0 0 0 4px #f97316}
-  .legend{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;margin:16px 0;font-size:13px}
-  .leg{display:flex;align-items:center;gap:6px}
-  .dot{width:14px;height:14px;border-radius:50%;box-shadow:0 2px 6px rgba(0,0,0,0.3)}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#0f0f1a;--bg2:#1a1a2e;--bg3:#16213e;
+  --m:#4a90d9;--m-bg:#1a3a5c;--m-bg2:#0d2340;
+  --t:#4aab5a;--t-bg:#1a3d22;--t-bg2:#0d2414;
+  --n:#8a60d9;--n-bg:#2d1a5c;--n-bg2:#1a0d40;
+  --x:#d9a030;--x-bg:#5c3d00;--x-bg2:#3d2800;
+  --f:#444;--f-bg:#1e1e2e;
+  --text:#e8e8f0;--text2:#a0a0c0;--text3:#606080;
+  --red:#ff5555;
+  --radius:12px;
+}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;overscroll-behavior:none;}
+
+/* TOP BAR */
+.topbar{background:var(--bg2);padding:14px 16px 10px;position:sticky;top:0;z-index:100;border-bottom:1px solid #ffffff10;}
+.topbar-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.app-title{font-size:15px;font-weight:600;color:var(--text);}
+.app-sub{font-size:11px;color:var(--text2);}
+.team-tabs{display:flex;gap:6px;}
+.team-tab{padding:6px 14px;border-radius:20px;border:1.5px solid #ffffff20;background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;}
+.team-tab.active{border-color:var(--m);background:var(--m-bg);color:var(--m);}
+.team-tab[data-team="B"].active{border-color:var(--t);background:var(--t-bg);color:var(--t);}
+.team-tab[data-team="C"].active{border-color:#d95a4a;background:#3d1a16;color:#d95a4a;}
+.team-tab[data-team="D"].active{border-color:var(--n);background:var(--n-bg);color:var(--n);}
+.team-tab[data-team="E"].active{border-color:var(--x);background:var(--x-bg);color:var(--x);}
+
+/* TODAY CARD */
+.today-card{margin:12px;padding:16px;border-radius:var(--radius);background:var(--bg2);border:1px solid #ffffff10;}
+.today-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.today-main{display:flex;align-items:center;justify-content:space-between;}
+.today-date{font-size:13px;color:var(--text2);}
+.today-shift{display:flex;align-items:center;gap:10px;}
+.shift-badge{padding:8px 18px;border-radius:20px;font-size:15px;font-weight:700;border:2px solid;}
+.shift-m{background:var(--m-bg);border-color:var(--m);color:var(--m);}
+.shift-t{background:var(--t-bg);border-color:var(--t);color:var(--t);}
+.shift-n{background:var(--n-bg);border-color:var(--n);color:var(--n);}
+.shift-x{background:var(--x-bg);border-color:var(--x);color:var(--x);}
+.shift-f{background:var(--f-bg);border-color:var(--f);color:var(--text2);}
+.shift-c{background:#3d1a16;border-color:#d95a4a;color:#d95a4a;}
+.shift-desc{font-size:12px;color:var(--text2);}
+.tomorrow-row{margin-top:10px;padding-top:10px;border-top:1px solid #ffffff08;display:flex;align-items:center;justify-content:space-between;}
+.tomorrow-label{font-size:11px;color:var(--text3);}
+.tomorrow-badge{padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600;border:1.5px solid;}
+
+/* MONTH NAV */
+.month-nav{display:flex;align-items:center;padding:4px 12px;gap:4px;}
+.nav-btn{background:transparent;border:none;color:var(--text2);font-size:20px;padding:8px;cursor:pointer;border-radius:8px;}
+.nav-btn:active{background:#ffffff10;}
+.month-title{flex:1;text-align:center;font-size:15px;font-weight:600;color:var(--text);}
+
+/* CALENDAR */
+.cal-wrap{padding:0 8px 24px;}
+.cal{width:100%;border-collapse:separate;border-spacing:3px;}
+.cal th{font-size:10px;color:var(--text3);text-align:center;padding:4px 0;font-weight:400;}
+.cal td{padding:0;}
+.day-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:46px;border-radius:8px;border:1.5px solid transparent;position:relative;}
+.day-num{font-size:13px;font-weight:500;}
+.day-lbl{font-size:9px;font-weight:700;margin-top:1px;letter-spacing:.02em;}
+.dc-m{background:var(--m-bg2);border-color:var(--m);}
+.dc-m .day-num,.dc-m .day-lbl{color:var(--m);}
+.dc-t{background:var(--t-bg2);border-color:var(--t);}
+.dc-t .day-num,.dc-t .day-lbl{color:var(--t);}
+.dc-n{background:var(--n-bg2);border-color:var(--n);}
+.dc-n .day-num,.dc-n .day-lbl{color:var(--n);}
+.dc-x{background:var(--x-bg2);border-color:var(--x);}
+.dc-x .day-num,.dc-x .day-lbl{color:var(--x);}
+.dc-f{background:var(--f-bg);border-color:transparent;}
+.dc-f .day-num{color:var(--text3);}
+.dc-f .day-lbl{color:var(--text3);}
+.dc-c{background:#2a0d0a;border-color:#d95a4a;}
+.dc-c .day-num,.dc-c .day-lbl{color:#d95a4a;}
+.fer-dot{position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:var(--red);}
+.today-ring{outline:2px solid var(--red);outline-offset:1px;}
+
+/* LEGEND */
+.legend{display:flex;flex-wrap:wrap;gap:8px;padding:0 12px 12px;}
+.leg{display:flex;align-items:center;gap:5px;font-size:11px;}
+.leg-dot{width:10px;height:10px;border-radius:3px;border:1.5px solid;}
+
+/* INSTALL BANNER */
+.fer-list{margin:0 12px 8px;padding:10px 14px;border-radius:10px;background:#1a1a2e;border:1px solid #ffffff10;display:none;}
+.fer-list.show{display:block;}
+.fer-list-title{font-size:10px;color:#a0a0c0;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.fer-item{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #ffffff08;font-size:13px;}
+.fer-item:last-child{border-bottom:none;}
+.fer-day{font-weight:600;color:#d9a030;min-width:28px;}
+.fer-name{color:#e8e8f0;}
+.fer-shift{font-size:11px;color:#a0a0c0;margin-left:auto;}
+.install-banner{margin:0 12px 12px;padding:12px 14px;background:var(--bg2);border-radius:var(--radius);border:1px solid #ffffff10;display:none;align-items:center;gap:10px;}
+.install-banner.show{display:flex;}
+.install-txt{flex:1;font-size:12px;color:var(--text2);}
+.install-btn{padding:6px 14px;border-radius:20px;background:var(--m-bg);border:1.5px solid var(--m);color:var(--m);font-size:12px;font-weight:600;cursor:pointer;}
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div class="title">Verallia Turnos 2026</div>
-  <div style="font-size:13px;opacity:0.7">Fontela • Figueira da Foz</div>
+<div class="topbar">
+  <div class="topbar-row1">
+    <div>
+      <div class="app-title">Verallia Turnos 2026</div>
+      <div class="app-sub">Fontela, Figueira da Foz</div>
+    </div>
+  </div>
+  <div class="team-tabs" id="tabs">
+    <button class="team-tab active" data-team="A">Equipa A</button>
+    <button class="team-tab" data-team="B">Equipa B</button>
+    <button class="team-tab" data-team="C">Equipa C</button>
+    <button class="team-tab" data-team="D">Equipa D</button>
+    <button class="team-tab" data-team="E">Equipa E</button>
+  </div>
 </div>
 
-<div class="tabs" id="tabs"></div>
+<div class="install-banner" id="install-banner">
+  <div class="install-txt">Instala no ecra inicial para acesso rapido!</div>
+  <button class="install-btn" id="install-btn">Instalar</button>
+</div>
 
 <div class="today-card" id="today-card"></div>
 
-<div class="calendar">
-  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
-    <button onclick="prev()" style="font-size:26px;background:none;border:none;color:#94a3b8">‹</button>
-    <b id="mes" style="font-size:20px">Maio 2026</b>
-    <button onclick="next()" style="font-size:26px;background:none;border:none;color:#94a3b8">›</button>
-  </div>
-  <table id="cal"></table>
+<div class="fer-list" id="fer-list"><div class="fer-list-title">Feriados este mes</div><div id="fer-items"></div></div>
+<div class="legend">
+  <div class="leg"><div class="leg-dot" style="background:#0d2340;border-color:#4a90d9;"></div><span style="color:#4a90d9">Manha</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#0d2414;border-color:#4aab5a;"></div><span style="color:#4aab5a">Tarde</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#1a0d40;border-color:#8a60d9;"></div><span style="color:#8a60d9">Noite</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#3d2800;border-color:#d9a030;"></div><span style="color:#d9a030">Feriado</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#1e1e2e;border-color:#444;"></div><span style="color:#606080">Folga</span></div>
+  <div class="leg"><div class="leg-dot" style="background:transparent;border-color:#ff5555;border-radius:50%;"></div><span style="color:#ff5555">Hoje</span></div>
 </div>
 
-<div class="legend">
-  <div class="leg"><div class="dot" style="background:#67e8f9"></div>Manhã</div>
-  <div class="leg"><div class="dot" style="background:#86efac"></div>Tarde</div>
-  <div class="leg"><div class="dot" style="background:#c084fc"></div>Noite</div>
-  <div class="leg"><div class="dot" style="background:#fcd34d"></div>Feriado</div>
-  <div class="leg"><div class="dot" style="background:#64748b"></div>Folga</div>
+<div class="month-nav">
+  <button class="nav-btn" id="prev">&#8249;</button>
+  <div class="month-title" id="month-title"></div>
+  <button class="nav-btn" id="next">&#8250;</button>
 </div>
+
+<div class="cal-wrap">
+  <table class="cal">
+    <thead><tr><th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sab</th></tr></thead>
+    <tbody id="cal-body"></tbody>
+  </table>
+</div>
+
+<script src="schedule-data.js"></script>
+<script>
+const TEAMS_ORDER = ['A','B','D','E'];
+const TEAM_COLORS = {A:'m',B:'t',C:'c',D:'n',E:'x'};
+
+const today = new Date();
+const todayD = today.getDate(), todayM = today.getMonth();
+let curTeam = localStorage.getItem('team') || 'A';
+let curMonth = todayM;
+
+function shiftInfo(s, teamColor) {
+  const tc = TEAM_COLORS[teamColor] || 'm';
+  if(s==='5')  return {cls:'dc-m', badge:'shift-m', lbl:'05h', desc:'Manha 05-13'};
+  if(s==='13') return {cls:'dc-t', badge:'shift-t', lbl:'13h', desc:'Tarde 13-21'};
+  if(s==='21') return {cls:'dc-n', badge:'shift-n', lbl:'21h', desc:'Noite 21-05'};
+  if(s==='X')  return {cls:'dc-x', badge:'shift-x', lbl:'FER', desc:'Feriado'};
+  return {cls:'dc-f', badge:'shift-f', lbl:'folga', desc:'Dia de folga'};
+}
+
+function getShift(team, month, day) {
+  const data = SCHEDULE[team];
+  if(!data) return 'F';
+  const mdata = data[month];
+  if(!mdata) return 'F';
+  const row = mdata.find(r => r[0] === day);
+  return row ? row[2] : 'F';
+}
+
+function renderTodayCard() {
+  const shift = getShift(curTeam, todayM, todayD);
+  const tomorrow = new Date(today); tomorrow.setDate(todayD+1);
+  const tomShift = getShift(curTeam, tomorrow.getMonth(), tomorrow.getDate());
+  const inf = shiftInfo(shift, curTeam);
+  const tinf = shiftInfo(tomShift, curTeam);
+  const ferKey = `${todayD}-${todayM+1}`;
+  const ferName = FERIADOS[ferKey] || '';
+  const weekdays = ['Domingo','Segunda','Terca','Quarta','Quinta','Sexta','Sabado'];
+  const months = MONTH_NAMES;
+  
+  document.getElementById('today-card').innerHTML = `
+    <div class="today-label">Hoje - Equipa ${curTeam}</div>
+    <div class="today-main">
+      <div>
+        <div class="today-date">${weekdays[today.getDay()]}, ${todayD} ${months[todayM]}</div>
+        ${ferName ? `<div style="font-size:11px;color:var(--x);margin-top:2px">${ferName}</div>` : ''}
+      </div>
+      <div class="today-shift">
+        <div>
+          <div class="shift-badge ${inf.badge}">${inf.lbl === 'folga' ? 'FOLGA' : inf.lbl}</div>
+          <div class="shift-desc" style="margin-top:4px;text-align:center">${inf.desc}</div>
+        </div>
+      </div>
+    </div>
+    <div class="tomorrow-row">
+      <div class="tomorrow-label">Amanha: ${tomorrow.getDate()} ${months[tomorrow.getMonth()]}</div>
+      <div class="tomorrow-badge ${tinf.badge}">${tinf.lbl === 'folga' ? 'FOLGA' : tinf.lbl} &mdash; ${tinf.desc}</div>
+    </div>
+  `;
+}
+
+function renderCalendar() {
+  document.getElementById('month-title').textContent = MONTH_NAMES[curMonth];
+  const data = SCHEDULE[curTeam] ? SCHEDULE[curTeam][curMonth] : [];
+  const firstDow = new Date(2026, curMonth, 1).getDay();
+  const tbody = document.getElementById('cal-body');
+  tbody.innerHTML = '';
+  
+  let cells = [];
+  for(let i=0;i<firstDow;i++) cells.push(null);
+  if(data) for(const d of data) cells.push(d);
+  while(cells.length%7!==0) cells.push(null);
+  
+  for(let r=0;r<cells.length/7;r++){
+    const tr = document.createElement('tr');
+    for(let c=0;c<7;c++){
+      const td = document.createElement('td');
+      const item = cells[r*7+c];
+      if(item){
+        const [day,,shift] = item;
+        const inf = shiftInfo(shift, curTeam);
+        const ferKey = `${day}-${curMonth+1}`;
+        const hasFer = !!FERIADOS[ferKey];
+        const isToday = curMonth===todayM && day===todayD;
+        const div = document.createElement('div');
+        div.className = `day-cell ${inf.cls}${isToday?' today-ring':''}`;
+        div.innerHTML = `<span class="day-num">${day}</span><span class="day-lbl">${inf.lbl==='folga'?'—':inf.lbl}</span>${hasFer?'<div class="fer-dot"></div>':''}`;
+        td.appendChild(div);
+      }
+      tr.appendChild(td);
+    }
+    tbody.appendChild(tr);
+  }
+}
+
+
+function renderFeriados() {
+  const daysInMonth = new Date(curYear, curMonth+1, 0).getDate();
+  const items = [];
+  const shiftColors = {'5':'color:#4a90d9','13':'color:#4aab5a','21':'color:#8a60d9','F':'color:#606080'};
+  const shiftLabels = {'5':'Manha 05-13','13':'Tarde 13-21','21':'Noite 21-05','F':'Folga'};
+  for(let d=1;d<=daysInMonth;d++){
+    const date = new Date(curYear, curMonth, d);
+    const ferKey = `${d}-${curMonth+1}`;
+    const fer = FERIADOS[ferKey] || '';
+    if(fer){
+      const s = getShift(curTeam, date);
+      items.push(`<div class="fer-item">
+        <span class="fer-day">${d}</span>
+        <span class="fer-name">${fer}</span>
+        <span class="fer-shift" style="${shiftColors[s]||''}">${shiftLabels[s]||''}</span>
+      </div>`);
+    }
+  }
+  const list = document.getElementById('fer-list');
+  document.getElementById('fer-items').innerHTML = items.join('');
+  list.classList.toggle('show', items.length > 0);
+}
+
+function setTeam(t) {
+  curTeam = t;
+  localStorage.setItem('team', t);
+  document.querySelectorAll('.team-tab').forEach(b => {
+    b.classList.toggle('active', b.dataset.team === t);
+  });
+  renderTodayCard();
+  renderCalendar();
+  renderFeriados();
+}
+
+document.getElementById('tabs').addEventListener('click', e => {
+  if(e.target.dataset.team) setTeam(e.target.dataset.team);
+});
+document.getElementById('prev').onclick = () => { if(curMonth>0){curMonth--;renderCalendar();renderFeriados();}};
+document.getElementById('next').onclick = () => { if(curMonth<11){curMonth++;renderCalendar();renderFeriados();}};
+
+// PWA install
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  document.getElementById('install-banner').classList.add('show');
+});
+document.getElementById('install-btn').onclick = async () => {
+  if(deferredPrompt){
+    deferredPrompt.prompt();
+    const {outcome} = await deferredPrompt.userChoice;
+    deferredPrompt = null;
+    document.getElementById('install-banner').classList.remove('show');
+  }
+};
+
+setTeam(curTeam);
+</script>
 
 <script>
-['A','B','C','D','E'].forEach(t=>{
-  const b=document.createElement('button');
-  b.className=`tab ${t==='A'?'active':''}`;
-  b.textContent=`Equipa ${t}`;
-  b.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');render(t)};
-  document.getElementById('tabs').appendChild(b);
-});
-
-function render(team='A'){
-  document.getElementById('today-card').innerHTML=`
-    <div style="display:flex;justify-content:space-between">
-      <div>
-        <div style="opacity:0.7">HOJE • Equipa <b>${team}</b></div>
-        <div style="font-size:18px;font-weight:600">Sábado, 30 Maio</div>
-        <div style="margin-top:6px">Amanhã: 31 Maio — 05h</div>
-      </div>
-      <div style="text-align:right">
-        <div class="shift">05h</div>
-        <div style="color:#67e8f9;font-weight:500">Manhã • 05-13</div>
-      </div>
-    </div>`;
-  
-  let html = `<tr><th>Dom</th><th>Seg</th><th>Ter</th><th>Qua</th><th>Qui</th><th>Sex</th><th>Sab</th></tr><tr>`;
-  const dados = ['x','n','n','n','f','t','t','t','t','f','f','f','f','f','f','f','f','t','t','t','t','f','f','f','t','t','t','t','f','m','m'];
-  dados.forEach((tipo,i)=>{
-    const d = i+1;
-    let cls = tipo==='m'?'m':tipo==='t'?'t':tipo==='n'?'n':tipo==='x'?'x':'f';
-    let label = tipo==='m'?'05h':tipo==='t'?'13h':tipo==='n'?'21h':tipo==='x'?'FER':'FOLGA';
-    html += `<td><div class="day ${cls} ${d===1?'x':''} ${d===30?'today':''}">${d}<br><small>${label}</small></div></td>`;
-    if((i+1)%7===0) html += '</tr><tr>';
+if('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(reg => {
+    reg.addEventListener('updatefound', () => {
+      const newSW = reg.installing;
+      newSW.addEventListener('statechange', () => {
+        if(newSW.state === 'activated') window.location.reload();
+      });
+    });
   });
-  document.getElementById('cal').innerHTML = html;
+  navigator.serviceWorker.addEventListener('message', e => {
+    if(e.data === 'reload') window.location.reload();
+  });
 }
-render();
 </script>
 </body>
 </html>
