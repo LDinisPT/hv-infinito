@@ -92,7 +92,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .leg-dot{width:10px;height:10px;border-radius:3px;border:1.5px solid;}
 
 /* INSTALL BANNER */
-.fer-list{margin:0 12px 8px;padding:10px 14px;border-radius:10px;background:#1a1a2e;border:1px solid #ffffff10;display:none;}
+.fer-list{margin:0 12px 8px;padding:10px 14px;border-radius:10px;background:#1a1a2e;border:1px solid #ffffff10;display:block;}
 .fer-list.show{display:block;}
 .fer-list-title{font-size:10px;color:#a0a0c0;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
 .fer-item{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #ffffff08;font-size:13px;}
@@ -133,7 +133,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <div class="today-card" id="today-card"></div>
 
-<div class="fer-list" id="fer-list"><div class="fer-list-title">Feriados este mes</div><div id="fer-items"></div></div>
+<div class="fer-list" id="fer-list"><div class="fer-list-title">Feriados este mes</div><div id="fer-items"><div class="fer-item"><span class="fer-day">1</span><span class="fer-name">Dia do Trabalhador</span><span class="fer-shift" style="color:#8a60d9">Noite 21-05</span></div></div></div>
 <div class="legend">
   <div class="leg"><div class="leg-dot" style="background:#0d2340;border-color:#4a90d9;"></div><span style="color:#4a90d9">Manha</span></div>
   <div class="leg"><div class="leg-dot" style="background:#0d2414;border-color:#4aab5a;"></div><span style="color:#4aab5a">Tarde</span></div>
