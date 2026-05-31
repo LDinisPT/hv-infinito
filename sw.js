@@ -1,8 +1,12 @@
 const CACHE = 'verallia-2027-v2';
-const FILES = ['/', '/index.html', '/schedule-data.js', '/manifest.json', '/verallia_logo.avif', '/verallia_logo.avif'];
+const FILES = ['/', '/index.html', '/schedule-data.js', '/manifest.json', '/verallia_logo.avif'];
 
+// Force update on every install
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)));
+  e.waitUntil(
+    caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k))))
+    .then(() => caches.open(CACHE).then(c => c.addAll(FILES)))
+  );
   self.skipWaiting();
 });
 
@@ -13,15 +17,20 @@ self.addEventListener('activate', e => {
     )
   );
   self.clients.claim();
-  self.clients.matchAll().then(clients => clients.forEach(c => c.postMessage('reload')));
+  self.clients.matchAll({includeUncontrolled: true}).then(clients => {
+    clients.forEach(c => c.postMessage('reload'));
+  });
 });
 
+// Network first, fallback to cache
 self.addEventListener('fetch', e => {
   e.respondWith(
-    fetch(e.request).then(res => {
-      const clone = res.clone();
-      caches.open(CACHE).then(c => c.put(e.request, clone));
-      return res;
-    }).catch(() => caches.match(e.request))
+    fetch(e.request)
+      .then(res => {
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put(e.request, clone));
+        return res;
+      })
+      .catch(() => caches.match(e.request))
   );
 });
