@@ -109,7 +109,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <div class="topbar">
   <div class="topbar-row1">
     <div style="display:flex;align-items:center;gap:10px;">
-      <img src="verallia_logo.avif" alt="Verallia" style="height:26px;object-fit:contain;filter:brightness(0) invert(1);">
+      <div style="height:26px;padding:0 10px;background:#ffffff;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#003087;letter-spacing:.02em;font-family:serif;">VERALLIA</div>
       <div>
         <div class="app-title">Turnos 2026</div>
         <div class="app-sub">Fontela, Figueira da Foz</div>
@@ -251,26 +251,26 @@ function renderCalendar() {
 
 
 function renderFeriados() {
-  const daysInMonth = new Date(curYear, curMonth+1, 0).getDate();
+  const daysInMonth = new Date(todayY, curMonth+1, 0).getDate();
   const items = [];
   const shiftColors = {'5':'color:#4a90d9','13':'color:#4aab5a','21':'color:#8a60d9','F':'color:#606080'};
   const shiftLabels = {'5':'Manha 05-13','13':'Tarde 13-21','21':'Noite 21-05','F':'Folga'};
   for(let d=1;d<=daysInMonth;d++){
-    const date = new Date(curYear, curMonth, d);
     const ferKey = `${d}-${curMonth+1}`;
     const fer = FERIADOS[ferKey] || '';
     if(fer){
-      const s = getShift(curTeam, date);
-      items.push(`<div class="fer-item">
-        <span class="fer-day">${d}</span>
-        <span class="fer-name">${fer}</span>
-        <span class="fer-shift" style="${shiftColors[s]||''}">${shiftLabels[s]||''}</span>
-      </div>`);
+      const s = getShift(curTeam, curMonth, d);
+      const color = shiftColors[s] || '';
+      const label = shiftLabels[s] || '';
+      items.push(`<div class="fer-item"><span class="fer-day">${d}</span><span class="fer-name">${fer}</span><span class="fer-shift" style="${color}">${label}</span></div>`);
     }
   }
   const list = document.getElementById('fer-list');
-  document.getElementById('fer-items').innerHTML = items.join('');
-  list.classList.toggle('show', items.length > 0);
+  const itemsEl = document.getElementById('fer-items');
+  if(list && itemsEl){
+    itemsEl.innerHTML = items.join('');
+    list.classList.toggle('show', items.length > 0);
+  }
 }
 
 function setTeam(t) {
