@@ -237,11 +237,11 @@ function renderCalendar() {
         const [day,,shift] = item;
         const inf = shiftInfo(shift, curTeam);
         const ferKey = `${day}-${curMonth+1}`;
-        const hasFer = !!FERIADOS[ferKey];
+        const hasFer = !!getFeriadoLocal(day, curMonth);
         const isToday = curMonth===todayM && day===todayD;
         const div = document.createElement('div');
         div.className = `day-cell ${inf.cls}${isToday?' today-ring':''}`;
-        div.innerHTML = `${hasFer?'<div class="faixa"><span>FERIADO</span></div>':''}<span class="day-num">${day}</span><span class="day-lbl">${inf.lbl==='folga'?'—':inf.lbl}</span>`;
+        div.innerHTML = `${hasFer?'<div class="faixa"><span>FERIADO</span></div>':''}<span class="day-num">${day}</span><span class="day-lbl">${inf.lbl==='folga'?'Folga':inf.lbl}</span>`;
         td.appendChild(div);
       }
       tr.appendChild(td);
@@ -252,15 +252,12 @@ function renderCalendar() {
 
 
 function renderFeriados() {
-  console.log('renderFeriados called, month:', curMonth, 'team:', curTeam);
   const daysInMonth = new Date(todayY, curMonth+1, 0).getDate();
   const items = [];
   const shiftColors = {'5':'color:#4a90d9','13':'color:#4aab5a','21':'color:#8a60d9','F':'color:#606080'};
   const shiftLabels = {'5':'Manha 05-13','13':'Tarde 13-21','21':'Noite 21-05','F':'Folga'};
   for(let d=1;d<=daysInMonth;d++){
-    const ferKey = `${d}-${curMonth+1}`;
-    const fer = FERIADOS[ferKey] || '';
-    console.log('day', d, 'ferKey', ferKey, 'fer', fer);
+    const fer = getFeriadoLocal(d, curMonth);
     if(fer){
       const s = getShift(curTeam, curMonth, d);
       items.push(`<div class="fer-item"><span class="fer-day">${d}</span><span class="fer-name">${fer}</span><span class="fer-shift" style="${shiftColors[s]||''}">${shiftLabels[s]||''}</span></div>`);
@@ -268,7 +265,6 @@ function renderFeriados() {
   }
   const list = document.getElementById('fer-list');
   const itemsEl = document.getElementById('fer-items');
-  console.log('items found:', items.length, 'list el:', !!list, 'itemsEl:', !!itemsEl);
   if(list && itemsEl){
     itemsEl.innerHTML = items.join('');
     list.classList.toggle('show', items.length > 0);
@@ -307,6 +303,21 @@ document.getElementById('install-btn').onclick = async () => {
     document.getElementById('install-banner').classList.remove('show');
   }
 };
+
+
+// Feriados inline - independente do schedule-data.js
+const FERIADOS_2026 = {
+  "1-1":"Ano Novo","18-1":"Dia do Vidreiro","17-2":"Carnaval",
+  "3-4":"Sexta-feira Santa","5-4":"Pascoa","25-4":"Dia da Liberdade",
+  "1-5":"Dia do Trabalhador","4-6":"Corpo de Deus","10-6":"Dia de Portugal",
+  "24-6":"Sao Joao","15-8":"Assuncao N.Sra.","5-10":"Implantacao Republica",
+  "1-11":"Todos os Santos","1-12":"Restauracao Independencia",
+  "8-12":"Imaculada Conceicao","25-12":"Natal"
+};
+
+function getFeriadoLocal(day, month) {
+  return FERIADOS_2026[`${day}-${month+1}`] || '';
+}
 
 setTeam(curTeam);
 </script>
