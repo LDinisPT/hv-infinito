@@ -104,6 +104,16 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .install-banner.show{display:flex;}
 .install-txt{flex:1;font-size:12px;color:var(--text2);}
 .install-btn{padding:6px 14px;border-radius:20px;background:var(--m-bg);border:1.5px solid var(--m);color:var(--m);font-size:12px;font-weight:600;cursor:pointer;}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 12px;}
+.stat{background:var(--bg2);border-radius:var(--rad);padding:10px 8px;text-align:center;border:1.5px solid transparent;}
+.stat-n{font-size:22px;font-weight:500;line-height:1;}
+.stat-l{font-size:10px;margin-top:3px;}
+.s-m{border-color:#4A90D9;}.s-m .stat-n{color:#4A90D9;}
+.s-t{border-color:#4AAB5A;}.s-t .stat-n{color:#4AAB5A;}
+.s-n{border-color:#8A60D9;}.s-n .stat-n{color:#8A60D9;}
+.s-x{border-color:#D9A030;}.s-x .stat-n{color:#D9A030;}
+.s-f .stat-n{color:var(--text2);}
+.s-w .stat-n{color:var(--text);}
 </style>
 </head>
 <body>
@@ -133,6 +143,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <div class="today-card" id="today-card"></div>
 
+<div class="stats" id="stats-grid"></div>
 <div class="fer-list" id="fer-list"><div class="fer-list-title">Feriados este mes</div><div id="fer-items"></div></div>
 <div class="legend">
   <div class="leg"><div class="leg-dot" style="background:#0d2340;border-color:#4a90d9;"></div><span style="color:#4a90d9">Manha</span></div>
@@ -278,6 +289,32 @@ function renderFeriados() {
   }
 }
 
+
+function renderStats() {
+  const grid = document.getElementById('stats-grid');
+  if(!grid) return;
+  let m=0,t=0,n=0,f=0,x=0;
+  const yearData = (SCHEDULES[curYear]||{})[curTeam]||[];
+  yearData.forEach(month => {
+    month.forEach(row => {
+      const s = row[2];
+      if(s==='5') m++;
+      else if(s==='13') t++;
+      else if(s==='21') n++;
+      else if(s==='X') x++;
+      else f++;
+    });
+  });
+  const w = m+t+n+x;
+  grid.innerHTML = `
+    <div class="stat s-m"><div class="stat-n">${m}</div><div class="stat-l" style="color:var(--m-col)">Manha</div></div>
+    <div class="stat s-t"><div class="stat-n">${t}</div><div class="stat-l" style="color:var(--t-col)">Tarde</div></div>
+    <div class="stat s-n"><div class="stat-n">${n}</div><div class="stat-l" style="color:var(--n-col)">Noite</div></div>
+    ${x>0?`<div class="stat s-x"><div class="stat-n">${x}</div><div class="stat-l" style="color:var(--x-col)">Ferias</div></div>`:''}
+    <div class="stat s-f"><div class="stat-n">${f}</div><div class="stat-l" style="color:var(--text2)">Folgas</div></div>
+    <div class="stat s-w"><div class="stat-n">${w}</div><div class="stat-l" style="color:var(--text2)">Trabalhados</div></div>
+  `;
+}
 function setTeam(t) {
   curTeam = t;
   localStorage.setItem('team', t);
@@ -287,6 +324,7 @@ function setTeam(t) {
   renderTodayCard();
   renderCalendar();
   renderFeriados();
+  renderStats();
 }
 
 document.getElementById('tabs').addEventListener('click', e => {
