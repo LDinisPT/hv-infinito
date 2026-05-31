@@ -167,6 +167,7 @@ const TEAMS_ORDER = ['A','B','D','E'];
 const TEAM_COLORS = {A:'m',B:'t',C:'c',D:'n',E:'x'};
 
 const today = new Date();
+const todayY = today.getFullYear();
 const todayD = today.getDate(), todayM = today.getMonth();
 let curTeam = localStorage.getItem('team') || 'A';
 let curYear = todayY;
