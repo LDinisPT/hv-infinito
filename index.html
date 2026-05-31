@@ -190,10 +190,9 @@ function renderTodayCard() {
   const tomShift = getShift(curTeam, tomorrow.getMonth(), tomorrow.getDate());
   const inf = shiftInfo(shift, curTeam);
   const tinf = shiftInfo(tomShift, curTeam);
-  const ferKey = `${todayD}-${todayM+1}`;
-  const ferName = FERIADOS[ferKey] || '';
+  const ferName = getFeriadoLocal(todayD, todayM);
   const weekdays = ['Domingo','Segunda','Terca','Quarta','Quinta','Sexta','Sabado'];
-  const months = MONTH_NAMES;
+  const months = MONTH_NAMES_PT;
   
   document.getElementById('today-card').innerHTML = `
     <div class="today-label">Hoje - Equipa ${curTeam}</div>
@@ -217,7 +216,7 @@ function renderTodayCard() {
 }
 
 function renderCalendar() {
-  document.getElementById('month-title').textContent = MONTH_NAMES[curMonth];
+  document.getElementById('month-title').textContent = MONTH_NAMES_PT[curMonth];
   const data = SCHEDULE[curTeam] ? SCHEDULE[curTeam][curMonth] : [];
   const firstDow = new Date(2026, curMonth, 1).getDay();
   const tbody = document.getElementById('cal-body');
@@ -306,6 +305,7 @@ document.getElementById('install-btn').onclick = async () => {
 
 
 // Feriados inline - independente do schedule-data.js
+const MONTH_NAMES_PT = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 const FERIADOS_2026 = {
   "1-1":"Ano Novo","18-1":"Dia do Vidreiro","17-2":"Carnaval",
   "3-4":"Sexta-feira Santa","5-4":"Pascoa","25-4":"Dia da Liberdade",
