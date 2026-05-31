@@ -83,7 +83,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .dc-f .day-lbl{color:var(--text3);}
 .dc-c{background:#2a0d0a;border-color:#d95a4a;}
 .dc-c .day-num,.dc-c .day-lbl{color:#d95a4a;}
-.faixa{position:absolute;top:0;left:0;right:0;height:13px;background:#3d2800;display:flex;align-items:center;justify-content:center;}.faixa span{font-size:7px;font-weight:700;color:#d9a030;letter-spacing:.05em;}
+.faixa{position:absolute;top:0;left:0;right:0;height:13px;background:#3d2800;display:flex;align-items:center;justify-content:center;}.faixa span{font-size:7px;font-weight:700;color:#d9a030;letter-spacing:.05em;}.faixa.ferias{background:#0d3d2a;}.faixa.ferias span{color:#4aab5a;}.dc-x{background:#0d3d2a;border-color:#4aab5a;}.dc-x .dn,.dc-x .dl{color:#4aab5a;}
 .today-ring{outline:2px solid var(--red);outline-offset:1px;}
 
 /* LEGEND */
@@ -203,7 +203,7 @@ function renderTodayCard() {
       </div>
       <div class="today-shift">
         <div>
-          <div class="shift-badge ${inf.badge}">${inf.lbl === 'folga' ? 'FOLGA' : inf.lbl}</div>
+          <div class="shift-badge ${inf.badge}">${inf.lbl === 'Folga' ? 'FOLGA' : inf.lbl === '🏖️' ? '🏖️ FÉRIAS' : inf.lbl}</div>
           <div class="shift-desc" style="margin-top:4px;text-align:center">${inf.desc}</div>
         </div>
       </div>
@@ -240,7 +240,10 @@ function renderCalendar() {
         const isToday = curMonth===todayM && day===todayD;
         const div = document.createElement('div');
         div.className = `day-cell ${inf.cls}${isToday?' today-ring':''}`;
-        div.innerHTML = `${hasFer?'<div class="faixa"><span>FERIADO</span></div>':''}<span class="day-num">${day}</span><span class="day-lbl">${inf.lbl==='folga'?'Folga':inf.lbl}</span>`;
+        const isFerias = shift === 'X';
+        const faixaHTML = isFerias ? '<div class="faixa ferias"><span>🏖️ FERIAS</span></div>'
+                        : hasFer ? '<div class="faixa"><span>FERIADO</span></div>' : '';
+        div.innerHTML = `${faixaHTML}<span class="day-num">${day}</span><span class="day-lbl">${inf.lbl}</span>`;
         td.appendChild(div);
       }
       tr.appendChild(td);
@@ -260,7 +263,10 @@ function renderFeriados() {
     const fer = getFeriadoLocal(d, curMonth);
     if(fer){
       const s = getShift(curTeam, curMonth, d);
-      items.push(`<div class="fer-item"><span class="fer-day">${d}</span><span class="fer-name">${fer}</span><span class="fer-shift" style="${shiftColors[s]||''}">${shiftLabels[s]||''}</span></div>`);
+      const isFerias = s === 'X';
+      const shiftLabel = isFerias ? '🏖️ Ferias + Feriado' : (shiftLabels[s] || '');
+      const shiftColor = isFerias ? 'color:#4aab5a' : (shiftColors[s] || '');
+      items.push(`<div class="fer-item"><span class="fer-day">${d}</span><span class="fer-name">${fer}</span><span class="fer-shift" style="${shiftColor}">${shiftLabel}</span></div>`);
     }
   }
   const itemsEl = document.getElementById('fer-items');
