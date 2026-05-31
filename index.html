@@ -181,14 +181,8 @@ function shiftInfo(s, teamColor) {
   return {cls:'dc-f', badge:'shift-f', lbl:'folga', desc:'Dia de folga'};
 }
 
-function getShift(team, month, day) {
-  const data = SCHEDULE[team];
-  if(!data) return 'F';
-  const mdata = data[month];
-  if(!mdata) return 'F';
-  const row = mdata.find(r => r[0] === day);
-  return row ? row[2] : 'F';
-}
+// getShift now in schedule-data.js
+
 
 function renderTodayCard() {
   const shift = getShift(curTeam, todayY, todayM, todayD);
@@ -222,9 +216,11 @@ function renderTodayCard() {
 }
 
 function renderCalendar() {
-  document.getElementById('month-title').textContent = MONTH_NAMES_PT[curMonth];
-  const data = SCHEDULE[curTeam] ? SCHEDULE[curTeam][curMonth] : [];
-  const firstDow = new Date(2026, curMonth, 1).getDay();
+  document.getElementById('month-title').textContent = (typeof MONTH_NAMES !== 'undefined' ? MONTH_NAMES : MONTH_NAMES_PT)[curMonth];
+  const yearData = SCHEDULES[curYear] || {};
+  const teamData = yearData[curTeam] || [];
+  const data = teamData[curMonth] || [];
+  const firstDow = new Date(curYear, curMonth, 1).getDay();
   const tbody = document.getElementById('cal-body');
   tbody.innerHTML = '';
   
@@ -243,7 +239,7 @@ function renderCalendar() {
         const inf = shiftInfo(shift, curTeam);
         const ferKey = `${day}-${curMonth+1}`;
         const hasFer = !!getFeriadoLocal(day, curMonth);
-        const isToday = curMonth===todayM && day===todayD;
+        const isToday = curYear===todayY && curMonth===todayM && day===todayD;
         const div = document.createElement('div');
         div.className = `day-cell ${inf.cls}${isToday?' today-ring':''}`;
         const isFerias = shift === 'X';
@@ -330,6 +326,7 @@ function getFeriadoLocal(day, month) {
   return getFeriado(curYear, month, day);
 }
 
+document.getElementById("year-lbl").textContent = curYear;
 setTeam(curTeam);
 </script>
 
