@@ -66,7 +66,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .cal{width:100%;border-collapse:separate;border-spacing:3px;}
 .cal th{font-size:10px;color:var(--text3);text-align:center;padding:4px 0;font-weight:400;}
 .cal td{padding:0;}
-.day-cell{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:46px;border-radius:8px;border:1.5px solid transparent;position:relative;}
+.day-cell{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:50px;border-radius:8px;border:1.5px solid transparent;position:relative;overflow:hidden;padding-bottom:5px;}
 .day-num{font-size:13px;font-weight:500;}
 .day-lbl{font-size:9px;font-weight:700;margin-top:1px;letter-spacing:.02em;}
 .dc-m{background:var(--m-bg2);border-color:var(--m);}
@@ -82,7 +82,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 .dc-f .day-lbl{color:var(--text3);}
 .dc-c{background:#2a0d0a;border-color:#d95a4a;}
 .dc-c .day-num,.dc-c .day-lbl{color:#d95a4a;}
-.fer-dot{position:absolute;top:3px;right:3px;width:5px;height:5px;border-radius:50%;background:var(--red);}
+.faixa{position:absolute;top:0;left:0;right:0;height:13px;background:#3d2800;display:flex;align-items:center;justify-content:center;}.faixa span{font-size:7px;font-weight:700;color:#d9a030;letter-spacing:.05em;}
 .today-ring{outline:2px solid var(--red);outline-offset:1px;}
 
 /* LEGEND */
@@ -108,9 +108,12 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 <body>
 <div class="topbar">
   <div class="topbar-row1">
-    <div>
-      <div class="app-title">Verallia Turnos 2026</div>
-      <div class="app-sub">Fontela, Figueira da Foz</div>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <img src="verallia_logo.avif" alt="Verallia" style="height:26px;object-fit:contain;filter:brightness(0) invert(1);">
+      <div>
+        <div class="app-title">Turnos 2026</div>
+        <div class="app-sub">Fontela, Figueira da Foz</div>
+      </div>
     </div>
   </div>
   <div class="team-tabs" id="tabs">
@@ -237,7 +240,7 @@ function renderCalendar() {
         const isToday = curMonth===todayM && day===todayD;
         const div = document.createElement('div');
         div.className = `day-cell ${inf.cls}${isToday?' today-ring':''}`;
-        div.innerHTML = `<span class="day-num">${day}</span><span class="day-lbl">${inf.lbl==='folga'?'—':inf.lbl}</span>${hasFer?'<div class="fer-dot"></div>':''}`;
+        div.innerHTML = `${hasFer?'<div class="faixa"><span>FERIADO</span></div>':''}<span class="day-num">${day}</span><span class="day-lbl">${inf.lbl==='folga'?'—':inf.lbl}</span>`;
         td.appendChild(div);
       }
       tr.appendChild(td);
