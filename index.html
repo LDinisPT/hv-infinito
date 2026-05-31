@@ -143,6 +143,11 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   <div class="leg"><div class="leg-dot" style="background:transparent;border-color:#ff5555;border-radius:50%;"></div><span style="color:#ff5555">Hoje</span></div>
 </div>
 
+<div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:4px 12px 0;">
+  <button class="nav-btn" id="prev-yr">&#8249;</button>
+  <div style="font-size:13px;font-weight:600;color:var(--text2);min-width:40px;text-align:center;" id="year-lbl"></div>
+  <button class="nav-btn" id="next-yr">&#8250;</button>
+</div>
 <div class="month-nav">
   <button class="nav-btn" id="prev">&#8249;</button>
   <div class="month-title" id="month-title"></div>
@@ -164,6 +169,7 @@ const TEAM_COLORS = {A:'m',B:'t',C:'c',D:'n',E:'x'};
 const today = new Date();
 const todayD = today.getDate(), todayM = today.getMonth();
 let curTeam = localStorage.getItem('team') || 'A';
+let curYear = todayY;
 let curMonth = todayM;
 
 function shiftInfo(s, teamColor) {
@@ -185,9 +191,9 @@ function getShift(team, month, day) {
 }
 
 function renderTodayCard() {
-  const shift = getShift(curTeam, todayM, todayD);
+  const shift = getShift(curTeam, todayY, todayM, todayD);
   const tomorrow = new Date(today); tomorrow.setDate(todayD+1);
-  const tomShift = getShift(curTeam, tomorrow.getMonth(), tomorrow.getDate());
+  const tomShift = getShift(curTeam, tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
   const inf = shiftInfo(shift, curTeam);
   const tinf = shiftInfo(tomShift, curTeam);
   const ferName = getFeriadoLocal(todayD, todayM);
@@ -262,7 +268,7 @@ function renderFeriados() {
   for(let d=1;d<=daysInMonth;d++){
     const fer = getFeriadoLocal(d, curMonth);
     if(fer){
-      const s = getShift(curTeam, curMonth, d);
+      const s = getShift(curTeam, curYear, curMonth, d);
       const isFerias = s === 'X';
       const shiftLabel = isFerias ? '🏖️ Ferias + Feriado' : (shiftLabels[s] || '');
       const shiftColor = isFerias ? 'color:#4aab5a' : (shiftColors[s] || '');
@@ -321,7 +327,7 @@ const FERIADOS_2026 = {
 };
 
 function getFeriadoLocal(day, month) {
-  return FERIADOS_2026[`${day}-${month+1}`] || '';
+  return getFeriado(curYear, month, day);
 }
 
 setTeam(curTeam);
