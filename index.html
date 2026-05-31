@@ -133,7 +133,7 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
 
 <div class="today-card" id="today-card"></div>
 
-<div class="fer-list" id="fer-list"><div class="fer-list-title">Feriados este mes</div><div id="fer-items"><div class="fer-item"><span class="fer-day">1</span><span class="fer-name">Dia do Trabalhador</span><span class="fer-shift" style="color:#8a60d9">Noite 21-05</span></div></div></div>
+<div class="fer-list" id="fer-list"><div class="fer-list-title">Feriados este mes</div><div id="fer-items"></div></div>
 <div class="legend">
   <div class="leg"><div class="leg-dot" style="background:#0d2340;border-color:#4a90d9;"></div><span style="color:#4a90d9">Manha</span></div>
   <div class="leg"><div class="leg-dot" style="background:#0d2414;border-color:#4aab5a;"></div><span style="color:#4aab5a">Tarde</span></div>
@@ -251,7 +251,8 @@ function renderCalendar() {
 
 
 function renderFeriados() {
-  const daysInMonth = new Date(todayY, curMonth+1, 0).getDate();
+  const year = 2026;
+  const daysInMonth = new Date(year, curMonth+1, 0).getDate();
   const items = [];
   const shiftColors = {'5':'color:#4a90d9','13':'color:#4aab5a','21':'color:#8a60d9','F':'color:#606080'};
   const shiftLabels = {'5':'Manha 05-13','13':'Tarde 13-21','21':'Noite 21-05','F':'Folga'};
@@ -262,11 +263,9 @@ function renderFeriados() {
       items.push(`<div class="fer-item"><span class="fer-day">${d}</span><span class="fer-name">${fer}</span><span class="fer-shift" style="${shiftColors[s]||''}">${shiftLabels[s]||''}</span></div>`);
     }
   }
-  const list = document.getElementById('fer-list');
   const itemsEl = document.getElementById('fer-items');
-  if(list && itemsEl){
-    itemsEl.innerHTML = items.join('');
-    list.classList.toggle('show', items.length > 0);
+  if(itemsEl){
+    itemsEl.innerHTML = items.length > 0 ? items.join('') : '<div style="color:#606080;font-size:12px;">Sem feriados este mes</div>';
   }
 }
 
