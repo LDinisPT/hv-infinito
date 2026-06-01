@@ -149,6 +149,15 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .rainbow-text .c3{color:#FECA57;}.rainbow-text .c4{color:#48DB71;}
 .rainbow-text .c5{color:#54A0FF;}.rainbow-text .c6{color:#9B59B6;}
 .rainbow-sub{font-size:12px;color:rgba(255,255,255,0.35);margin-top:8px;}
+
+.today-top-row{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;}
+.today-left .today-greeting{font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.1em;}
+.today-left .today-clock{font-size:22px;font-weight:200;color:rgba(255,255,255,0.7);margin-top:3px;}
+.today-right{text-align:right;}
+.weather-row{display:flex;align-items:center;gap:6px;justify-content:flex-end;}
+.w-icon{font-size:22px;line-height:1;}
+.w-temp{font-size:20px;font-weight:200;color:rgba(255,255,255,0.7);}
+.w-city{font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;}
 </style>
 </head>
 <body>
@@ -277,6 +286,34 @@ function getQuinzenaDays(team, year) {
 }
 
 const RAINBOW_CLS = ['dc-q1','dc-q2','dc-q3','dc-q4','dc-q5','dc-q6','dc-q7'];
+
+async function fetchWeather() {
+  try {
+    const url = 'https://api.open-meteo.com/v1/forecast?latitude=40.1500&longitude=-8.8608&current=temperature_2m,weathercode&timezone=Europe/Lisbon';
+    const res = await fetch(url);
+    const data = await res.json();
+    const temp = Math.round(data.current.temperature_2m);
+    const code = data.current.weathercode;
+    
+    const icons = {
+      0:'☀️', 1:'🌤️', 2:'⛅', 3:'☁️',
+      45:'🌫️', 48:'🌫️',
+      51:'🌦️', 53:'🌦️', 55:'🌧️',
+      61:'🌧️', 63:'🌧️', 65:'🌧️',
+      71:'❄️', 73:'❄️', 75:'❄️',
+      80:'🌦️', 81:'🌧️', 82:'⛈️',
+      95:'⛈️', 96:'⛈️', 99:'⛈️'
+    };
+    const icon = icons[code] || icons[Math.floor(code/10)*10] || '🌡️';
+    
+    const el = document.getElementById('weather-widget');
+    if(el) el.innerHTML = `
+      <div class="weather-row"><span class="w-icon">${icon}</span><span class="w-temp">${temp}°</span></div>
+      <div class="w-city">Figueira da Foz</div>`;
+  } catch(e) {
+    console.log('Weather unavailable');
+  }
+}
 function getGreeting() {
   const h = new Date().getHours();
   if(h >= 6 && h < 12) return 'Bom dia';
@@ -395,9 +432,15 @@ function renderTodayCard() {
   const greeting = getGreeting();
   const clockStr = formatTime(now);
   document.getElementById('today-card').innerHTML = `
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;">
-      <div class="today-lbl">${greeting} · Equipa ${curTeam}</div>
-      <div style="font-size:18px;font-weight:200;color:rgba(255,255,255,0.6);" id="clock-time">${clockStr}</div>
+    <div class="today-top-row">
+      <div class="today-left">
+        <div class="today-greeting">${greeting} · Equipa ${curTeam}</div>
+        <div class="today-clock" id="clock-time">${clockStr}</div>
+      </div>
+      <div class="today-right" id="weather-widget">
+        <div class="weather-row"><span class="w-icon">⛅</span><span class="w-temp">--°</span></div>
+        <div class="w-city">Figueira da Foz</div>
+      </div>
     </div>
     <div class="today-main">
       <div>
@@ -549,6 +592,8 @@ document.getElementById('install-btn').onclick = async()=>{
 setTeam(curTeam);
 setInterval(renderClock, 1000);
 renderQuinzena();
+fetchWeather();
+setInterval(fetchWeather, 1800000);
 </script>
 
 <script>
