@@ -127,6 +127,28 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .q-days{text-align:center;}
 .q-days .q-num{font-size:28px;font-weight:200;color:#A8D870;line-height:1;}
 .q-days .q-sub{font-size:10px;color:rgba(168,216,112,0.5);margin-top:2px;letter-spacing:.04em;}
+
+.dc-q1{background:rgba(255,107,107,0.15);border:0.5px solid rgba(255,107,107,0.3);}
+.dc-q1 .day-num{color:#FF8E8E;}.dc-q1 .day-lbl{color:rgba(255,142,142,0.7);}
+.dc-q2{background:rgba(255,159,67,0.15);border:0.5px solid rgba(255,159,67,0.3);}
+.dc-q2 .day-num{color:#FFB570;}.dc-q2 .day-lbl{color:rgba(255,181,112,0.7);}
+.dc-q3{background:rgba(254,202,87,0.15);border:0.5px solid rgba(254,202,87,0.3);}
+.dc-q3 .day-num{color:#FFD966;}.dc-q3 .day-lbl{color:rgba(255,217,102,0.7);}
+.dc-q4{background:rgba(72,219,113,0.15);border:0.5px solid rgba(72,219,113,0.3);}
+.dc-q4 .day-num{color:#70DDA8;}.dc-q4 .day-lbl{color:rgba(112,221,168,0.7);}
+.dc-q5{background:rgba(84,160,255,0.15);border:0.5px solid rgba(84,160,255,0.3);}
+.dc-q5 .day-num{color:#85B7EB;}.dc-q5 .day-lbl{color:rgba(133,183,235,0.7);}
+.dc-q6{background:rgba(155,89,182,0.15);border:0.5px solid rgba(155,89,182,0.3);}
+.dc-q6 .day-num{color:#C890F0;}.dc-q6 .day-lbl{color:rgba(200,144,240,0.7);}
+.dc-q7{background:rgba(255,107,107,0.15);border:0.5px solid rgba(255,107,107,0.3);}
+.dc-q7 .day-num{color:#FF8E8E;}.dc-q7 .day-lbl{color:rgba(255,142,142,0.7);}
+
+.rainbow-card{background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,200,100,0.15);border-radius:16px;padding:16px;text-align:center;}
+.rainbow-text{font-size:22px;font-weight:800;letter-spacing:.04em;line-height:1.2;}
+.rainbow-text .c1{color:#FF6B6B;}.rainbow-text .c2{color:#FF9F43;}
+.rainbow-text .c3{color:#FECA57;}.rainbow-text .c4{color:#48DB71;}
+.rainbow-text .c5{color:#54A0FF;}.rainbow-text .c6{color:#9B59B6;}
+.rainbow-sub{font-size:12px;color:rgba(255,255,255,0.35);margin-top:8px;}
 </style>
 </head>
 <body>
@@ -218,6 +240,43 @@ function getTeamCls(team) {
   return map[team]||'m';
 }
 
+
+function getQuinzenaDays(team, year) {
+  const yearData = (SCHEDULES[year]||{})[team]||[];
+  const monthDays = [31,28,31,30,31,30,31,31,30,31,30,31];
+  const quinzena = new Set();
+  
+  for(let m=0; m<12; m++) {
+    for(let d=1; d<=monthDays[m]; d++) {
+      const row = (yearData[m]||[]).find(r=>r[0]===d);
+      const shift = row ? row[2] : 'F';
+      if(shift === 'F') {
+        // Count consecutive F days
+        let count = 0;
+        let mm = m, dd = d;
+        while(mm < 12) {
+          const r2 = (yearData[mm]||[]).find(r=>r[0]===dd);
+          if(!r2 || r2[2] !== 'F') break;
+          count++;
+          dd++;
+          if(dd > monthDays[mm]) { dd=1; mm++; }
+        }
+        if(count >= 12) {
+          // Mark all these days as quinzena
+          let mm2 = m, dd2 = d;
+          for(let i=0; i<count; i++) {
+            quinzena.add(`${mm2}-${dd2}`);
+            dd2++;
+            if(dd2 > monthDays[mm2]) { dd2=1; mm2++; }
+          }
+        }
+      }
+    }
+  }
+  return quinzena;
+}
+
+const RAINBOW_CLS = ['dc-q1','dc-q2','dc-q3','dc-q4','dc-q5','dc-q6','dc-q7'];
 function getGreeting() {
   const h = new Date().getHours();
   if(h >= 6 && h < 12) return 'Bom dia';
@@ -275,15 +334,34 @@ function renderQuinzena() {
   const mns = typeof MONTH_NAMES !== 'undefined' ? MONTH_NAMES : MONTH_NAMES_PT;
   if(found) {
     const daysLeft = found.daysUntil;
-    card.innerHTML = `
-      <div class="q-left">
-        <div class="q-lbl">Proxima quinzena</div>
-        <div class="q-val">${found.date.getDate()} ${mns[found.date.getMonth()]} · ${found.count} dias</div>
-      </div>
-      <div class="q-days">
-        <div class="q-num">${daysLeft}</div>
-        <div class="q-sub">${daysLeft===0?'HOJE':daysLeft===1?'AMANHA':'DIAS'}</div>
+    if(daysLeft === 0) {
+      // Inside quinzena - check how many days remain
+      const quinzenaDays = getQuinzenaDays(curTeam, curYear);
+      const today2 = new Date(todayY, todayM, todayD);
+      let daysRemain = 0;
+      for(let i=0; i<20; i++) {
+        const d2 = new Date(todayY, todayM, todayD+i);
+        if(quinzenaDays.has(`${d2.getMonth()}-${d2.getDate()}`)) daysRemain++;
+        else if(i>0) break;
+      }
+      const returnDate = new Date(todayY, todayM, todayD+daysRemain);
+      card.innerHTML = `<div class="rainbow-card" style="width:100%;">
+        <div class="rainbow-text">
+          <span class="c1">E</span><span class="c2">S</span><span class="c3">T</span><span class="c4">A</span><span class="c5">S</span><span style="color:transparent;font-size:8px"> </span><span class="c6">D</span><span class="c1">E</span><span style="color:transparent;font-size:8px"> </span><span class="c2">F</span><span class="c3">E</span><span class="c4">R</span><span class="c5">I</span><span class="c6">A</span><span class="c1">S</span> <span class="c2">🏖️</span>
+        </div>
+        <div class="rainbow-sub">Ainda tens ${daysRemain} dias · Volta a ${returnDate.getDate()} ${mns[returnDate.getMonth()]}</div>
       </div>`;
+    } else {
+      card.innerHTML = `
+        <div class="q-left">
+          <div class="q-lbl">Proxima quinzena</div>
+          <div class="q-val">${found.date.getDate()} ${mns[found.date.getMonth()]} · ${found.count} dias</div>
+        </div>
+        <div class="q-days">
+          <div class="q-num">${daysLeft}</div>
+          <div class="q-sub">${daysLeft===1?'AMANHA':'DIAS'}</div>
+        </div>`;
+    }
   } else {
     card.innerHTML = '';
   }
@@ -375,6 +453,7 @@ function renderCalendar() {
   const yearData = (SCHEDULES[curYear]||{})[curTeam]||[];
   const data = yearData[curMonth]||[];
   const firstDow = new Date(curYear, curMonth, 1).getDay();
+  const quinzenaDays = getQuinzenaDays(curTeam, curYear);
   const tbody = document.getElementById('cal-body');
   tbody.innerHTML = '';
   let cells = [];
@@ -393,13 +472,15 @@ function renderCalendar() {
         const isToday = curYear===todayY && curMonth===todayM && day===todayD;
         const hasFer = !!getFeriadoLocal(day, curMonth);
         const isX = shift==='X';
-        const cls = SHIFT_CLS[shift]||'dc-f';
+        const isQuinzena = shift==='F' && quinzenaDays.has(`${curMonth}-${day}`);
+        const qIdx = isQuinzena ? (day % 7) : 0;
+        const cls = isQuinzena ? RAINBOW_CLS[qIdx] : (SHIFT_CLS[shift]||'dc-f');
         const div = document.createElement('div');
         div.className = `day-cell ${cls}${isToday?' today-ring':''}`;
         const faixaHTML = isX
           ? '<div class="faixa faixa-x"><span>FERIAS</span></div>'
           : hasFer ? '<div class="faixa faixa-fer"><span>FERIADO</span></div>' : '';
-        div.innerHTML = `${faixaHTML}<span class="day-num">${day}</span><span class="day-lbl">${shift==='F'?'—':SHIFT_NUM_LBL[shift]}</span>`;
+        div.innerHTML = `${faixaHTML}<span class="day-num">${day}</span><span class="day-lbl">${isQuinzena?'🏖️':shift==='F'?'Folga':SHIFT_NUM_LBL[shift]}</span>`;
         td.appendChild(div);
       }
       tr.appendChild(td);
