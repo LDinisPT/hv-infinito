@@ -3,132 +3,140 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<meta name="theme-color" content="#1a1a2e">
+<meta name="theme-color" content="#060610">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Verallia Turnos">
 <link rel="manifest" href="manifest.json">
-<title>Verallia Turnos 2026</title>
+<title>Verallia Turnos</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-:root{
-  --bg:#0f0f1a;--bg2:#1a1a2e;--bg3:#16213e;
-  --m:#4a90d9;--m-bg:#1a3a5c;--m-bg2:#0d2340;
-  --t:#4aab5a;--t-bg:#1a3d22;--t-bg2:#0d2414;
-  --n:#8a60d9;--n-bg:#2d1a5c;--n-bg2:#1a0d40;
-  --x:#d9a030;--x-bg:#5c3d00;--x-bg2:#3d2800;
-  --f:#444;--f-bg:#1e1e2e;
-  --text:#e8e8f0;--text2:#a0a0c0;--text3:#606080;
-  --red:#ff5555;
-  --radius:12px;
-}
-body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;min-height:100vh;overscroll-behavior:none;}
+body{background:#060610;color:#e8e8f0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;min-height:100vh;overscroll-behavior:none;}
+
+/* Aurora background */
+body::before{content:'';position:fixed;top:-100px;left:-80px;width:300px;height:250px;background:radial-gradient(ellipse,rgba(55,138,221,0.08),transparent 70%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:200px;background:radial-gradient(ellipse,rgba(0,107,63,0.07),transparent 70%);pointer-events:none;z-index:0;}
+
+.app{position:relative;z-index:1;max-width:440px;margin:0 auto;padding:0 0 80px;}
 
 /* TOP BAR */
-.topbar{background:var(--bg2);padding:14px 16px 10px;position:sticky;top:0;z-index:100;border-bottom:1px solid #ffffff10;}
-.topbar-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-.app-title{font-size:15px;font-weight:600;color:var(--text);}
-.app-sub{font-size:11px;color:var(--text2);}
-.team-tabs{display:flex;gap:6px;}
-.team-tab{padding:6px 14px;border-radius:20px;border:1.5px solid #ffffff20;background:transparent;color:var(--text2);font-size:13px;font-weight:500;cursor:pointer;transition:all .2s;}
-.team-tab.active{border-color:var(--m);background:var(--m-bg);color:var(--m);}
-.team-tab[data-team="B"].active{border-color:var(--t);background:var(--t-bg);color:var(--t);}
-.team-tab[data-team="C"].active{border-color:#d95a4a;background:#3d1a16;color:#d95a4a;}
-.team-tab[data-team="D"].active{border-color:var(--n);background:var(--n-bg);color:var(--n);}
-.team-tab[data-team="E"].active{border-color:var(--x);background:var(--x-bg);color:var(--x);}
+.topbar{padding:14px 16px 10px;position:sticky;top:0;z-index:100;background:rgba(6,6,16,0.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:0.5px solid rgba(255,255,255,0.05);}
+.topbar-row1{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.logo-wrap{display:flex;align-items:center;gap:10px;}
+.logo-img{height:24px;object-fit:contain;}
+.logo-fallback{background:#006B3F;padding:3px 9px;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:900;color:#fff;letter-spacing:.08em;}
+.year-nav{display:flex;align-items:center;gap:6px;}
+.year-lbl{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4);min-width:36px;text-align:center;}
+.nav-btn{background:transparent;border:none;color:rgba(255,255,255,0.3);font-size:20px;padding:2px 6px;cursor:pointer;line-height:1;}
+.nav-btn:active{color:#fff;}
+
+.team-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;}
+.team-tab{flex-shrink:0;padding:6px 16px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.3);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;}
+.team-tab.active-A{border-color:rgba(55,138,221,0.5);background:rgba(55,138,221,0.12);color:#85B7EB;}
+.team-tab.active-B{border-color:rgba(29,158,117,0.5);background:rgba(29,158,117,0.12);color:#5DCAA5;}
+.team-tab.active-C{border-color:rgba(208,89,74,0.5);background:rgba(208,89,74,0.12);color:#F09595;}
+.team-tab.active-D{border-color:rgba(127,119,221,0.5);background:rgba(127,119,221,0.12);color:#AFA9EC;}
+.team-tab.active-E{border-color:rgba(186,117,23,0.5);background:rgba(186,117,23,0.12);color:#EF9F27;}
 
 /* TODAY CARD */
-.today-card{margin:12px;padding:16px;border-radius:var(--radius);background:var(--bg2);border:1px solid #ffffff10;}
-.today-label{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
+.today-card{margin:12px 12px 0;padding:16px;border-radius:16px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);}
+.today-lbl{font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
 .today-main{display:flex;align-items:center;justify-content:space-between;}
-.today-date{font-size:13px;color:var(--text2);}
-.today-shift{display:flex;align-items:center;gap:10px;}
-.shift-badge{padding:8px 18px;border-radius:20px;font-size:15px;font-weight:700;border:2px solid;}
-.shift-m{background:var(--m-bg);border-color:var(--m);color:var(--m);}
-.shift-t{background:var(--t-bg);border-color:var(--t);color:var(--t);}
-.shift-n{background:var(--n-bg);border-color:var(--n);color:var(--n);}
-.shift-x{background:var(--x-bg);border-color:var(--x);color:var(--x);}
-.shift-f{background:var(--f-bg);border-color:var(--f);color:var(--text2);}
-.shift-c{background:#3d1a16;border-color:#d95a4a;color:#d95a4a;}
-.shift-desc{font-size:12px;color:var(--text2);}
-.tomorrow-row{margin-top:10px;padding-top:10px;border-top:1px solid #ffffff08;display:flex;align-items:center;justify-content:space-between;}
-.tomorrow-label{font-size:11px;color:var(--text3);}
-.tomorrow-badge{padding:4px 12px;border-radius:12px;font-size:12px;font-weight:600;border:1.5px solid;}
+.today-date{font-size:14px;color:rgba(255,255,255,0.7);}
+.today-fer{font-size:11px;margin-top:3px;}
+.shift-big{padding:10px 20px;border-radius:12px;text-align:center;}
+.shift-big-5{background:rgba(55,138,221,0.12);border:0.5px solid rgba(55,138,221,0.25);}
+.shift-big-13{background:rgba(29,158,117,0.12);border:0.5px solid rgba(29,158,117,0.25);}
+.shift-big-21{background:rgba(127,119,221,0.12);border:0.5px solid rgba(127,119,221,0.25);}
+.shift-big-F{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);}
+.shift-big-X{background:rgba(186,117,23,0.12);border:0.5px solid rgba(186,117,23,0.25);}
+.shift-num{font-size:26px;font-weight:200;letter-spacing:-.02em;}
+.shift-num-5{color:#85B7EB;} .shift-num-13{color:#5DCAA5;} .shift-num-21{color:#AFA9EC;} .shift-num-F{color:rgba(255,255,255,0.2);} .shift-num-X{color:#EF9F27;}
+.shift-desc{font-size:10px;margin-top:2px;letter-spacing:.03em;}
+.shift-desc-5{color:rgba(133,183,235,0.5);} .shift-desc-13{color:rgba(93,202,165,0.5);} .shift-desc-21{color:rgba(175,169,236,0.5);} .shift-desc-F{color:rgba(255,255,255,0.15);} .shift-desc-X{color:rgba(239,159,39,0.5);}
+.tomorrow-row{margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;}
+.tomorrow-lbl{font-size:11px;color:rgba(255,255,255,0.25);}
+.tomorrow-badge{font-size:12px;padding:4px 12px;border-radius:10px;}
+.tb-5{background:rgba(55,138,221,0.1);color:#85B7EB;}
+.tb-13{background:rgba(29,158,117,0.1);color:#5DCAA5;}
+.tb-21{background:rgba(127,119,221,0.1);color:#AFA9EC;}
+.tb-F{background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.2);}
+.tb-X{background:rgba(186,117,23,0.1);color:#EF9F27;}
 
-/* MONTH NAV */
-.month-nav{display:flex;align-items:center;padding:4px 12px;gap:4px;}
-.nav-btn{background:transparent;border:none;color:var(--text2);font-size:20px;padding:8px;cursor:pointer;border-radius:8px;}
-.nav-btn:active{background:#ffffff10;}
-.month-title{flex:1;text-align:center;font-size:15px;font-weight:600;color:var(--text);}
+/* STATS */
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 12px 0;}
+.stat{background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.stat-bar{width:3px;height:32px;border-radius:2px;flex-shrink:0;}
+.stat-num{font-size:22px;font-weight:200;color:#fff;line-height:1;}
+.stat-lbl{font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;letter-spacing:.03em;}
 
-/* CALENDAR */
-.cal-wrap{padding:0 8px 24px;}
-.cal{width:100%;border-collapse:separate;border-spacing:3px;}
-.cal th{font-size:10px;color:var(--text3);text-align:center;padding:4px 0;font-weight:400;}
-.cal td{padding:0;}
-.day-cell{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:50px;border-radius:8px;border:1.5px solid transparent;position:relative;overflow:hidden;padding-bottom:5px;}
-.day-num{font-size:13px;font-weight:500;}
-.day-lbl{font-size:9px;font-weight:700;margin-top:1px;letter-spacing:.02em;}
-.dc-m{background:var(--m-bg2);border-color:var(--m);}
-.dc-m .day-num,.dc-m .day-lbl{color:var(--m);}
-.dc-t{background:var(--t-bg2);border-color:var(--t);}
-.dc-t .day-num,.dc-t .day-lbl{color:var(--t);}
-.dc-n{background:var(--n-bg2);border-color:var(--n);}
-.dc-n .day-num,.dc-n .day-lbl{color:var(--n);}
-.dc-x{background:var(--x-bg2);border-color:var(--x);}
-.dc-x .day-num,.dc-x .day-lbl{color:var(--x);}
-.dc-f{background:var(--f-bg);border-color:transparent;}
-.dc-f .day-num{color:var(--text3);}
-.dc-f .day-lbl{color:var(--text3);}
-.dc-c{background:#2a0d0a;border-color:#d95a4a;}
-.dc-c .day-num,.dc-c .day-lbl{color:#d95a4a;}
-.faixa{position:absolute;top:0;left:0;right:0;height:13px;background:#3d2800;display:flex;align-items:center;justify-content:center;}.faixa span{font-size:7px;font-weight:700;color:#d9a030;letter-spacing:.05em;}.faixa.ferias{background:#0d3d2a;}.faixa.ferias span{color:#4aab5a;}.dc-x{background:#0d3d2a;border-color:#4aab5a;}.dc-x .dn,.dc-x .dl{color:#4aab5a;}
-.today-ring{outline:2px solid var(--red);outline-offset:1px;}
+/* FERIADOS */
+.fer-list{margin:10px 12px 0;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.06);display:block;}
+.fer-list-title{font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
+.fer-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid rgba(255,255,255,0.04);font-size:12px;}
+.fer-item:last-child{border-bottom:none;}
+.fer-day{font-weight:500;color:#EF9F27;min-width:22px;}
+.fer-name{color:rgba(255,255,255,0.6);flex:1;}
+.fer-shift{font-size:11px;}
 
 /* LEGEND */
-.legend{display:flex;flex-wrap:wrap;gap:8px;padding:0 12px 12px;}
+.legend{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px 0;}
 .leg{display:flex;align-items:center;gap:5px;font-size:11px;}
-.leg-dot{width:10px;height:10px;border-radius:3px;border:1.5px solid;}
+.leg-dot{width:8px;height:8px;border-radius:50%;}
 
-/* INSTALL BANNER */
-.fer-list{margin:0 12px 8px;padding:10px 14px;border-radius:10px;background:#1a1a2e;border:1px solid #ffffff10;display:block;}
-.fer-list.show{display:block;}
-.fer-list-title{font-size:10px;color:#a0a0c0;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;}
-.fer-item{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid #ffffff08;font-size:13px;}
-.fer-item:last-child{border-bottom:none;}
-.fer-day{font-weight:600;color:#d9a030;min-width:28px;}
-.fer-name{color:#e8e8f0;}
-.fer-shift{font-size:11px;color:#a0a0c0;margin-left:auto;}
-.install-banner{margin:0 12px 12px;padding:12px 14px;background:var(--bg2);border-radius:var(--radius);border:1px solid #ffffff10;display:none;align-items:center;gap:10px;}
-.install-banner.show{display:flex;}
-.install-txt{flex:1;font-size:12px;color:var(--text2);}
-.install-btn{padding:6px 14px;border-radius:20px;background:var(--m-bg);border:1.5px solid var(--m);color:var(--m);font-size:12px;font-weight:600;cursor:pointer;}
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:8px 12px;}
-.stat{background:var(--bg2);border-radius:var(--rad);padding:10px 8px;text-align:center;border:1.5px solid transparent;}
-.stat-n{font-size:22px;font-weight:500;line-height:1;}
-.stat-l{font-size:10px;margin-top:3px;}
-.s-m{border-color:#4A90D9;}.s-m .stat-n{color:#4A90D9;}
-.s-t{border-color:#4AAB5A;}.s-t .stat-n{color:#4AAB5A;}
-.s-n{border-color:#8A60D9;}.s-n .stat-n{color:#8A60D9;}
-.s-x{border-color:#D9A030;}.s-x .stat-n{color:#D9A030;}
-.s-f .stat-n{color:var(--text2);}
-.s-w .stat-n{color:var(--text);}
+/* CALENDAR */
+.cal-header{display:flex;align-items:center;padding:10px 12px 6px;}
+.month-title{flex:1;text-align:center;font-size:15px;font-weight:500;color:rgba(255,255,255,0.8);}
+.cal-wrap{padding:0 8px 0;}
+.cal{width:100%;border-collapse:separate;border-spacing:3px;}
+.cal th{font-size:9px;color:rgba(255,255,255,0.2);padding:3px 0;text-align:center;font-weight:400;letter-spacing:.06em;text-transform:uppercase;}
+.cal td{padding:0;}
+.day-cell{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:48px;border-radius:10px;position:relative;overflow:hidden;padding-bottom:5px;}
+.day-num{font-size:13px;font-weight:400;}
+.day-lbl{font-size:8px;font-weight:500;margin-top:1px;letter-spacing:.02em;}
+.dc-m{background:rgba(55,138,221,0.12);border:0.5px solid rgba(55,138,221,0.2);}
+.dc-m .day-num{color:#85B7EB;} .dc-m .day-lbl{color:rgba(133,183,235,0.55);}
+.dc-t{background:rgba(29,158,117,0.12);border:0.5px solid rgba(29,158,117,0.2);}
+.dc-t .day-num{color:#5DCAA5;} .dc-t .day-lbl{color:rgba(93,202,165,0.55);}
+.dc-n{background:rgba(127,119,221,0.12);border:0.5px solid rgba(127,119,221,0.2);}
+.dc-n .day-num{color:#AFA9EC;} .dc-n .day-lbl{color:rgba(175,169,236,0.55);}
+.dc-f{background:rgba(255,255,255,0.02);}
+.dc-f .day-num{color:rgba(255,255,255,0.18);} .dc-f .day-lbl{color:transparent;}
+.dc-x{background:rgba(186,117,23,0.12);border:0.5px solid rgba(186,117,23,0.25);}
+.dc-x .day-num{color:#EF9F27;} .dc-x .day-lbl{color:rgba(239,159,39,0.6);}
+.dc-c{background:rgba(208,89,74,0.12);border:0.5px solid rgba(208,89,74,0.2);}
+.dc-c .day-num{color:#F09595;} .dc-c .day-lbl{color:rgba(240,149,149,0.55);}
+.today-ring{outline:1.5px solid rgba(226,75,74,0.7);outline-offset:1px;}
+.faixa{position:absolute;top:0;left:0;right:0;height:12px;display:flex;align-items:center;justify-content:center;}
+.faixa-fer{background:rgba(186,117,23,0.35);}
+.faixa-fer span{font-size:6px;font-weight:700;color:#EF9F27;letter-spacing:.08em;text-transform:uppercase;}
+.faixa-x{background:rgba(29,158,117,0.25);}
+.faixa-x span{font-size:6px;font-weight:700;color:#5DCAA5;letter-spacing:.06em;}
+
+/* INSTALL */
+.install-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,16,0.95);backdrop-filter:blur(12px);border-top:0.5px solid rgba(255,255,255,0.08);padding:12px 16px;display:none;align-items:center;gap:10px;z-index:200;}
+.install-bar.show{display:flex;}
+.install-txt{flex:1;font-size:12px;color:rgba(255,255,255,0.5);}
+.install-btn{padding:8px 18px;border-radius:20px;background:rgba(55,138,221,0.15);border:0.5px solid rgba(55,138,221,0.3);color:#85B7EB;font-size:13px;font-weight:500;cursor:pointer;}
 </style>
 </head>
 <body>
+<div class="app">
 <div class="topbar">
   <div class="topbar-row1">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <div style="height:26px;padding:0 10px;background:#006B3F;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:900;color:#fff;letter-spacing:.08em;font-family:'Montserrat',sans-serif;">VERALLIA</div>
-      <div>
-        <div class="app-title">Turnos 2026</div>
-        <div class="app-sub">Fontela, Figueira da Foz</div>
-      </div>
+    <div class="logo-wrap">
+      <img src="verallia_logo.avif" alt="Verallia" class="logo-img" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div class="logo-fallback" style="display:none">VERALLIA</div>
+    </div>
+    <div class="year-nav">
+      <button class="nav-btn" id="prev-yr">&#8249;</button>
+      <div class="year-lbl" id="year-lbl"></div>
+      <button class="nav-btn" id="next-yr">&#8250;</button>
     </div>
   </div>
   <div class="team-tabs" id="tabs">
-    <button class="team-tab active" data-team="A">Equipa A</button>
+    <button class="team-tab" data-team="A">Equipa A</button>
     <button class="team-tab" data-team="B">Equipa B</button>
     <button class="team-tab" data-team="C">Equipa C</button>
     <button class="team-tab" data-team="D">Equipa D</button>
@@ -136,33 +144,28 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
   </div>
 </div>
 
-<div class="install-banner" id="install-banner">
-  <div class="install-txt">Instala no ecra inicial para acesso rapido!</div>
-  <button class="install-btn" id="install-btn">Instalar</button>
-</div>
-
 <div class="today-card" id="today-card"></div>
 
 <div class="stats" id="stats-grid"></div>
-<div class="fer-list" id="fer-list"><div class="fer-list-title">Feriados este mes</div><div id="fer-items"></div></div>
-<div class="legend">
-  <div class="leg"><div class="leg-dot" style="background:#0d2340;border-color:#4a90d9;"></div><span style="color:#4a90d9">Manha</span></div>
-  <div class="leg"><div class="leg-dot" style="background:#0d2414;border-color:#4aab5a;"></div><span style="color:#4aab5a">Tarde</span></div>
-  <div class="leg"><div class="leg-dot" style="background:#1a0d40;border-color:#8a60d9;"></div><span style="color:#8a60d9">Noite</span></div>
-  <div class="leg"><div class="leg-dot" style="background:#3d2800;border-color:#d9a030;"></div><span style="color:#d9a030">Feriado</span></div>
-  <div class="leg"><div class="leg-dot" style="background:#1e1e2e;border-color:#444;"></div><span style="color:#606080">Folga</span></div>
-  <div class="leg"><div class="leg-dot" style="background:transparent;border-color:#ff5555;border-radius:50%;"></div><span style="color:#ff5555">Hoje</span></div>
+
+<div class="fer-list" id="fer-list">
+  <div class="fer-list-title">Feriados este mes</div>
+  <div id="fer-items"></div>
 </div>
 
-<div style="display:flex;align-items:center;justify-content:center;gap:8px;padding:4px 12px 0;">
-  <button class="nav-btn" id="prev-yr">&#8249;</button>
-  <div style="font-size:13px;font-weight:600;color:var(--text2);min-width:40px;text-align:center;" id="year-lbl"></div>
-  <button class="nav-btn" id="next-yr">&#8250;</button>
+<div class="legend">
+  <div class="leg"><div class="leg-dot" style="background:#378ADD"></div><span style="color:rgba(133,183,235,0.7)">Manha</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#1D9E75"></div><span style="color:rgba(93,202,165,0.7)">Tarde</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#7F77DD"></div><span style="color:rgba(175,169,236,0.7)">Noite</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#EF9F27"></div><span style="color:rgba(239,159,39,0.7)">Feriado</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#5DCAA5"></div><span style="color:rgba(93,202,165,0.7)">Ferias</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#E24B4A;border-radius:0"></div><span style="color:rgba(226,75,74,0.7)">Hoje</span></div>
 </div>
-<div class="month-nav">
-  <button class="nav-btn" id="prev">&#8249;</button>
+
+<div class="cal-header">
+  <button class="nav-btn" id="prev-mo">&#8249;</button>
   <div class="month-title" id="month-title"></div>
-  <button class="nav-btn" id="next">&#8250;</button>
+  <button class="nav-btn" id="next-mo">&#8250;</button>
 </div>
 
 <div class="cal-wrap">
@@ -171,93 +174,140 @@ body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSy
     <tbody id="cal-body"></tbody>
   </table>
 </div>
+</div>
 
-<script src="schedule-data.js?v=8"></script>
+<div class="install-bar" id="install-bar">
+  <div class="install-txt">Instala no ecra inicial!</div>
+  <button class="install-btn" id="install-btn">Instalar</button>
+</div>
+
+<script src="schedule-data.js?v=9"></script>
 <script>
-const TEAMS_ORDER = ['A','B','D','E'];
 const TEAM_COLORS = {A:'m',B:'t',C:'c',D:'n',E:'x'};
 
 const today = new Date();
 const todayY = today.getFullYear();
 const todayD = today.getDate(), todayM = today.getMonth();
+
 let curTeam = localStorage.getItem('team') || 'A';
 let curYear = todayY;
 let curMonth = todayM;
 
-function shiftInfo(s, teamColor) {
-  const tc = TEAM_COLORS[teamColor] || 'm';
-  if(s==='5')  return {cls:'dc-m', badge:'shift-m', lbl:'05h', desc:'Manha 05-13'};
-  if(s==='13') return {cls:'dc-t', badge:'shift-t', lbl:'13h', desc:'Tarde 13-21'};
-  if(s==='21') return {cls:'dc-n', badge:'shift-n', lbl:'21h', desc:'Noite 21-05'};
-  if(s==='X')  return {cls:'dc-x', badge:'shift-x', lbl:'FER', desc:'Feriado'};
-  return {cls:'dc-f', badge:'shift-f', lbl:'folga', desc:'Dia de folga'};
+const SHIFT_CLS = {'5':'dc-m','13':'dc-t','21':'dc-n','F':'dc-f','X':'dc-x'};
+const SHIFT_NUM_LBL = {'5':'05h','13':'13h','21':'21h','F':'Folga','X':'Ferias'};
+const SHIFT_DESC = {'5':'Manha 05-13','13':'Tarde 13-21','21':'Noite 21-05','F':'Dia de folga','X':'Ferias + Feriado'};
+const STAT_COLORS = {'5':'#378ADD','13':'#1D9E75','21':'#7F77DD'};
+
+function getTeamCls(team) {
+  const map = {A:'m',B:'t',C:'c',D:'n',E:'x'};
+  return map[team]||'m';
 }
 
-// getShift now in schedule-data.js
-
-
 function renderTodayCard() {
-  const shift = getShift(curTeam, todayY, todayM, todayD);
-  const tomorrow = new Date(today); tomorrow.setDate(todayD+1);
-  const tomShift = getShift(curTeam, tomorrow.getFullYear(), tomorrow.getMonth(), tomorrow.getDate());
-  const inf = shiftInfo(shift, curTeam);
-  const tinf = shiftInfo(tomShift, curTeam);
-  const ferName = getFeriadoLocal(todayD, todayM);
-  const weekdays = ['Domingo','Segunda','Terca','Quarta','Quinta','Sexta','Sabado'];
-  const months = MONTH_NAMES_PT;
-  
+  const t = new Date(todayY, todayM, todayD);
+  const tom = new Date(todayY, todayM, todayD+1);
+  const s = getShift(curTeam, todayY, todayM, todayD);
+  const st = getShift(curTeam, tom.getFullYear(), tom.getMonth(), tom.getDate());
+  const fer = getFeriadoLocal(todayD, todayM);
+  const ferTom = getFeriado(tom.getFullYear(), tom.getMonth(), tom.getDate());
+  const wdays = ['Domingo','Segunda','Terca','Quarta','Quinta','Sexta','Sabado'];
+  const mns = (typeof MONTH_NAMES !== 'undefined' ? MONTH_NAMES : MONTH_NAMES_PT);
+
   document.getElementById('today-card').innerHTML = `
-    <div class="today-label">Hoje - Equipa ${curTeam}</div>
+    <div class="today-lbl">Hoje · Equipa ${curTeam}</div>
     <div class="today-main">
       <div>
-        <div class="today-date">${weekdays[today.getDay()]}, ${todayD} ${months[todayM]}</div>
-        ${ferName ? `<div style="font-size:11px;color:var(--x);margin-top:2px">${ferName}</div>` : ''}
+        <div class="today-date">${wdays[t.getDay()]}, ${todayD} ${mns[todayM]}</div>
+        ${fer?`<div class="today-fer" style="color:#EF9F27;font-size:11px;">${fer}</div>`:''}
       </div>
-      <div class="today-shift">
-        <div>
-          <div class="shift-badge ${inf.badge}">${inf.lbl === 'Folga' ? 'FOLGA' : inf.lbl === '🏖️' ? '🏖️ FÉRIAS' : inf.lbl}</div>
-          <div class="shift-desc" style="margin-top:4px;text-align:center">${inf.desc}</div>
-        </div>
+      <div class="shift-big shift-big-${s}">
+        <div class="shift-num shift-num-${s}">${s==='F'?'—':SHIFT_NUM_LBL[s]}</div>
+        <div class="shift-desc shift-desc-${s}">${SHIFT_DESC[s]}</div>
       </div>
     </div>
     <div class="tomorrow-row">
-      <div class="tomorrow-label">Amanha: ${tomorrow.getDate()} ${months[tomorrow.getMonth()]}</div>
-      <div class="tomorrow-badge ${tinf.badge}">${tinf.lbl === 'folga' ? 'FOLGA' : tinf.lbl} &mdash; ${tinf.desc}</div>
-    </div>
-  `;
+      <div class="tomorrow-lbl">Amanha: ${tom.getDate()} ${mns[tom.getMonth()]}${ferTom?' · '+ferTom:''}</div>
+      <div class="tomorrow-badge tb-${st}">${st==='F'?'Folga':SHIFT_NUM_LBL[st]} — ${SHIFT_DESC[st]}</div>
+    </div>`;
+}
+
+function renderStats() {
+  const grid = document.getElementById('stats-grid');
+  if(!grid) return;
+  let m=0,t=0,n=0,f=0,x=0;
+  const yearData = (SCHEDULES[curYear]||{})[curTeam]||[];
+  yearData.forEach(month => month.forEach(row => {
+    const s = row[2];
+    if(s==='5') m++;
+    else if(s==='13') t++;
+    else if(s==='21') n++;
+    else if(s==='X') x++;
+    else f++;
+  }));
+  const stats = [
+    {num:m,lbl:'Manha',color:'#378ADD'},
+    {num:t,lbl:'Tarde',color:'#1D9E75'},
+    {num:n,lbl:'Noite',color:'#7F77DD'},
+    {num:m+t+n+x,lbl:'Trabalhados',color:'rgba(255,255,255,0.2)'},
+  ];
+  grid.innerHTML = stats.map(s=>`
+    <div class="stat">
+      <div class="stat-bar" style="background:${s.color}"></div>
+      <div><div class="stat-num">${s.num}</div><div class="stat-lbl">${s.lbl}</div></div>
+    </div>`).join('');
+}
+
+function renderFeriados() {
+  const daysInMonth = new Date(curYear, curMonth+1, 0).getDate();
+  const items = [];
+  const shiftColors = {'5':'#85B7EB','13':'#5DCAA5','21':'#AFA9EC','F':'rgba(255,255,255,0.2)','X':'#5DCAA5'};
+  for(let d=1;d<=daysInMonth;d++){
+    const fer = getFeriadoLocal(d, curMonth);
+    if(fer){
+      const s = getShift(curTeam, curYear, curMonth, d);
+      const isX = s==='X';
+      items.push(`<div class="fer-item">
+        <span class="fer-day">${d}</span>
+        <span class="fer-name">${fer}</span>
+        <span class="fer-shift" style="color:${shiftColors[s]||''}">${isX?'Ferias':s==='F'?'Folga':SHIFT_NUM_LBL[s]}</span>
+      </div>`);
+    }
+  }
+  const itemsEl = document.getElementById('fer-items');
+  if(itemsEl) itemsEl.innerHTML = items.length > 0 ? items.join('') : '<div style="color:rgba(255,255,255,0.2);font-size:12px;">Sem feriados este mes</div>';
 }
 
 function renderCalendar() {
-  document.getElementById('month-title').textContent = (typeof MONTH_NAMES !== 'undefined' ? MONTH_NAMES : MONTH_NAMES_PT)[curMonth];
-  const yearData = SCHEDULES[curYear] || {};
-  const teamData = yearData[curTeam] || [];
-  const data = teamData[curMonth] || [];
+  const mns = (typeof MONTH_NAMES !== 'undefined' ? MONTH_NAMES : MONTH_NAMES_PT);
+  document.getElementById('month-title').textContent = mns[curMonth] + ' ' + curYear;
+  const yearData = (SCHEDULES[curYear]||{})[curTeam]||[];
+  const data = yearData[curMonth]||[];
   const firstDow = new Date(curYear, curMonth, 1).getDay();
   const tbody = document.getElementById('cal-body');
   tbody.innerHTML = '';
-  
   let cells = [];
   for(let i=0;i<firstDow;i++) cells.push(null);
-  if(data) for(const d of data) cells.push(d);
-  while(cells.length%7!==0) cells.push(null);
-  
+  const daysInMonth = new Date(curYear, curMonth+1, 0).getDate();
+  for(let d=1;d<=daysInMonth;d++) cells.push(d);
+  while(cells.length%7) cells.push(null);
   for(let r=0;r<cells.length/7;r++){
     const tr = document.createElement('tr');
     for(let c=0;c<7;c++){
       const td = document.createElement('td');
-      const item = cells[r*7+c];
-      if(item){
-        const [day,,shift] = item;
-        const inf = shiftInfo(shift, curTeam);
-        const ferKey = `${day}-${curMonth+1}`;
-        const hasFer = !!getFeriadoLocal(day, curMonth);
+      const day = cells[r*7+c];
+      if(day){
+        const row = data.find(x=>x[0]===day);
+        const shift = row ? row[2] : 'F';
         const isToday = curYear===todayY && curMonth===todayM && day===todayD;
+        const hasFer = !!getFeriadoLocal(day, curMonth);
+        const isX = shift==='X';
+        const cls = SHIFT_CLS[shift]||'dc-f';
         const div = document.createElement('div');
-        div.className = `day-cell ${inf.cls}${isToday?' today-ring':''}`;
-        const isFerias = shift === 'X';
-        const faixaHTML = isFerias ? '<div class="faixa ferias"><span>🏖️ FERIAS</span></div>'
-                        : hasFer ? '<div class="faixa"><span>FERIADO</span></div>' : '';
-        div.innerHTML = `${faixaHTML}<span class="day-num">${day}</span><span class="day-lbl">${inf.lbl}</span>`;
+        div.className = `day-cell ${cls}${isToday?' today-ring':''}`;
+        const faixaHTML = isX
+          ? '<div class="faixa faixa-x"><span>FERIAS</span></div>'
+          : hasFer ? '<div class="faixa faixa-fer"><span>FERIADO</span></div>' : '';
+        div.innerHTML = `${faixaHTML}<span class="day-num">${day}</span><span class="day-lbl">${shift==='F'?'—':SHIFT_NUM_LBL[shift]}</span>`;
         td.appendChild(div);
       }
       tr.appendChild(td);
@@ -266,60 +316,11 @@ function renderCalendar() {
   }
 }
 
-
-function renderFeriados() {
-  const year = 2026;
-  const daysInMonth = new Date(year, curMonth+1, 0).getDate();
-  const items = [];
-  const shiftColors = {'5':'color:#4a90d9','13':'color:#4aab5a','21':'color:#8a60d9','F':'color:#606080'};
-  const shiftLabels = {'5':'Manha 05-13','13':'Tarde 13-21','21':'Noite 21-05','F':'Folga'};
-  for(let d=1;d<=daysInMonth;d++){
-    const fer = getFeriadoLocal(d, curMonth);
-    if(fer){
-      const s = getShift(curTeam, curYear, curMonth, d);
-      const isFerias = s === 'X';
-      const shiftLabel = isFerias ? '🏖️ Ferias + Feriado' : (shiftLabels[s] || '');
-      const shiftColor = isFerias ? 'color:#4aab5a' : (shiftColors[s] || '');
-      items.push(`<div class="fer-item"><span class="fer-day">${d}</span><span class="fer-name">${fer}</span><span class="fer-shift" style="${shiftColor}">${shiftLabel}</span></div>`);
-    }
-  }
-  const itemsEl = document.getElementById('fer-items');
-  if(itemsEl){
-    itemsEl.innerHTML = items.length > 0 ? items.join('') : '<div style="color:#606080;font-size:12px;">Sem feriados este mes</div>';
-  }
-}
-
-
-function renderStats() {
-  const grid = document.getElementById('stats-grid');
-  if(!grid) return;
-  let m=0,t=0,n=0,f=0,x=0;
-  const yearData = (SCHEDULES[curYear]||{})[curTeam]||[];
-  yearData.forEach(month => {
-    month.forEach(row => {
-      const s = row[2];
-      if(s==='5') m++;
-      else if(s==='13') t++;
-      else if(s==='21') n++;
-      else if(s==='X') x++;
-      else f++;
-    });
-  });
-  const w = m+t+n+x;
-  grid.innerHTML = `
-    <div class="stat s-m"><div class="stat-n">${m}</div><div class="stat-l" style="color:var(--m-col)">Manha</div></div>
-    <div class="stat s-t"><div class="stat-n">${t}</div><div class="stat-l" style="color:var(--t-col)">Tarde</div></div>
-    <div class="stat s-n"><div class="stat-n">${n}</div><div class="stat-l" style="color:var(--n-col)">Noite</div></div>
-    ${x>0?`<div class="stat s-x"><div class="stat-n">${x}</div><div class="stat-l" style="color:var(--x-col)">Ferias</div></div>`:''}
-    <div class="stat s-f"><div class="stat-n">${f}</div><div class="stat-l" style="color:var(--text2)">Folgas</div></div>
-    <div class="stat s-w"><div class="stat-n">${w}</div><div class="stat-l" style="color:var(--text2)">Trabalhados</div></div>
-  `;
-}
-function setTeam(t) {
+function setTeam(t){
   curTeam = t;
-  localStorage.setItem('team', t);
-  document.querySelectorAll('.team-tab').forEach(b => {
-    b.classList.toggle('active', b.dataset.team === t);
+  localStorage.setItem('team',t);
+  document.querySelectorAll('.team-tab').forEach(b=>{
+    b.className = 'team-tab' + (b.dataset.team===t?' active-'+t:'');
   });
   renderTodayCard();
   renderCalendar();
@@ -327,55 +328,46 @@ function setTeam(t) {
   renderStats();
 }
 
-document.getElementById('tabs').addEventListener('click', e => {
+document.getElementById('tabs').addEventListener('click', e=>{
   if(e.target.dataset.team) setTeam(e.target.dataset.team);
 });
-document.getElementById('prev').onclick = () => { if(curMonth>0){curMonth--;renderCalendar();renderFeriados();}};
-document.getElementById('next').onclick = () => { if(curMonth<11){curMonth++;renderCalendar();renderFeriados();}};
 
-// PWA install
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  deferredPrompt = e;
-  document.getElementById('install-banner').classList.add('show');
-});
-document.getElementById('install-btn').onclick = async () => {
-  if(deferredPrompt){
-    deferredPrompt.prompt();
-    const {outcome} = await deferredPrompt.userChoice;
-    deferredPrompt = null;
-    document.getElementById('install-banner').classList.remove('show');
-  }
-};
+document.getElementById('prev-yr').onclick = ()=>{curYear--;document.getElementById('year-lbl').textContent=curYear;renderTodayCard();renderCalendar();renderFeriados();renderStats();};
+document.getElementById('next-yr').onclick = ()=>{curYear++;document.getElementById('year-lbl').textContent=curYear;renderTodayCard();renderCalendar();renderFeriados();renderStats();};
+document.getElementById('prev-mo').onclick = ()=>{if(curMonth===0){curMonth=11;curYear--;}else curMonth--;document.getElementById('year-lbl').textContent=curYear;renderCalendar();renderFeriados();};
+document.getElementById('next-mo').onclick = ()=>{if(curMonth===11){curMonth=0;curYear++;}else curMonth++;document.getElementById('year-lbl').textContent=curYear;renderCalendar();renderFeriados();};
 
-
-// Feriados inline - independente do schedule-data.js
 const MONTH_NAMES_PT = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-const FERIADOS_2026 = {
-  "1-1":"Ano Novo","18-1":"Dia do Vidreiro","17-2":"Carnaval",
-  "3-4":"Sexta-feira Santa","5-4":"Pascoa","25-4":"Dia da Liberdade",
-  "1-5":"Dia do Trabalhador","4-6":"Corpo de Deus","10-6":"Dia de Portugal",
-  "24-6":"Sao Joao","15-8":"Assuncao N.Sra.","5-10":"Implantacao Republica",
-  "1-11":"Todos os Santos","1-12":"Restauracao Independencia",
-  "8-12":"Imaculada Conceicao","25-12":"Natal"
-};
+const FERIADOS_2026_LOCAL = {"1-1":"Ano Novo","18-1":"Dia do Vidreiro","17-2":"Carnaval","3-4":"Sexta-feira Santa","5-4":"Pascoa","25-4":"Dia da Liberdade","1-5":"Dia do Trabalhador","4-6":"Corpo de Deus","10-6":"Dia de Portugal","24-6":"Sao Joao","15-8":"Assuncao N.Sra.","5-10":"Implantacao Republica","1-11":"Todos os Santos","1-12":"Restauracao Independencia","8-12":"Imaculada Conceicao","25-12":"Natal"};
+const FERIADOS_2027_LOCAL = {"1-1":"Ano Novo","18-1":"Dia do Vidreiro","9-2":"Carnaval","26-3":"Sexta-feira Santa","28-3":"Pascoa","25-4":"Dia da Liberdade","1-5":"Dia do Trabalhador","27-5":"Corpo de Deus","10-6":"Dia de Portugal","24-6":"Sao Joao","15-8":"Assuncao N.Sra.","5-10":"Implantacao Republica","1-11":"Todos os Santos","1-12":"Restauracao Independencia","8-12":"Imaculada Conceicao","25-12":"Natal"};
 
 function getFeriadoLocal(day, month) {
-  return getFeriado(curYear, month, day);
+  const key = `${day}-${month+1}`;
+  if(curYear===2026) return FERIADOS_2026_LOCAL[key]||'';
+  if(curYear===2027) return FERIADOS_2027_LOCAL[key]||'';
+  return '';
 }
 
-document.getElementById("year-lbl").textContent = curYear;
+document.getElementById('year-lbl').textContent = curYear;
+
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', e=>{
+  e.preventDefault(); deferredPrompt=e;
+  document.getElementById('install-bar').classList.add('show');
+});
+document.getElementById('install-btn').onclick = async()=>{
+  if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; document.getElementById('install-bar').classList.remove('show'); }
+};
+
 setTeam(curTeam);
 </script>
 
 <script>
 if('serviceWorker' in navigator) {
-  // Unregister old SW and register new one
   navigator.serviceWorker.getRegistrations().then(regs => {
     regs.forEach(r => r.unregister());
   }).then(() => {
-    navigator.serviceWorker.register('sw.js?v=2027').then(reg => {
+    navigator.serviceWorker.register('sw.js?v=9').then(reg => {
       reg.addEventListener('updatefound', () => {
         const newSW = reg.installing;
         newSW.addEventListener('statechange', () => {
