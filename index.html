@@ -12,7 +12,7 @@
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{background:#060610;color:#e8e8f0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;min-height:100vh;overscroll-behavior:none;}
+body{background:#060610;color:#e8e8f0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;min-height:100vh;overscroll-behavior:none;overflow-x:hidden;}
 
 /* Aurora background */
 body::before{content:'';position:fixed;top:-100px;left:-80px;width:300px;height:250px;background:radial-gradient(ellipse,rgba(55,138,221,0.08),transparent 70%);pointer-events:none;z-index:0;}
@@ -31,7 +31,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .nav-btn{background:transparent;border:none;color:rgba(255,255,255,0.3);font-size:20px;padding:2px 6px;cursor:pointer;line-height:1;}
 .nav-btn:active{color:#fff;}
 
-.team-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;}
+.team-tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px;-ms-overflow-style:none;scrollbar-width:none;}
 .team-tab{flex-shrink:0;padding:6px 16px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.3);font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;}
 .team-tab.active-A{border-color:rgba(55,138,221,0.5);background:rgba(55,138,221,0.12);color:#85B7EB;}
 .team-tab.active-B{border-color:rgba(29,158,117,0.5);background:rgba(29,158,117,0.12);color:#5DCAA5;}
@@ -119,6 +119,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .install-bar.show{display:flex;}
 .install-txt{flex:1;font-size:12px;color:rgba(255,255,255,0.5);}
 .install-btn{padding:8px 18px;border-radius:20px;background:rgba(55,138,221,0.15);border:0.5px solid rgba(55,138,221,0.3);color:#85B7EB;font-size:13px;font-weight:500;cursor:pointer;}
+.team-tabs::-webkit-scrollbar{display:none;}
 </style>
 </head>
 <body>
