@@ -50,11 +50,11 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .shift-big-13{background:rgba(29,158,117,0.12);border:0.5px solid rgba(29,158,117,0.25);}
 .shift-big-21{background:rgba(127,119,221,0.12);border:0.5px solid rgba(127,119,221,0.25);}
 .shift-big-F{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);}
-.shift-big-X{background:rgba(186,117,23,0.12);border:0.5px solid rgba(186,117,23,0.25);}
+.shift-big-X{background:rgba(217,160,48,0.12);border:0.5px solid rgba(217,160,48,0.25);}
 .shift-num{font-size:26px;font-weight:200;letter-spacing:-.02em;}
-.shift-num-5{color:#85B7EB;} .shift-num-13{color:#5DCAA5;} .shift-num-21{color:#AFA9EC;} .shift-num-F{color:rgba(255,255,255,0.2);} .shift-num-X{color:#EF9F27;}
+.shift-num-5{color:#85B7EB;} .shift-num-13{color:#5DCAA5;} .shift-num-21{color:#AFA9EC;} .shift-num-F{color:rgba(255,255,255,0.2);} .shift-num-X{color:#FFD166;}
 .shift-desc{font-size:10px;margin-top:2px;letter-spacing:.03em;}
-.shift-desc-5{color:rgba(133,183,235,0.5);} .shift-desc-13{color:rgba(93,202,165,0.5);} .shift-desc-21{color:rgba(175,169,236,0.5);} .shift-desc-F{color:rgba(255,255,255,0.15);} .shift-desc-X{color:rgba(239,159,39,0.5);}
+.shift-desc-5{color:rgba(133,183,235,0.5);} .shift-desc-13{color:rgba(93,202,165,0.5);} .shift-desc-21{color:rgba(175,169,236,0.5);} .shift-desc-F{color:rgba(255,255,255,0.15);} .shift-desc-X{color:rgba(255,209,102,0.5);}
 .tomorrow-row{margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;}
 .tomorrow-lbl{font-size:11px;color:rgba(255,255,255,0.25);}
 .tomorrow-badge{font-size:12px;padding:4px 12px;border-radius:10px;}
@@ -62,7 +62,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .tb-13{background:rgba(29,158,117,0.1);color:#5DCAA5;}
 .tb-21{background:rgba(127,119,221,0.1);color:#AFA9EC;}
 .tb-F{background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.2);}
-.tb-X{background:rgba(186,117,23,0.1);color:#EF9F27;}
+.tb-X{background:rgba(217,160,48,0.1);color:#FFD166;}
 
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 12px 0;}
@@ -103,16 +103,16 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .dc-n .day-num{color:#AFA9EC;} .dc-n .day-lbl{color:rgba(175,169,236,0.55);}
 .dc-f{background:rgba(255,255,255,0.02);}
 .dc-f .day-num{color:rgba(255,255,255,0.18);} .dc-f .day-lbl{color:transparent;}
-.dc-x{background:rgba(186,117,23,0.12);border:0.5px solid rgba(186,117,23,0.25);}
-.dc-x .day-num{color:#EF9F27;} .dc-x .day-lbl{color:rgba(239,159,39,0.6);}
+.dc-x{background:rgba(217,160,48,0.15);border:0.5px solid rgba(217,160,48,0.3);}
+.dc-x .day-num{color:#FFD166;} .dc-x .day-lbl{color:rgba(255,209,102,0.65);}
 .dc-c{background:rgba(208,89,74,0.12);border:0.5px solid rgba(208,89,74,0.2);}
 .dc-c .day-num{color:#F09595;} .dc-c .day-lbl{color:rgba(240,149,149,0.55);}
 .today-ring{outline:1.5px solid rgba(226,75,74,0.7);outline-offset:1px;}
 .faixa{position:absolute;top:0;left:0;right:0;height:12px;display:flex;align-items:center;justify-content:center;}
 .faixa-fer{background:rgba(186,117,23,0.35);}
 .faixa-fer span{font-size:6px;font-weight:700;color:#EF9F27;letter-spacing:.08em;text-transform:uppercase;}
-.faixa-x{background:rgba(29,158,117,0.25);}
-.faixa-x span{font-size:6px;font-weight:700;color:#5DCAA5;letter-spacing:.06em;}
+.faixa-x{background:rgba(217,160,48,0.3);}
+.faixa-x span{font-size:6px;font-weight:700;color:#FFD166;letter-spacing:.06em;}
 
 /* INSTALL */
 .install-bar{position:fixed;bottom:0;left:0;right:0;background:rgba(6,6,16,0.95);backdrop-filter:blur(12px);border-top:0.5px solid rgba(255,255,255,0.08);padding:12px 16px;display:none;align-items:center;gap:10px;z-index:200;}
@@ -163,7 +163,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
   <div class="leg"><div class="leg-dot" style="background:#1D9E75"></div><span style="color:rgba(93,202,165,0.7)">Tarde</span></div>
   <div class="leg"><div class="leg-dot" style="background:#7F77DD"></div><span style="color:rgba(175,169,236,0.7)">Noite</span></div>
   <div class="leg"><div class="leg-dot" style="background:#EF9F27"></div><span style="color:rgba(239,159,39,0.7)">Feriado</span></div>
-  <div class="leg"><div class="leg-dot" style="background:#5DCAA5"></div><span style="color:rgba(93,202,165,0.7)">Ferias</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#FFD166"></div><span style="color:rgba(255,209,102,0.7)">Ferias</span></div>
   <div class="leg"><div class="leg-dot" style="background:#E24B4A;border-radius:0"></div><span style="color:rgba(226,75,74,0.7)">Hoje</span></div>
 </div>
 
@@ -265,7 +265,7 @@ function renderStats() {
 function renderFeriados() {
   const daysInMonth = new Date(curYear, curMonth+1, 0).getDate();
   const items = [];
-  const shiftColors = {'5':'#85B7EB','13':'#5DCAA5','21':'#AFA9EC','F':'rgba(255,255,255,0.2)','X':'#5DCAA5'};
+  const shiftColors = {'5':'#85B7EB','13':'#5DCAA5','21':'#AFA9EC','F':'rgba(255,255,255,0.2)','X':'#FFD166'};
   for(let d=1;d<=daysInMonth;d++){
     const fer = getFeriadoLocal(d, curMonth);
     if(fer){
