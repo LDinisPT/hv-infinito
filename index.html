@@ -294,6 +294,25 @@ function renderClock() {
   if(el) el.textContent = formatTime(now);
 }
 
+function isInsideQuinzena(team, year) {
+  const quinzenaDays = getQuinzenaDays(team, year);
+  return quinzenaDays.has(`${todayM}-${todayD}`);
+}
+
+function getRemainingQuinzenaDays(team, year) {
+  const quinzenaDays = getQuinzenaDays(team, year);
+  const monthDays = [31,28,31,30,31,30,31,31,30,31,30,31];
+  let count = 0;
+  let m = todayM, d = todayD;
+  while(m < 12) {
+    if(!quinzenaDays.has(`${m}-${d}`)) break;
+    count++;
+    d++;
+    if(d > monthDays[m]) { d=1; m++; }
+  }
+  return { days: count, returnM: m, returnD: d };
+}
+
 function renderQuinzena() {
   const card = document.getElementById('quinzena-card');
   if(!card) return;
@@ -332,36 +351,31 @@ function renderQuinzena() {
   }
   
   const mns = typeof MONTH_NAMES !== 'undefined' ? MONTH_NAMES : MONTH_NAMES_PT;
+
+  // Check if currently inside quinzena
+  if(curYear === todayY && isInsideQuinzena(curTeam, curYear)) {
+    const rem = getRemainingQuinzenaDays(curTeam, curYear);
+    const returnDate = new Date(curYear, rem.returnM, rem.returnD);
+    card.innerHTML = `<div class="rainbow-card" style="width:100%;">
+      <div class="rainbow-text">
+        <span class="c1">E</span><span class="c2">S</span><span class="c3">T</span><span class="c4">A</span><span class="c5">S</span>&nbsp;<span class="c6">D</span><span class="c1">E</span>&nbsp;<span class="c2">F</span><span class="c3">E</span><span class="c4">R</span><span class="c5">I</span><span class="c6">A</span><span class="c1">S</span>&nbsp;<span class="c2">🏖️</span>
+      </div>
+      <div class="rainbow-sub">Ainda tens ${rem.days} dias · Volta a ${returnDate.getDate()} ${mns[returnDate.getMonth()]}</div>
+    </div>`;
+    return;
+  }
+
   if(found) {
     const daysLeft = found.daysUntil;
-    if(daysLeft === 0) {
-      // Inside quinzena - check how many days remain
-      const quinzenaDays = getQuinzenaDays(curTeam, curYear);
-      const today2 = new Date(todayY, todayM, todayD);
-      let daysRemain = 0;
-      for(let i=0; i<20; i++) {
-        const d2 = new Date(todayY, todayM, todayD+i);
-        if(quinzenaDays.has(`${d2.getMonth()}-${d2.getDate()}`)) daysRemain++;
-        else if(i>0) break;
-      }
-      const returnDate = new Date(todayY, todayM, todayD+daysRemain);
-      card.innerHTML = `<div class="rainbow-card" style="width:100%;">
-        <div class="rainbow-text">
-          <span class="c1">E</span><span class="c2">S</span><span class="c3">T</span><span class="c4">A</span><span class="c5">S</span><span style="color:transparent;font-size:8px"> </span><span class="c6">D</span><span class="c1">E</span><span style="color:transparent;font-size:8px"> </span><span class="c2">F</span><span class="c3">E</span><span class="c4">R</span><span class="c5">I</span><span class="c6">A</span><span class="c1">S</span> <span class="c2">🏖️</span>
-        </div>
-        <div class="rainbow-sub">Ainda tens ${daysRemain} dias · Volta a ${returnDate.getDate()} ${mns[returnDate.getMonth()]}</div>
+    card.innerHTML = `
+      <div class="q-left">
+        <div class="q-lbl">Proxima quinzena</div>
+        <div class="q-val">${found.date.getDate()} ${mns[found.date.getMonth()]} · ${found.count} dias</div>
+      </div>
+      <div class="q-days">
+        <div class="q-num">${daysLeft}</div>
+        <div class="q-sub">${daysLeft===1?'AMANHA':'DIAS'}</div>
       </div>`;
-    } else {
-      card.innerHTML = `
-        <div class="q-left">
-          <div class="q-lbl">Proxima quinzena</div>
-          <div class="q-val">${found.date.getDate()} ${mns[found.date.getMonth()]} · ${found.count} dias</div>
-        </div>
-        <div class="q-days">
-          <div class="q-num">${daysLeft}</div>
-          <div class="q-sub">${daysLeft===1?'AMANHA':'DIAS'}</div>
-        </div>`;
-    }
   } else {
     card.innerHTML = '';
   }
@@ -473,14 +487,13 @@ function renderCalendar() {
         const hasFer = !!getFeriadoLocal(day, curMonth);
         const isX = shift==='X';
         const isQuinzena = shift==='F' && quinzenaDays.has(`${curMonth}-${day}`);
-        const qIdx = isQuinzena ? (day % 7) : 0;
-        const cls = isQuinzena ? RAINBOW_CLS[qIdx] : (SHIFT_CLS[shift]||'dc-f');
+        const cls = SHIFT_CLS[shift]||'dc-f';
         const div = document.createElement('div');
         div.className = `day-cell ${cls}${isToday?' today-ring':''}`;
         const faixaHTML = isX
           ? '<div class="faixa faixa-x"><span>FERIAS</span></div>'
           : hasFer ? '<div class="faixa faixa-fer"><span>FERIADO</span></div>' : '';
-        div.innerHTML = `${faixaHTML}<span class="day-num">${day}</span><span class="day-lbl">${isQuinzena?'🏖️':shift==='F'?'Folga':SHIFT_NUM_LBL[shift]}</span>`;
+        div.innerHTML = `${faixaHTML}<span class="day-num">${day}</span><span class="day-lbl">${shift==='F'?'Folga':SHIFT_NUM_LBL[shift]}</span>`;
         td.appendChild(div);
       }
       tr.appendChild(td);
