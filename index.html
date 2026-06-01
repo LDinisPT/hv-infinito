@@ -33,7 +33,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 
 .team-tabs{display:flex;gap:4px;padding-bottom:2px;-ms-overflow-style:none;scrollbar-width:none;}
 .team-tab{flex:1;min-width:0;padding:6px 4px;border-radius:20px;border:0.5px solid rgba(255,255,255,0.1);background:transparent;color:rgba(255,255,255,0.3);font-size:12px;font-weight:500;cursor:pointer;transition:all .15s;text-align:center;white-space:nowrap;}
-.team-tab.active-A{border-color:rgba(55,138,221,0.5);background:rgba(55,138,221,0.12);color:#85B7EB;}
+.team-tab.active-A{border-color:rgba(255,230,0,0.4);background:rgba(255,230,0,0.08);color:#FFE600;}
 .team-tab.active-B{border-color:rgba(29,158,117,0.5);background:rgba(29,158,117,0.12);color:#5DCAA5;}
 .team-tab.active-C{border-color:rgba(208,89,74,0.5);background:rgba(208,89,74,0.12);color:#F09595;}
 .team-tab.active-D{border-color:rgba(127,119,221,0.5);background:rgba(127,119,221,0.12);color:#AFA9EC;}
@@ -46,21 +46,21 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .today-date{font-size:14px;color:rgba(255,255,255,0.7);}
 .today-fer{font-size:11px;margin-top:3px;}
 .shift-big{padding:10px 20px;border-radius:12px;text-align:center;}
-.shift-big-5{background:rgba(55,138,221,0.12);border:0.5px solid rgba(55,138,221,0.25);}
-.shift-big-13{background:rgba(29,158,117,0.12);border:0.5px solid rgba(29,158,117,0.25);}
-.shift-big-21{background:rgba(127,119,221,0.12);border:0.5px solid rgba(127,119,221,0.25);}
+.shift-big-5{background:rgba(255,230,0,0.1);border:0.5px solid rgba(255,230,0,0.25);}
+.shift-big-13{background:rgba(0,191,255,0.1);border:0.5px solid rgba(0,191,255,0.25);}
+.shift-big-21{background:rgba(0,255,180,0.1);border:0.5px solid rgba(0,255,180,0.25);}
 .shift-big-F{background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);}
 .shift-big-X{background:rgba(217,160,48,0.12);border:0.5px solid rgba(217,160,48,0.25);}
 .shift-num{font-size:26px;font-weight:200;letter-spacing:-.02em;}
-.shift-num-5{color:#85B7EB;} .shift-num-13{color:#5DCAA5;} .shift-num-21{color:#AFA9EC;} .shift-num-F{color:rgba(255,255,255,0.2);} .shift-num-X{color:#FFD166;}
+.shift-num-5{color:#FFE600;} .shift-num-13{color:#00BFFF;} .shift-num-21{color:#00FFB4;} .shift-num-F{color:rgba(255,255,255,0.2);} .shift-num-X{color:#FFD166;}
 .shift-desc{font-size:10px;margin-top:2px;letter-spacing:.03em;}
-.shift-desc-5{color:rgba(133,183,235,0.5);} .shift-desc-13{color:rgba(93,202,165,0.5);} .shift-desc-21{color:rgba(175,169,236,0.5);} .shift-desc-F{color:rgba(255,255,255,0.15);} .shift-desc-X{color:rgba(255,209,102,0.5);}
+.shift-desc-5{color:rgba(255,230,0,0.5);} .shift-desc-13{color:rgba(0,191,255,0.5);} .shift-desc-21{color:rgba(0,255,180,0.5);} .shift-desc-F{color:rgba(255,255,255,0.15);} .shift-desc-X{color:rgba(255,209,102,0.5);}
 .tomorrow-row{margin-top:10px;padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;}
 .tomorrow-lbl{font-size:11px;color:rgba(255,255,255,0.25);}
 .tomorrow-badge{font-size:12px;padding:4px 12px;border-radius:10px;}
-.tb-5{background:rgba(55,138,221,0.1);color:#85B7EB;}
-.tb-13{background:rgba(29,158,117,0.1);color:#5DCAA5;}
-.tb-21{background:rgba(127,119,221,0.1);color:#AFA9EC;}
+.tb-5{background:rgba(255,230,0,0.08);color:#FFE600;}
+.tb-13{background:rgba(0,191,255,0.08);color:#00BFFF;}
+.tb-21{background:rgba(0,255,180,0.08);color:#00FFB4;}
 .tb-F{background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.2);}
 .tb-X{background:rgba(217,160,48,0.1);color:#FFD166;}
 
@@ -95,12 +95,12 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .day-cell{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:48px;border-radius:10px;position:relative;overflow:hidden;padding-bottom:5px;}
 .day-num{font-size:13px;font-weight:400;}
 .day-lbl{font-size:8px;font-weight:500;margin-top:1px;letter-spacing:.02em;}
-.dc-m{background:rgba(55,138,221,0.12);border:0.5px solid rgba(55,138,221,0.2);}
-.dc-m .day-num{color:#85B7EB;} .dc-m .day-lbl{color:rgba(133,183,235,0.55);}
-.dc-t{background:rgba(29,158,117,0.12);border:0.5px solid rgba(29,158,117,0.2);}
-.dc-t .day-num{color:#5DCAA5;} .dc-t .day-lbl{color:rgba(93,202,165,0.55);}
-.dc-n{background:rgba(127,119,221,0.12);border:0.5px solid rgba(127,119,221,0.2);}
-.dc-n .day-num{color:#AFA9EC;} .dc-n .day-lbl{color:rgba(175,169,236,0.55);}
+.dc-m{background:rgba(255,230,0,0.12);border:0.5px solid rgba(255,230,0,0.3);}
+.dc-m .day-num{color:#FFE600;} .dc-m .day-lbl{color:rgba(255,230,0,0.6);}
+.dc-t{background:rgba(0,191,255,0.12);border:0.5px solid rgba(0,191,255,0.3);}
+.dc-t .day-num{color:#00BFFF;} .dc-t .day-lbl{color:rgba(0,191,255,0.6);}
+.dc-n{background:rgba(0,255,180,0.12);border:0.5px solid rgba(0,255,180,0.3);}
+.dc-n .day-num{color:#00FFB4;} .dc-n .day-lbl{color:rgba(0,255,180,0.6);}
 .dc-f{background:rgba(100,180,40,0.12);border:0.5px solid rgba(100,180,40,0.25);}
 .dc-f .day-num{color:#A8D870;} .dc-f .day-lbl{color:rgba(168,216,112,0.6);}
 .dc-x{background:rgba(217,160,48,0.15);border:0.5px solid rgba(217,160,48,0.3);}
@@ -198,9 +198,9 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 </div>
 
 <div class="legend">
-  <div class="leg"><div class="leg-dot" style="background:#378ADD"></div><span style="color:rgba(133,183,235,0.7)">Manha</span></div>
-  <div class="leg"><div class="leg-dot" style="background:#1D9E75"></div><span style="color:rgba(93,202,165,0.7)">Tarde</span></div>
-  <div class="leg"><div class="leg-dot" style="background:#7F77DD"></div><span style="color:rgba(175,169,236,0.7)">Noite</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#FFE600"></div><span style="color:rgba(255,230,0,0.8)">Manha</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#00BFFF"></div><span style="color:rgba(0,191,255,0.8)">Tarde</span></div>
+  <div class="leg"><div class="leg-dot" style="background:#00FFB4"></div><span style="color:rgba(0,255,180,0.8)">Noite</span></div>
   <div class="leg"><div class="leg-dot" style="background:#EF9F27"></div><span style="color:rgba(239,159,39,0.7)">Feriado</span></div>
   <div class="leg"><div class="leg-dot" style="background:#A8D870"></div><span style="color:rgba(168,216,112,0.7)">Folga</span></div>
   <div class="leg"><div class="leg-dot" style="background:#E24B4A;border-radius:0"></div><span style="color:rgba(226,75,74,0.7)">Hoje</span></div>
@@ -242,7 +242,7 @@ let curMonth = todayM;
 const SHIFT_CLS = {'5':'dc-m','13':'dc-t','21':'dc-n','F':'dc-f','X':'dc-x'};
 const SHIFT_NUM_LBL = {'5':'05h','13':'13h','21':'21h','F':'Folga','X':'Ferias'};
 const SHIFT_DESC = {'5':'Manha 05-13','13':'Tarde 13-21','21':'Noite 21-05','F':'Dia de folga','X':'Ferias + Feriado'};
-const STAT_COLORS = {'5':'#378ADD','13':'#1D9E75','21':'#7F77DD'};
+const STAT_COLORS = {'5':'#FFE600','13':'#00BFFF','21':'#00FFB4'};
 
 function getTeamCls(team) {
   const map = {A:'m',B:'t',C:'c',D:'n',E:'x'};
