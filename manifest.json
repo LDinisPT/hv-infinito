@@ -1,14 +1,15 @@
 {
-  "name": "Verallia Turnos 2026",
+  "name": "Verallia Turnos",
   "short_name": "Turnos",
-  "description": "Escala de turnos Verallia Fontela 2026",
-  "start_url": "/",
+  "description": "Escala de turnos Verallia Fontela, Figueira da Foz",
+  "start_url": "/hv-infinito/",
+  "scope": "/hv-infinito/",
   "display": "standalone",
-  "background_color": "#0f0f1a",
-  "theme_color": "#1a1a2e",
+  "background_color": "#060610",
+  "theme_color": "#060610",
   "orientation": "portrait",
   "icons": [
-    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png"},
-    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png"}
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}
   ]
 }
