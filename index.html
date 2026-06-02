@@ -9,10 +9,11 @@
 <meta name="apple-mobile-web-app-title" content="Verallia Turnos">
 <link rel="manifest" href="manifest.json">
 <title>Verallia Turnos</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@900&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
-body{background:#060610;color:#e8e8f0;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display',sans-serif;min-height:100vh;overscroll-behavior:none;overflow-x:hidden;}
+body{background:#060610;color:#e8e8f0;font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;min-height:100vh;overscroll-behavior:none;overflow-x:hidden;}
 
 /* Aurora background */
 body::before{content:'';position:fixed;top:-100px;left:-80px;width:300px;height:250px;background:radial-gradient(ellipse,rgba(55,138,221,0.08),transparent 70%);pointer-events:none;z-index:0;}
@@ -26,7 +27,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .logo-wrap{display:flex;align-items:center;gap:10px;}
 .logo-img{height:24px;object-fit:contain;}
 .logo-fallback{background:#006B3F;padding:3px 9px;border-radius:5px;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:900;color:#fff;letter-spacing:.08em;}
-.year-nav{display:flex;align-items:center;gap:6px;}
+.year-nav{display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:3px 8px;}
 .year-lbl{font-size:13px;font-weight:500;color:rgba(255,255,255,0.4);min-width:36px;text-align:center;}
 .nav-btn{background:transparent;border:none;color:rgba(255,255,255,0.3);font-size:20px;padding:2px 6px;cursor:pointer;line-height:1;}
 .nav-btn:active{color:#fff;}
@@ -40,7 +41,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .team-tab.active-E{border-color:rgba(186,117,23,0.5);background:rgba(186,117,23,0.12);color:#EF9F27;}
 
 /* TODAY CARD */
-.today-card{margin:12px 12px 0;padding:16px;border-radius:16px;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);min-height:120px;}
+.today-card{margin:12px 12px 0;padding:16px;border-radius:18px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.09);}
 .today-lbl{font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
 .today-main{display:flex;align-items:center;justify-content:space-between;}
 .today-date{font-size:14px;color:rgba(255,255,255,0.7);}
@@ -66,13 +67,13 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 
 /* STATS */
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:10px 12px 0;}
-.stat{background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.06);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.stat{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
 .stat-bar{width:3px;height:32px;border-radius:2px;flex-shrink:0;}
 .stat-num{font-size:22px;font-weight:200;color:#fff;line-height:1;}
 .stat-lbl{font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;letter-spacing:.03em;}
 
 /* FERIADOS */
-.fer-list{margin:10px 12px 0;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.06);display:block;}
+.fer-list{margin:10px 12px 0;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);display:block;}
 .fer-list-title{font-size:10px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
 .fer-item{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:0.5px solid rgba(255,255,255,0.04);font-size:12px;}
 .fer-item:last-child{border-bottom:none;}
@@ -87,13 +88,13 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 
 /* CALENDAR */
 .cal-header{display:flex;align-items:center;padding:10px 12px 6px;}
-.month-title{flex:1;text-align:center;font-size:15px;font-weight:500;color:rgba(255,255,255,0.8);}
+.month-title{flex:1;text-align:center;font-size:15px;font-weight:600;color:rgba(255,255,255,0.8);letter-spacing:-.01em;}
 .cal-wrap{padding:0 8px 0;}
 .cal{width:100%;border-collapse:separate;border-spacing:3px;}
 .cal th{font-size:9px;color:rgba(255,255,255,0.2);padding:3px 0;text-align:center;font-weight:400;letter-spacing:.06em;text-transform:uppercase;}
 .cal td{padding:0;}
-.day-cell{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:48px;border-radius:10px;position:relative;overflow:hidden;padding-bottom:5px;}
-.day-num{font-size:13px;font-weight:400;}
+.day-cell{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;min-height:52px;border-radius:12px;position:relative;overflow:hidden;padding-bottom:6px;}
+.day-num{font-size:14px;font-weight:400;}
 .day-lbl{font-size:8px;font-weight:500;margin-top:1px;letter-spacing:.02em;}
 .dc-m{background:rgba(255,230,0,0.12);border:0.5px solid rgba(255,230,0,0.3);}
 .dc-m .day-num{color:#FFE600;} .dc-m .day-lbl{color:rgba(255,230,0,0.6);}
@@ -361,7 +362,7 @@ function renderMedico() {
       <div class="medico-day">${s.name}</div>
       <div class="medico-person">
         <div class="medico-role">Enfermeira</div>
-        <div class="medico-name">Sra. Enfermeira</div>
+        <div class="medico-name">Enfermeira</div>
         <div class="medico-hours">${s.enf}</div>
       </div>
       ${medHTML}
@@ -538,7 +539,7 @@ function renderStats() {
   grid.innerHTML = stats.map(s=>`
     <div class="stat">
       <div class="stat-bar" style="background:${s.color}"></div>
-      <div><div class="stat-num">${s.num}</div><div class="stat-lbl">${s.lbl}</div></div>
+      <div><div class="stat-num" style="color:${s.color}">${s.num}</div><div class="stat-lbl">${s.lbl}</div></div>
     </div>`).join('');
 }
 
