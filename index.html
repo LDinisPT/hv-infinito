@@ -158,6 +158,22 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .w-icon{font-size:22px;line-height:1;}
 .w-temp{font-size:20px;font-weight:200;color:rgba(255,255,255,0.7);}
 .w-city{font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;}
+
+.medico-card{margin:8px 12px 0;background:rgba(255,255,255,0.04);border:0.5px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px 16px;}
+.medico-title{font-size:10px;color:rgba(255,255,255,0.3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;display:flex;align-items:center;gap:6px;}
+.medico-title span{font-size:14px;}
+.medico-row{display:grid;grid-template-columns:70px 1fr 1fr;gap:8px;margin-bottom:4px;padding:8px;border-radius:10px;}
+.medico-day{font-size:12px;font-weight:500;color:rgba(255,255,255,0.4);padding-top:2px;}
+.medico-person{display:flex;flex-direction:column;gap:2px;}
+.medico-name{font-size:11px;color:rgba(255,255,255,0.6);}
+.medico-hours{font-size:10px;color:rgba(0,191,255,0.6);}
+.medico-role{font-size:9px;color:rgba(255,255,255,0.25);text-transform:uppercase;letter-spacing:.05em;}
+.medico-none{font-size:11px;color:rgba(255,255,255,0.15);padding-top:14px;}
+.medico-today{background:rgba(255,230,0,0.06);border:1px solid rgba(255,230,0,0.3);}
+.medico-today .medico-day{color:#FFE600;font-weight:600;}
+.medico-today .medico-name{color:rgba(255,255,255,0.9);}
+.medico-today .medico-hours{color:rgba(0,191,255,0.9);}
+.medico-today .medico-role{color:rgba(255,255,255,0.4);}
 </style>
 </head>
 <body>
@@ -220,6 +236,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 </div>
 </div>
 
+<div class="medico-card" id="medico-card"></div>
 <div class="stats" id="stats-grid"></div>
 
 <div class="install-bar" id="install-bar">
@@ -313,6 +330,47 @@ async function fetchWeather() {
   } catch(e) {
     console.log('Weather unavailable');
   }
+}
+
+function renderMedico() {
+  const card = document.getElementById('medico-card');
+  if(!card) return;
+  
+  // 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri
+  const todayDow = today.getDay(); // 0=Sun, 1=Mon, 2=Tue, 3=Wed, 4=Thu, 5=Fri, 6=Sat
+  
+  const schedule = [
+    { dow:1, name:'2ª feira', enf:'9:00 – 14:00', med:'Dra. Isabel Pedro', medH:'9:00 – 13:00' },
+    { dow:2, name:'3ª feira', enf:'9:00 – 14:00', med:'Dr. Isaac Ramos',   medH:'9:00 – 13:00' },
+    { dow:3, name:'4ª feira', enf:'9:00 – 14:00', med:'Dra. Isabel Pedro', medH:'14:00 – 18:00', medRole:'Médico tarde' },
+    { dow:4, name:'5ª feira', enf:'9:00 – 14:00', med:null },
+    { dow:5, name:'6ª feira', enf:'9:00 – 14:00', med:'Dr. Isaac Ramos',   medH:'9:00 – 13:00' },
+  ];
+  
+  const rows = schedule.map(s => {
+    const isToday = s.dow === todayDow;
+    const medHTML = s.med
+      ? `<div class="medico-person">
+          <div class="medico-role">${s.medRole||'Médico'}</div>
+          <div class="medico-name">${s.med}</div>
+          <div class="medico-hours">${s.medH}</div>
+        </div>`
+      : `<div class="medico-none">Sem médico</div>`;
+    
+    return `<div class="medico-row${isToday?' medico-today':''}">
+      <div class="medico-day">${s.name}</div>
+      <div class="medico-person">
+        <div class="medico-role">Enfermeira</div>
+        <div class="medico-name">Sra. Enfermeira</div>
+        <div class="medico-hours">${s.enf}</div>
+      </div>
+      ${medHTML}
+    </div>`;
+  }).join('');
+  
+  card.innerHTML = `
+    <div class="medico-title"><span>🏥</span> Posto Médico</div>
+    ${rows}`;
 }
 function getGreeting() {
   const h = new Date().getHours();
@@ -554,6 +612,7 @@ function setTeam(t){
   renderTodayCard();
   renderCalendar();
   renderFeriados();
+  renderMedico();
   renderStats();
   renderQuinzena();
 }
@@ -592,6 +651,7 @@ document.getElementById('install-btn').onclick = async()=>{
 setTeam(curTeam);
 setInterval(renderClock, 1000);
 renderQuinzena();
+renderMedico();
 fetchWeather();
 setInterval(fetchWeather, 1800000);
 </script>
