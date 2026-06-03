@@ -7,7 +7,7 @@ const CYCLE_REF = new Date(2026, 0, 1);
 const TEAM_OFFSETS = {"A": 0, "B": 126, "C": 42, "D": 168, "E": 84};
 
 const X_DAYS = {
-  "2026": { "A":"8-12", "B":"15-8", "C":"10-6", "D":"24-6", "E":"17-2" }
+  "2026": { "A":"8-12", "C":"10-6", "D":"24-6", "E":"17-2" }
 };
 
 function isLeap(year) {
@@ -19,11 +19,6 @@ function getMonthDays(year) {
 }
 
 function getShift(team, year, month, day) {
-  // Check X days first
-  const xYear = X_DAYS[String(year)];
-  if(xYear && xYear[team]) {
-    if((day + '-' + (month+1)) === xYear[team]) return 'X';
-  }
   // Calculate from cycle
   const offset = TEAM_OFFSETS[team];
   if(offset === undefined) return 'F';
