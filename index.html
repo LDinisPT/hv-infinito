@@ -743,14 +743,11 @@ document.getElementById('prev-mo').onclick = ()=>{if(curMonth===0){curMonth=11;c
 document.getElementById('next-mo').onclick = ()=>{if(curMonth===11){curMonth=0;curYear++;}else curMonth++;document.getElementById('year-lbl').textContent=curYear;renderCalendar();renderFeriados();};
 
 const MONTH_NAMES_PT = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
-const FERIADOS_2026_LOCAL = {"1-1":"Ano Novo","18-1":"Dia do Vidreiro","17-2":"Carnaval","3-4":"Sexta-feira Santa","5-4":"Pascoa","25-4":"Dia da Liberdade","1-5":"Dia do Trabalhador","4-6":"Corpo de Deus","10-6":"Dia de Portugal","24-6":"Sao Joao","15-8":"Assuncao N.Sra.","5-10":"Implantacao Republica","1-11":"Todos os Santos","1-12":"Restauracao Independencia","8-12":"Imaculada Conceicao","25-12":"Natal"};
-const FERIADOS_2027_LOCAL = {"1-1":"Ano Novo","18-1":"Dia do Vidreiro","9-2":"Carnaval","26-3":"Sexta-feira Santa","28-3":"Pascoa","25-4":"Dia da Liberdade","1-5":"Dia do Trabalhador","27-5":"Corpo de Deus","10-6":"Dia de Portugal","24-6":"Sao Joao","15-8":"Assuncao N.Sra.","5-10":"Implantacao Republica","1-11":"Todos os Santos","1-12":"Restauracao Independencia","8-12":"Imaculada Conceicao","25-12":"Natal"};
+
+
 
 function getFeriadoLocal(day, month) {
-  const key = `${day}-${month+1}`;
-  if(curYear===2026) return FERIADOS_2026_LOCAL[key]||'';
-  if(curYear===2027) return FERIADOS_2027_LOCAL[key]||'';
-  return '';
+  return getFeriado(curYear, month, day);
 }
 
 document.getElementById('year-lbl').textContent = curYear;
