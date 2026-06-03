@@ -175,6 +175,24 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .medico-today .medico-name{color:rgba(255,255,255,0.9);}
 .medico-today .medico-hours{color:rgba(0,191,255,0.9);}
 .medico-today .medico-role{color:rgba(255,255,255,0.4);}
+
+.ciclo-card{margin:8px 12px 0;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px 16px;}
+.ciclo-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.ciclo-title{font-size:14px;font-weight:600;}
+.ciclo-sub{font-size:10px;color:rgba(255,255,255,0.3);margin-top:2px;}
+.ciclo-right{text-align:right;}
+.ciclo-num{font-size:28px;font-weight:300;line-height:1;}
+.ciclo-sub2{font-size:9px;color:rgba(255,255,255,0.3);letter-spacing:.06em;margin-top:1px;}
+.ciclo-dots{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.ciclo-dot{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;border:1.5px solid;position:relative;}
+.ciclo-dot-done{background:rgba(255,255,255,0.03);border-color:rgba(255,255,255,0.08);}
+.ciclo-dot-done::after{content:'✕';font-size:14px;color:rgba(255,255,255,0.2);}
+.ciclo-dot-today{border-width:2px;}
+.ciclo-dot-future{background:rgba(255,255,255,0.02);border-color:rgba(255,255,255,0.06);}
+.ciclo-dot-future span{color:rgba(255,255,255,0.2);font-size:12px;}
+.ciclo-next{padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;}
+.ciclo-next-lbl{font-size:10px;color:rgba(255,255,255,0.25);}
+.ciclo-next-val{font-size:11px;font-weight:500;}
 </style>
 </head>
 <body>
@@ -205,6 +223,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 </div>
 
 <div class="today-card" id="today-card"></div>
+<div class="ciclo-card" id="ciclo-card"></div>
 <div class="quinzena-card" id="quinzena-card"></div>
 
 
@@ -372,6 +391,101 @@ function renderMedico() {
   card.innerHTML = `
     <div class="medico-title"><span>🏥</span> Posto Médico</div>
     ${rows}`;
+}
+
+function renderCiclo() {
+  const card = document.getElementById('ciclo-card');
+  if(!card) return;
+
+  const yearData = (SCHEDULES[curYear]||{})[curTeam]||[];
+  const monthDays = [31,28,31,30,31,30,31,31,30,31,30,31];
+
+  // Find current block (consecutive same-type days containing today)
+  // First flatten all days
+  const allDays = [];
+  for(let m=0; m<12; m++) {
+    for(let d=1; d<=monthDays[m]; d++) {
+      const row = (yearData[m]||[]).find(r=>r[0]===d);
+      const shift = row ? row[2] : 'F';
+      allDays.push({m, d, shift, date: new Date(curYear, m, d)});
+    }
+  }
+
+  // Find today index
+  const todayIdx = allDays.findIndex(x => x.m===todayM && x.d===todayD);
+  if(todayIdx < 0) { card.innerHTML = ''; return; }
+
+  const todayShift = allDays[todayIdx].shift;
+
+  // Group shift type: F and X both = 'folga'
+  const grp = s => (s==='F'||s==='X') ? 'F' : s;
+  const todayGrp = grp(todayShift);
+
+  // Find block start
+  let start = todayIdx;
+  while(start > 0 && grp(allDays[start-1].shift) === todayGrp) start--;
+
+  // Find block end
+  let end = todayIdx;
+  while(end < allDays.length-1 && grp(allDays[end+1].shift) === todayGrp) end++;
+
+  const total = end - start + 1;
+  const done = todayIdx - start; // days passed (not including today)
+  const remain = end - todayIdx; // days remaining (not including today)
+
+  // Find next block
+  let nextShift = null;
+  let nextCount = 0;
+  if(end+1 < allDays.length) {
+    const nGrp = grp(allDays[end+1].shift);
+    let ni = end+1;
+    while(ni < allDays.length && grp(allDays[ni].shift) === nGrp) { nextCount++; ni++; }
+    nextShift = allDays[end+1].shift;
+  }
+
+  const SHIFT_INFO = {
+    '5':  { emoji:'☀️', label:'Manhã 05h-13h',  color:'#FFE600', bg:'rgba(255,230,0,0.15)' },
+    '13': { emoji:'🌊', label:'Tarde 13h-21h',  color:'#00BFFF', bg:'rgba(0,191,255,0.15)' },
+    '21': { emoji:'🌙', label:'Noite 21h-05h',  color:'#00FFB4', bg:'rgba(0,255,180,0.15)' },
+    'F':  { emoji:'🌿', label:'Folga',           color:'#A8D870', bg:'rgba(168,216,112,0.15)' },
+  };
+  const NEXT_COLORS = {'5':'#FFE600','13':'#00BFFF','21':'#00FFB4','F':'rgba(168,216,112,0.7)','X':'rgba(168,216,112,0.7)'};
+
+  const info = SHIFT_INFO[todayGrp==='F'?'F':todayShift] || SHIFT_INFO['F'];
+  const nextInfo = nextShift ? SHIFT_INFO[grp(nextShift)==='F'?'F':nextShift] : null;
+
+  // Build dots
+  let dotsHTML = '';
+  for(let i=0; i<total; i++) {
+    if(i < done) {
+      dotsHTML += `<div class="ciclo-dot ciclo-dot-done"></div>`;
+    } else if(i === done) {
+      dotsHTML += `<div class="ciclo-dot ciclo-dot-today" style="background:${info.bg};border-color:${info.color};"><span style="color:${info.color}">${i+1}</span></div>`;
+    } else {
+      dotsHTML += `<div class="ciclo-dot ciclo-dot-future"><span>${i+1}</span></div>`;
+    }
+  }
+
+  const nextHTML = nextInfo
+    ? `<div class="ciclo-next-val" style="color:${nextInfo.color}">${nextInfo.emoji} ${nextInfo.label.split(' ')[0]} · ${nextCount} dias</div>`
+    : `<div class="ciclo-next-val" style="color:rgba(255,255,255,0.3)">—</div>`;
+
+  card.innerHTML = `
+    <div class="ciclo-header">
+      <div>
+        <div class="ciclo-title" style="color:${info.color}">${info.emoji} ${info.label}</div>
+        <div class="ciclo-sub">Bloco atual · ${total} dias</div>
+      </div>
+      <div class="ciclo-right">
+        <div class="ciclo-num" style="color:${info.color}">${remain}</div>
+        <div class="ciclo-sub2">RESTAM</div>
+      </div>
+    </div>
+    <div class="ciclo-dots">${dotsHTML}</div>
+    <div class="ciclo-next">
+      <div class="ciclo-next-lbl">A seguir</div>
+      ${nextHTML}
+    </div>`;
 }
 function getGreeting() {
   const h = new Date().getHours();
@@ -611,6 +725,7 @@ function setTeam(t){
     b.className = 'team-tab' + (b.dataset.team===t?' active-'+t:'');
   });
   renderTodayCard();
+  renderCiclo();
   renderCalendar();
   renderFeriados();
   renderMedico();
@@ -652,6 +767,7 @@ document.getElementById('install-btn').onclick = async()=>{
 setTeam(curTeam);
 setInterval(renderClock, 1000);
 renderQuinzena();
+renderCiclo();
 renderMedico();
 fetchWeather();
 setInterval(fetchWeather, 1800000);
