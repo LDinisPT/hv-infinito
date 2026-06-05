@@ -34,3 +34,58 @@ self.addEventListener('fetch', e => {
       .catch(() => caches.match(e.request))
   );
 });
+
+
+// ===== ALARM HANDLING =====
+let scheduledAlarms = [];
+let alarmTimers = [];
+
+function clearAlarmTimers(){
+  alarmTimers.forEach(t => clearTimeout(t));
+  alarmTimers = [];
+}
+
+function scheduleAlarmTimers(alarms, label){
+  clearAlarmTimers();
+  const now = Date.now();
+  alarms.forEach(ts => {
+    const delay = ts - now;
+    if(delay > 0 && delay < 7 * 24 * 3600 * 1000){
+      const timer = setTimeout(() => {
+        self.registration.showNotification('Verallia Portugal', {
+          body: label || 'Turno Manhã 05h — Bom turno! 🌅',
+          icon: '/verallia_logo.avif',
+          badge: '/verallia_logo.avif',
+          tag: 'verallia-alarm-' + ts,
+          renotify: true,
+          requireInteraction: false,
+          vibrate: [200, 100, 200],
+        });
+      }, delay);
+      alarmTimers.push(timer);
+    }
+  });
+}
+
+self.addEventListener('message', event => {
+  if(event.data && event.data.type === 'SCHEDULE_ALARMS'){
+    scheduledAlarms = event.data.alarms || [];
+    scheduleAlarmTimers(scheduledAlarms, event.data.label);
+  }
+  if(event.data && event.data.type === 'CANCEL_ALARMS'){
+    clearAlarmTimers();
+    scheduledAlarms = [];
+  }
+  if(event.data === 'reload'){
+    self.clients.matchAll().then(clients => {
+      clients.forEach(c => c.navigate(c.url));
+    });
+  }
+});
+
+self.addEventListener('notificationclick', event => {
+  event.notification.close();
+  event.waitUntil(
+    clients.openWindow('/')
+  );
+});
