@@ -206,9 +206,20 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .w-pills{display:flex;gap:6px;justify-content:flex-end;margin-top:3px;}
 .w-pill{font-size:10px;color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.05);padding:2px 7px;border-radius:10px;}
 .w-city{font-size:10px;color:rgba(255,255,255,0.25);margin-top:3px;text-align:right;}
+
+/* === DESKTOP: smartphone centrado === */
+.app-wrapper{
+  width:100%;
+  max-width:430px;
+  margin:0 auto;
+  background:#060610;
+  min-height:100vh;
+}
+body{background:#02020a;}
 </style>
 </head>
 <body>
+<div class="app-wrapper">
 <div class="app">
 <div class="topbar">
   <div class="topbar-row1">
@@ -821,5 +832,6 @@ if('serviceWorker' in navigator) {
   });
 }
 </script>
+</div>
 </body>
 </html>
