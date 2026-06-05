@@ -207,113 +207,19 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 .w-pill{font-size:10px;color:rgba(255,255,255,0.35);background:rgba(255,255,255,0.05);padding:2px 7px;border-radius:10px;}
 .w-city{font-size:10px;color:rgba(255,255,255,0.25);margin-top:3px;text-align:right;}
 
-/* ===== SETTINGS PAGE ===== */
-.settings-btn{
-  background:none;border:none;cursor:pointer;padding:6px;
-  color:rgba(255,255,255,0.5);font-size:20px;line-height:1;
-  transition:color .2s;
+/* === DESKTOP: smartphone centrado === */
+.app-wrapper{
+  width:100%;
+  max-width:430px;
+  margin:0 auto;
+  background:#060610;
+  min-height:100vh;
 }
-.settings-btn:hover{color:rgba(255,255,255,0.9);}
-
-.settings-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.6);
-  z-index:100;opacity:0;pointer-events:none;transition:opacity .3s;
-}
-.settings-overlay.open{opacity:1;pointer-events:all;}
-
-.settings-panel{
-  position:fixed;top:0;right:-100%;width:min(360px,100%);height:100%;
-  background:#0d0d1e;border-left:1px solid rgba(255,255,255,0.08);
-  z-index:101;transition:right .3s cubic-bezier(.4,0,.2,1);
-  display:flex;flex-direction:column;overflow-y:auto;
-}
-.settings-panel.open{right:0;}
-
-.settings-header{
-  display:flex;align-items:center;gap:12px;
-  padding:16px 16px 12px;border-bottom:1px solid rgba(255,255,255,0.07);
-  position:sticky;top:0;background:#0d0d1e;z-index:1;
-}
-.settings-back{
-  background:none;border:none;cursor:pointer;
-  color:rgba(255,255,255,0.6);font-size:22px;padding:4px;
-}
-.settings-title{font-size:16px;font-weight:600;color:#e8e8f0;}
-
-.settings-section{padding:16px;}
-.settings-section-title{
-  font-size:10px;color:rgba(255,255,255,0.3);
-  text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;
-}
-
-/* Team selector in settings */
-.settings-team-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px;}
-.settings-team-btn{
-  padding:10px 4px;border-radius:12px;border:1px solid rgba(255,255,255,0.1);
-  background:transparent;color:rgba(255,255,255,0.4);font-size:13px;
-  font-weight:600;cursor:pointer;font-family:inherit;transition:all .2s;
-}
-.settings-team-btn.active-A{background:rgba(255,230,0,0.15);border-color:rgba(255,230,0,0.4);color:#FFE600;}
-.settings-team-btn.active-B{background:rgba(0,191,255,0.15);border-color:rgba(0,191,255,0.4);color:#00BFFF;}
-.settings-team-btn.active-C{background:rgba(0,255,180,0.12);border-color:rgba(0,255,180,0.3);color:#00FFB4;}
-.settings-team-btn.active-D{background:rgba(168,85,247,0.15);border-color:rgba(168,85,247,0.4);color:#a855f7;}
-.settings-team-btn.active-E{background:rgba(251,146,60,0.15);border-color:rgba(251,146,60,0.4);color:#fb923c;}
-
-.settings-divider{height:1px;background:rgba(255,255,255,0.06);margin:0 16px;}
-
-/* Alarm toggle row */
-.settings-row{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:14px 16px;
-}
-.settings-row-label{font-size:14px;color:#e8e8f0;}
-.settings-row-sub{font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;}
-
-/* Toggle switch */
-.toggle{position:relative;display:inline-block;width:44px;height:24px;flex-shrink:0;}
-.toggle input{opacity:0;width:0;height:0;}
-.toggle-slider{
-  position:absolute;inset:0;background:rgba(255,255,255,0.1);
-  border-radius:24px;transition:.3s;cursor:pointer;
-}
-.toggle-slider:before{
-  content:'';position:absolute;width:18px;height:18px;
-  left:3px;top:3px;background:rgba(255,255,255,0.4);
-  border-radius:50%;transition:.3s;
-}
-.toggle input:checked+.toggle-slider{background:rgba(74,171,106,0.6);}
-.toggle input:checked+.toggle-slider:before{
-  transform:translateX(20px);background:#4aab6a;
-}
-
-/* Time picker */
-.alarm-time-row{
-  padding:0 16px 16px;display:flex;align-items:center;gap:10px;
-}
-.alarm-time-row.hidden{display:none;}
-.alarm-time-label{font-size:13px;color:rgba(255,255,255,0.5);}
-.alarm-time-input{
-  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);
-  border-radius:10px;color:#e8e8f0;font-size:18px;font-weight:300;
-  padding:8px 14px;font-family:inherit;cursor:pointer;
-  color-scheme:dark;
-}
-.alarm-time-input:focus{outline:none;border-color:rgba(74,171,106,0.5);}
-
-.alarm-status{
-  margin:0 16px 16px;padding:10px 14px;border-radius:12px;
-  background:rgba(74,171,106,0.08);border:1px solid rgba(74,171,106,0.2);
-  font-size:12px;color:rgba(74,171,106,0.8);display:none;
-}
-.alarm-status.visible{display:block;}
-
-.settings-footer{
-  padding:16px;margin-top:auto;
-  font-size:10px;color:rgba(255,255,255,0.2);text-align:center;
-}
+body{background:#02020a;}
 </style>
 </head>
 <body>
+<div class="app-wrapper">
 <div class="app">
 <div class="topbar">
   <div class="topbar-row1">
@@ -323,7 +229,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
       <div>
         <div class="logo-name">VERALLIA PORTUGAL</div>
         <div class="logo-sub">Fontela, Figueira da Foz</div>
-        <div class="logo-credit">Feito por: Luís Dinis</div>
+        <div class="logo-credit">Desenvolvido por: Luís Dinis</div>
       </div>
     </div>
     <div class="year-nav">
@@ -383,157 +289,7 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
   <button class="install-btn" id="install-btn">Instalar</button>
 </div>
 
-<script src="schedule-data.js?v=9">
-// ===== SETTINGS =====
-const settingsBtn   = document.getElementById('settings-btn');
-const settingsBack  = document.getElementById('settings-back');
-const settingsPanel = document.getElementById('settings-panel');
-const overlay       = document.getElementById('settings-overlay');
-const alarmToggle   = document.getElementById('alarm-toggle');
-const alarmTimeRow  = document.getElementById('alarm-time-row');
-const alarmTimeInp  = document.getElementById('alarm-time');
-const alarmStatus   = document.getElementById('alarm-status');
-
-function openSettings(){
-  settingsPanel.classList.add('open');
-  overlay.classList.add('open');
-  syncSettingsUI();
-}
-function closeSettings(){
-  settingsPanel.classList.remove('open');
-  overlay.classList.remove('open');
-}
-
-settingsBtn.addEventListener('click', openSettings);
-settingsBack.addEventListener('click', closeSettings);
-overlay.addEventListener('click', closeSettings);
-
-// Team buttons in settings
-document.querySelectorAll('.settings-team-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const t = btn.dataset.team;
-    setTeam(t);
-    syncSettingsUI();
-  });
-});
-
-function syncSettingsUI(){
-  document.querySelectorAll('.settings-team-btn').forEach(btn => {
-    btn.className = 'settings-team-btn' + (btn.dataset.team===curTeam?' active-'+curTeam:'');
-  });
-  const alarmOn = localStorage.getItem('alarm-on') === '1';
-  alarmToggle.checked = alarmOn;
-  alarmTimeRow.classList.toggle('hidden', !alarmOn);
-  alarmTimeInp.value = localStorage.getItem('alarm-time') || '04:30';
-  updateAlarmStatus();
-}
-
-// Alarm toggle
-alarmToggle.addEventListener('change', async () => {
-  if(alarmToggle.checked){
-    // Request notification permission
-    const perm = await Notification.requestPermission();
-    if(perm !== 'granted'){
-      alarmToggle.checked = false;
-      alarmStatus.textContent = '❌ Permissão negada. Ativa as notificações nas definições do browser.';
-      alarmStatus.classList.add('visible');
-      return;
-    }
-    localStorage.setItem('alarm-on','1');
-    alarmTimeRow.classList.remove('hidden');
-    scheduleAlarms();
-  } else {
-    localStorage.setItem('alarm-on','0');
-    alarmTimeRow.classList.add('hidden');
-    cancelAlarms();
-  }
-  updateAlarmStatus();
-});
-
-alarmTimeInp.addEventListener('change', () => {
-  localStorage.setItem('alarm-time', alarmTimeInp.value);
-  if(alarmToggle.checked) scheduleAlarms();
-  updateAlarmStatus();
-});
-
-function updateAlarmStatus(){
-  const on = localStorage.getItem('alarm-on') === '1';
-  const time = localStorage.getItem('alarm-time') || '04:30';
-  if(on){
-    alarmStatus.textContent = `✅ Alarme ativo às ${time} nos dias de Manhã`;
-    alarmStatus.classList.add('visible');
-  } else {
-    alarmStatus.classList.remove('visible');
-  }
-}
-
-// ===== ALARM SCHEDULING =====
-function getTodayShift(team){
-  const d = new Date();
-  const ref = new Date(CYCLE_REF);
-  const diffDays = Math.floor((d - ref) / 86400000);
-  const pos = ((diffDays % CYCLE_LEN) + CYCLE_LEN) % CYCLE_LEN;
-  const off = TEAM_OFFSETS[team];
-  return CYCLE[(pos + off) % CYCLE_LEN];
-}
-
-function isManha(date, team){
-  const ref = new Date(CYCLE_REF);
-  const diffDays = Math.floor((date - ref) / 86400000);
-  const pos = ((diffDays % CYCLE_LEN) + CYCLE_LEN) % CYCLE_LEN;
-  const off = TEAM_OFFSETS[team];
-  return CYCLE[(pos + off) % CYCLE_LEN] === '5';
-}
-
-function scheduleAlarms(){
-  if(!('serviceWorker' in navigator)) return;
-  const time = (localStorage.getItem('alarm-time') || '04:30').split(':');
-  const h = parseInt(time[0]);
-  const m = parseInt(time[1]);
-  const team = curTeam;
-  
-  // Schedule for next 7 days
-  const alarms = [];
-  for(let i=0; i<7; i++){
-    const d = new Date();
-    d.setDate(d.getDate() + i);
-    d.setHours(h, m, 0, 0);
-    if(d > new Date() && isManha(d, team)){
-      alarms.push(d.getTime());
-    }
-  }
-  
-  localStorage.setItem('alarm-schedule', JSON.stringify(alarms));
-  localStorage.setItem('alarm-team', team);
-  
-  // Register with SW
-  navigator.serviceWorker.ready.then(reg => {
-    reg.active && reg.active.postMessage({
-      type: 'SCHEDULE_ALARMS',
-      alarms: alarms,
-      team: team,
-      label: 'Turno Manhã 05h — Verallia'
-    });
-  });
-  
-  console.log('Alarmes agendados:', alarms.map(t => new Date(t).toLocaleString('pt-PT')));
-}
-
-function cancelAlarms(){
-  localStorage.removeItem('alarm-schedule');
-  navigator.serviceWorker.ready.then(reg => {
-    reg.active && reg.active.postMessage({ type: 'CANCEL_ALARMS' });
-  });
-}
-
-// Re-schedule alarms on page load if active
-window.addEventListener('load', () => {
-  if(localStorage.getItem('alarm-on') === '1'){
-    scheduleAlarms();
-  }
-});
-
-</script>
+<script src="schedule-data.js?v=9"></script>
 <script>
 const TEAM_COLORS = {A:'m',B:'t',C:'c',D:'n',E:'x'};
 
@@ -1076,57 +832,6 @@ if('serviceWorker' in navigator) {
   });
 }
 </script>
-
-<!-- SETTINGS OVERLAY -->
-<div class="settings-overlay" id="settings-overlay"></div>
-
-<!-- SETTINGS PANEL -->
-<div class="settings-panel" id="settings-panel">
-  <div class="settings-header">
-    <button class="settings-back" id="settings-back">‹</button>
-    <span class="settings-title">Definições</span>
-  </div>
-
-  <!-- Team -->
-  <div class="settings-section">
-    <div class="settings-section-title">A minha equipa</div>
-    <div class="settings-team-grid">
-      <button class="settings-team-btn" data-team="A">A</button>
-      <button class="settings-team-btn" data-team="B">B</button>
-      <button class="settings-team-btn" data-team="C">C</button>
-      <button class="settings-team-btn" data-team="D">D</button>
-      <button class="settings-team-btn" data-team="E">E</button>
-    </div>
-    <div style="font-size:11px;color:rgba(255,255,255,0.3);">Guardado automaticamente</div>
-  </div>
-
-  <div class="settings-divider"></div>
-
-  <!-- Alarm -->
-  <div class="settings-row">
-    <div>
-      <div class="settings-row-label">🔔 Alarme turno Manhã</div>
-      <div class="settings-row-sub">Notificação nos dias de turno 05h</div>
-    </div>
-    <label class="toggle">
-      <input type="checkbox" id="alarm-toggle">
-      <span class="toggle-slider"></span>
-    </label>
-  </div>
-
-  <div class="alarm-time-row hidden" id="alarm-time-row">
-    <span class="alarm-time-label">Hora:</span>
-    <input type="time" class="alarm-time-input" id="alarm-time" value="04:30">
-  </div>
-
-  <div class="alarm-status" id="alarm-status"></div>
-
-  <div class="settings-divider"></div>
-
-  <div class="settings-footer">
-    Verallia Portugal · Fontela<br>
-    Desenvolvido por: Luís Dinis
-  </div>
 </div>
 </body>
 </html>
