@@ -1,4 +1,14 @@
 <!DOCTYPE html>
+<!--
+  =========================================
+  © 2026 Luís Dinis — Todos os direitos reservados
+  Desenvolvido por: Luís Dinis
+  Repositório: github.com/LDinisPT/hv-infinito
+  Verallia Portugal — Fontela, Figueira da Foz
+  Qualquer cópia ou redistribuição requer atribuição ao autor.
+  =========================================
+-->
+
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
@@ -225,6 +235,14 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
   min-height:100vh;
 }
 body{background:#02020a;}
+
+.footer-copy{
+  text-align:center;
+  padding:16px 12px 24px;
+  font-size:11px;
+  color:rgba(255,255,255,0.2);
+  letter-spacing:0.05em;
+}
 </style>
 </head>
 <body>
@@ -844,5 +862,11 @@ if('serviceWorker' in navigator) {
 }
 </script>
 </div>
+
+<div class="footer-copy" id="footer-copy"></div>
+<script>
+  document.getElementById('footer-copy').textContent =
+    '© ' + new Date().getFullYear() + ' Luís Dinis — Todos os direitos reservados';
+</script>
 </body>
 </html>
