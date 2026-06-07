@@ -2,7 +2,16 @@
 <html lang="pt">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-QS6M0N5NKE"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-QS6M0N5NKE');
+</script>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#060610">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -297,7 +306,9 @@ const today = new Date();
 const todayY = today.getFullYear();
 const todayD = today.getDate(), todayM = today.getMonth();
 
-let curTeam = localStorage.getItem('team') || 'A';
+function safeGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+function safeSet(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
+let curTeam = safeGet('team') || 'A';
 let curYear = todayY;
 let curMonth = todayM;
 
@@ -763,7 +774,7 @@ function renderCalendar() {
 
 function setTeam(t){
   curTeam = t;
-  localStorage.setItem('team',t);
+  safeSet('team',t);
   document.querySelectorAll('.team-tab').forEach(b=>{
     b.className = 'team-tab' + (b.dataset.team===t?' active-'+t:'');
   });
