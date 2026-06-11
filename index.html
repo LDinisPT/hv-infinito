@@ -748,41 +748,24 @@ function teamsHTMLToday(){
 
 function renderTodayCard() {
   const t = new Date(todayY, todayM, todayD);
-  const tom = new Date(todayY, todayM, todayD+1);
-  const s = getShift(curTeam, todayY, todayM, todayD);
-  const st = getShift(curTeam, tom.getFullYear(), tom.getMonth(), tom.getDate());
   const fer = getFeriadoLocal(todayD, todayM);
-  const ferTom = getFeriado(tom.getFullYear(), tom.getMonth(), tom.getDate());
   const wdays = ['Domingo','Segunda','Terca','Quarta','Quinta','Sexta','Sabado'];
   const mns = (typeof MONTH_NAMES !== 'undefined' ? MONTH_NAMES : MONTH_NAMES_PT);
-
-    const now = new Date();
+  const now = new Date();
   const greeting = getGreeting();
   const clockStr = formatTime(now);
   document.getElementById('today-card').innerHTML = `
     <div class="today-top-row">
       <div class="today-left">
-        <div class="today-greeting">${greeting} · Equipa ${curTeam}</div>
-        <div class="today-clock" id="clock-time">${clockStr}</div>
+        <div class="today-greeting" style="font-size:16px;font-weight:600;color:rgba(255,255,255,0.85);letter-spacing:.05em;">${greeting} · <span style="display:inline-block;vertical-align:top;">Equipa ${curTeam}<br><span style="font-size:12px;color:#4aab6a;letter-spacing:.12em;text-transform:uppercase;font-weight:600;">Selecionada</span></span></div>
+        <div class="today-clock" id="clock-time" style="font-size:42px;">${clockStr}</div>
+        <div class="today-date" style="margin-top:2px;">${wdays[t.getDay()]}, ${todayD} ${mns[todayM]}</div>
+        ${fer?`<div class="today-fer" style="color:#EF9F27;font-size:11px;">${fer}</div>`:''}
       </div>
-      <div class="today-right" id="weather-widget">
+      <div class="today-right" id="weather-widget" style="transform:scale(1.1);transform-origin:top right;white-space:nowrap;">
         <div class="weather-row"><span class="w-icon">⛅</span><span class="w-temp">--°</span></div>
         <div class="w-city">Figueira da Foz</div>
       </div>
-    </div>
-    <div class="today-main">
-      <div>
-        <div class="today-date">${wdays[t.getDay()]}, ${todayD} ${mns[todayM]}</div>
-        ${fer?`<div class="today-fer" style="color:#EF9F27;font-size:11px;">${fer}</div>`:''}
-      </div>
-      <div class="shift-big shift-big-${s}">
-        <div class="shift-num shift-num-${s}">${s==='F'?'—':SHIFT_NUM_LBL[s]}</div>
-        <div class="shift-desc shift-desc-${s}">${SHIFT_DESC[s]}</div>
-      </div>
-    </div>
-    <div class="tomorrow-row">
-      <div class="tomorrow-lbl">Amanha: ${tom.getDate()} ${mns[tom.getMonth()]}${ferTom?' · '+ferTom:''}</div>
-      <div class="tomorrow-badge tb-${st}">${st==='F'?'Folga':SHIFT_NUM_LBL[st]} — ${SHIFT_DESC[st]}</div>
     </div>
     ${teamsHTMLToday()}`;
 }
