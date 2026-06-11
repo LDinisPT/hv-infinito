@@ -250,8 +250,9 @@ body{background:#02020a;}
   border-top:0.5px solid rgba(255,255,255,0.07);
 }
 .teams-today-title{
-  font-size:10px;color:rgba(255,255,255,0.3);
+  font-size:12px;color:rgba(255,255,255,0.4);
   text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;
+  text-align:center;font-weight:600;
 }
 .teams-today-grid{display:flex;gap:8px;}
 .tt-item{
@@ -266,13 +267,13 @@ body{background:#02020a;}
   background:rgba(74,171,106,0.08);
   box-shadow:0 0 12px rgba(74,171,106,0.12);
 }
-.tt-shift{font-size:10px;color:rgba(255,255,255,0.4);}
+.tt-shift{font-size:12px;color:rgba(255,255,255,0.45);}
 .tt-item.tt-active .tt-shift{color:#4aab6a;font-weight:600;}
-.tt-team{font-size:17px;font-weight:700;}
+.tt-team{font-size:22px;font-weight:700;}
 .tt-team-m{color:#FFE600;}
 .tt-team-t{color:#00BFFF;}
 .tt-team-n{color:#00FFB4;}
-.tt-hours{font-size:9px;color:rgba(255,255,255,0.25);}
+.tt-hours{font-size:11px;color:rgba(255,255,255,0.3);}
 .tt-item.tt-active .tt-hours{color:rgba(74,171,106,0.7);}
 </style>
 </head>
@@ -696,11 +697,13 @@ function renderQuinzena() {
 
 
 // ===== EQUIPAS HOJE =====
-function getTeamsToday(){
-  // Que equipa faz M, T, N hoje (e amanhã para a Noite depois das 21h)
+function getTeamsFor(dayOffset){
+  // Que equipa faz M, T, N no dia (0=hoje, 1=amanhã)
+  const d = new Date();
+  d.setDate(d.getDate() + dayOffset);
   const res = {};
   for(const tm of ['A','B','C','D','E']){
-    const s = getShift(tm, todayY, todayM, todayD);
+    const s = getShift(tm, d.getFullYear(), d.getMonth(), d.getDate());
     if(s==='5') res.M = tm;
     else if(s==='13') res.T = tm;
     else if(s==='21') res.N = tm;
@@ -716,25 +719,30 @@ function getCurrentShiftKey(){
   return 'N';
 }
 
-function teamsHTMLToday(){
-  const tt = getTeamsToday();
-  const cur = getCurrentShiftKey();
+function teamsGridHTML(tt, cur){
   const items = [
     {k:'M', lbl:'☀️ Manhã', team:tt.M||'—', cls:'m', hrs:'05-13'},
     {k:'T', lbl:'🌊 Tarde', team:tt.T||'—', cls:'t', hrs:'13-21'},
     {k:'N', lbl:'🌙 Noite', team:tt.N||'—', cls:'n', hrs:'21-05'},
   ];
-  return `
-    <div class="teams-today">
-      <div class="teams-today-title">Equipas hoje</div>
-      <div class="teams-today-grid">
+  return `<div class="teams-today-grid">
         ${items.map(it => `
-          <div class="tt-item${it.k===cur?' tt-active':''}">
+          <div class="tt-item${cur && it.k===cur?' tt-active':''}">
             <span class="tt-shift">${it.lbl}</span>
             <span class="tt-team tt-team-${it.cls}">${it.team}</span>
             <span class="tt-hours">${it.hrs}</span>
           </div>`).join('')}
-      </div>
+      </div>`;
+}
+
+function teamsHTMLToday(){
+  const cur = getCurrentShiftKey();
+  return `
+    <div class="teams-today">
+      <div class="teams-today-title">Equipas hoje</div>
+      ${teamsGridHTML(getTeamsFor(0), cur)}
+      <div class="teams-today-title" style="margin-top:10px;">Equipas amanhã</div>
+      ${teamsGridHTML(getTeamsFor(1), null)}
     </div>`;
 }
 
