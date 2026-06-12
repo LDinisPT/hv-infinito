@@ -275,6 +275,33 @@ body{background:#02020a;}
 .tt-team-n{color:#00FFB4;}
 .tt-hours{font-size:11px;color:rgba(255,255,255,0.3);}
 .tt-item.tt-active .tt-hours{color:rgba(74,171,106,0.7);}
+
+/* ===== BOTÕES HOJE / VER DATA ===== */
+.today-actions{display:flex;gap:8px;margin-top:12px;}
+.today-action-btn{flex:1;padding:9px 10px;border-radius:11px;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.75);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s;}
+.today-action-btn:active{background:rgba(255,255,255,0.1);}
+.today-action-btn.tab-today{border-color:rgba(74,171,106,0.3);color:#4aab6a;background:rgba(74,171,106,0.07);}
+.today-action-btn.tab-today:active{background:rgba(74,171,106,0.15);}
+
+/* ===== POPUP VER DATA ===== */
+.date-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);z-index:500;display:none;align-items:center;justify-content:center;padding:18px;}
+.date-overlay.show{display:flex;}
+.date-modal{width:100%;max-width:420px;background:#0d0d1a;border-radius:22px;border:1px solid rgba(255,255,255,0.1);padding:20px;max-height:90vh;overflow-y:auto;animation:datePop .2s ease;}
+@keyframes datePop{from{transform:scale(.95);opacity:0;}to{transform:scale(1);opacity:1;}}
+.date-modal-title{font-size:17px;font-weight:700;color:#fff;margin-bottom:4px;display:flex;align-items:center;gap:8px;}
+.date-modal-sub{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:16px;}
+.date-pick-row{display:flex;gap:8px;align-items:center;margin-bottom:18px;}
+.date-input{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;color:#fff;font-size:16px;font-family:inherit;padding:12px 14px;}
+.date-input::-webkit-calendar-picker-indicator{filter:invert(0.7);cursor:pointer;}
+.date-input:focus{outline:none;border-color:rgba(74,171,106,0.4);}
+.date-result{margin-top:4px;}
+.date-result-head{text-align:center;margin-bottom:14px;}
+.date-result-day{font-size:20px;font-weight:700;color:#fff;}
+.date-result-fer{color:#EF9F27;font-size:13px;font-weight:600;margin-top:4px;}
+.date-result-empty{text-align:center;color:rgba(255,255,255,0.35);font-size:14px;padding:24px 0;}
+.date-close{width:100%;padding:13px;border-radius:13px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.6);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;margin-top:18px;}
+.date-close:active{background:rgba(255,255,255,0.1);}
+.tt-item.tt-mine{border-color:rgba(74,171,106,0.5);background:rgba(74,171,106,0.08);}
 </style>
 </head>
 <body>
@@ -343,12 +370,24 @@ body{background:#02020a;}
 <div class="medico-card" id="medico-card"></div>
 <div class="stats" id="stats-grid"></div>
 
+<div class="date-overlay" id="date-overlay">
+  <div class="date-modal">
+    <div class="date-modal-title">🔍 Ver outra data</div>
+    <div class="date-modal-sub">Escolhe um dia para ver que equipas fazem cada turno.</div>
+    <div class="date-pick-row">
+      <input type="date" class="date-input" id="date-input" min="2026-01-01" max="2036-12-31">
+    </div>
+    <div class="date-result" id="date-result"></div>
+    <button class="date-close" id="date-close">Fechar</button>
+  </div>
+</div>
+
 <div class="install-bar" id="install-bar">
   <div class="install-txt">Instala no ecra inicial!</div>
   <button class="install-btn" id="install-btn">Instalar</button>
 </div>
 
-<script src="schedule-data.js?v=10"></script>
+<script src="schedule-data.js?v=11"></script>
 <script>
 const TEAM_COLORS = {A:'m',B:'t',C:'c',D:'n',E:'x'};
 
@@ -722,6 +761,77 @@ function getTeamsFor(dayOffset){
   return res;
 }
 
+// Turnos de uma data exata (sem o recuo das 05h) — para o popup "Ver data"
+function getTeamsForDate(y, mo, d){
+  const res = {};
+  for(const tm of ['A','B','C','D','E']){
+    const s = getShift(tm, y, mo, d);
+    if(s==='5') res.M = tm;
+    else if(s==='13') res.T = tm;
+    else if(s==='21') res.N = tm;
+  }
+  return res;
+}
+
+// Voltar ao mês/ano de hoje no calendário
+function goToToday(){
+  curYear = todayY;
+  curMonth = todayM;
+  const yl = document.getElementById('year-lbl');
+  if(yl) yl.textContent = curYear;
+  renderCalendar();
+  renderFeriados();
+  renderStats();
+  // scroll suave até ao topo
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+// ---- Popup "Ver outra data" ----
+function gridForDate(tt, mineTeam){
+  const items = [
+    {lbl:'☀️ Manhã', team:tt.M||'—', cls:'m', hrs:'05-13'},
+    {lbl:'🌊 Tarde', team:tt.T||'—', cls:'t', hrs:'13-21'},
+    {lbl:'🌙 Noite', team:tt.N||'—', cls:'n', hrs:'21-05'},
+  ];
+  return `<div class="teams-today-grid">
+        ${items.map(it => `
+          <div class="tt-item${it.team===mineTeam?' tt-mine':''}">
+            <span class="tt-shift">${it.lbl}</span>
+            <span class="tt-team tt-team-${it.cls}">${it.team}</span>
+            <span class="tt-hours">${it.hrs}</span>
+          </div>`).join('')}
+      </div>`;
+}
+
+function showDateResult(val){
+  const box = document.getElementById('date-result');
+  if(!val){ box.innerHTML = '<div class="date-result-empty">Escolhe uma data acima.</div>'; return; }
+  const [y, mo, d] = val.split('-').map(Number);
+  const moIdx = mo - 1;
+  const date = new Date(y, moIdx, d);
+  const wdays = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
+  const mns = (typeof MONTH_NAMES !== 'undefined' ? MONTH_NAMES : MONTH_NAMES_PT);
+  const fer = getFeriado(y, moIdx, d);
+  const tt = getTeamsForDate(y, moIdx, d);
+  box.innerHTML = `
+    <div class="date-result-head">
+      <div class="date-result-day">${wdays[date.getDay()]}, ${d} ${mns[moIdx]} ${y}</div>
+      ${fer?`<div class="date-result-fer">⭐ ${fer}</div>`:''}
+    </div>
+    ${gridForDate(tt, curTeam)}`;
+}
+
+function openDatePopup(){
+  const inp = document.getElementById('date-input');
+  // pré-preenche com hoje se vazio
+  if(!inp.value){
+    inp.value = `${todayY}-${String(todayM+1).padStart(2,'0')}-${String(todayD).padStart(2,'0')}`;
+  }
+  showDateResult(inp.value);
+  document.getElementById('date-overlay').classList.add('show');
+}
+function closeDatePopup(){ document.getElementById('date-overlay').classList.remove('show'); }
+
 function getCurrentShiftKey(){
   // Que turno está a decorrer agora: M (05-13), T (13-21), N (21-05)
   const h = new Date().getHours();
@@ -782,6 +892,10 @@ function renderTodayCard() {
         <div class="weather-row"><span class="w-icon">⛅</span><span class="w-temp">--°</span></div>
         <div class="w-city">Figueira da Foz</div>
       </div>
+    </div>
+    <div class="today-actions">
+      <button class="today-action-btn tab-today" id="btn-hoje">📍 Hoje</button>
+      <button class="today-action-btn" id="btn-ver-data">🔍 Ver outra data</button>
     </div>
     ${teamsHTMLToday()}`;
 }
@@ -897,6 +1011,18 @@ document.getElementById('next-yr').onclick = ()=>{curYear++;document.getElementB
 document.getElementById('prev-mo').onclick = ()=>{if(curMonth===0){curMonth=11;curYear--;}else curMonth--;document.getElementById('year-lbl').textContent=curYear;renderCalendar();renderFeriados();};
 document.getElementById('next-mo').onclick = ()=>{if(curMonth===11){curMonth=0;curYear++;}else curMonth++;document.getElementById('year-lbl').textContent=curYear;renderCalendar();renderFeriados();};
 
+// Botões Hoje / Ver data (delegação — o today-card é recriado a cada render)
+document.getElementById('today-card').addEventListener('click', e => {
+  if(e.target.closest('#btn-hoje')) goToToday();
+  else if(e.target.closest('#btn-ver-data')) openDatePopup();
+});
+// Popup Ver data
+document.getElementById('date-input').addEventListener('change', e => showDateResult(e.target.value));
+document.getElementById('date-close').onclick = closeDatePopup;
+document.getElementById('date-overlay').addEventListener('click', e => {
+  if(e.target.id === 'date-overlay') closeDatePopup();
+});
+
 const MONTH_NAMES_PT = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
 
@@ -940,7 +1066,7 @@ if('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(regs => {
     regs.forEach(r => r.unregister());
   }).then(() => {
-    navigator.serviceWorker.register('sw.js?v=10').then(reg => {
+    navigator.serviceWorker.register('sw.js?v=11').then(reg => {
       reg.addEventListener('updatefound', () => {
         const newSW = reg.installing;
         newSW.addEventListener('statechange', () => {
