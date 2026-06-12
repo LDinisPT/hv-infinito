@@ -1,4 +1,4 @@
-const CACHE = 'verallia-2027-v30';
+const CACHE = 'verallia-2027-v32';
 const FILES = ['/', '/index.html', '/schedule-data.js', '/manifest.json', '/verallia_logo.avif'];
 
 // Force update on every install
