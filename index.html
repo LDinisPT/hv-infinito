@@ -348,7 +348,7 @@ body{background:#02020a;}
   <button class="install-btn" id="install-btn">Instalar</button>
 </div>
 
-<script src="schedule-data.js?v=9"></script>
+<script src="schedule-data.js?v=10"></script>
 <script>
 const TEAM_COLORS = {A:'m',B:'t',C:'c',D:'n',E:'x'};
 
@@ -697,9 +697,20 @@ function renderQuinzena() {
 
 
 // ===== EQUIPAS HOJE =====
-function getTeamsFor(dayOffset){
-  // Que equipa faz M, T, N no dia (0=hoje, 1=amanhã)
+// Dia de turno: roda às 05:00, não à meia-noite.
+// Entre 00:00 e 04:59 a Noite (21h-05h) ainda está em curso,
+// por isso "hoje" continua a ser o dia em que essa Noite começou.
+function getShiftRefDate(){
   const d = new Date();
+  if(d.getHours() < 5){
+    d.setDate(d.getDate() - 1);
+  }
+  return d;
+}
+
+function getTeamsFor(dayOffset){
+  // Que equipa faz M, T, N no dia de turno (0=hoje, 1=amanhã)
+  const d = getShiftRefDate();
   d.setDate(d.getDate() + dayOffset);
   const res = {};
   for(const tm of ['A','B','C','D','E']){
@@ -737,11 +748,16 @@ function teamsGridHTML(tt, cur){
 
 function teamsHTMLToday(){
   const cur = getCurrentShiftKey();
+  const wd = ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb'];
+  const ref = getShiftRefDate();
+  const refTom = new Date(ref); refTom.setDate(refTom.getDate()+1);
+  const lblHoje = `${wd[ref.getDay()]} ${ref.getDate()}`;
+  const lblAmanha = `${wd[refTom.getDay()]} ${refTom.getDate()}`;
   return `
     <div class="teams-today">
-      <div class="teams-today-title">Equipas hoje</div>
+      <div class="teams-today-title">Equipas hoje · ${lblHoje}</div>
       ${teamsGridHTML(getTeamsFor(0), cur)}
-      <div class="teams-today-title" style="margin-top:10px;">Equipas amanhã</div>
+      <div class="teams-today-title" style="margin-top:10px;">Equipas amanhã · ${lblAmanha}</div>
       ${teamsGridHTML(getTeamsFor(1), null)}
     </div>`;
 }
@@ -924,7 +940,7 @@ if('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(regs => {
     regs.forEach(r => r.unregister());
   }).then(() => {
-    navigator.serviceWorker.register('sw.js?v=9').then(reg => {
+    navigator.serviceWorker.register('sw.js?v=10').then(reg => {
       reg.addEventListener('updatefound', () => {
         const newSW = reg.installing;
         newSW.addEventListener('statechange', () => {
