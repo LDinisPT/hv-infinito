@@ -303,6 +303,33 @@ body{background:#02020a;}
 .date-close{width:100%;padding:13px;border-radius:13px;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.6);font-size:14px;font-weight:500;font-family:inherit;cursor:pointer;margin-top:18px;}
 .date-close:active{background:rgba(255,255,255,0.1);}
 .tt-item.tt-mine{border-color:rgba(74,171,106,0.5);background:rgba(74,171,106,0.08);}
+
+/* ===== EVENTOS GRUPO DESPORTIVO ===== */
+.evt-card{margin:0 12px 16px;}
+.evt-toggle{width:100%;background:rgba(74,171,106,0.07);border:0.5px solid rgba(74,171,106,0.3);border-radius:14px;padding:13px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;color:#fff;text-align:left;font-family:inherit;gap:10px;}
+.evt-toggle:active{background:rgba(74,171,106,0.13);}
+.evt-toggle-info{display:flex;align-items:center;gap:11px;min-width:0;}
+.evt-toggle-icon{font-size:20px;flex-shrink:0;}
+.evt-toggle-title{font-size:13.5px;font-weight:600;color:#fff;line-height:1.3;}
+.evt-toggle-sub{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;}
+.evt-chev{font-size:18px;color:rgba(255,255,255,0.5);flex-shrink:0;transition:transform .2s;}
+.evt-chev.open{transform:rotate(90deg);}
+.evt-body{margin-top:8px;display:flex;flex-direction:column;gap:7px;}
+.evt-item{display:flex;align-items:center;gap:11px;padding:11px 13px;border-radius:12px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);}
+.evt-item.evt-past{opacity:0.55;background:rgba(255,255,255,0.02);border-color:rgba(255,255,255,0.06);}
+.evt-item.evt-next{background:rgba(255,230,0,0.08);border:1px solid rgba(255,230,0,0.4);}
+.evt-date{width:44px;text-align:center;flex-shrink:0;}
+.evt-day{font-size:17px;font-weight:600;color:#fff;line-height:1.1;}
+.evt-item.evt-past .evt-day{color:rgba(255,255,255,0.6);}
+.evt-item.evt-next .evt-day{color:#FFE600;}
+.evt-mon{font-size:10px;color:rgba(255,255,255,0.4);text-transform:uppercase;}
+.evt-item.evt-next .evt-mon{color:rgba(255,230,0,0.6);}
+.evt-date-tbd{font-size:11px;font-weight:600;color:rgba(255,255,255,0.5);line-height:1.2;}
+.evt-name{flex:1;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.35;}
+.evt-item.evt-past .evt-name{color:rgba(255,255,255,0.6);}
+.evt-next-lbl{font-size:10px;color:#FFE600;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:2px;}
+.evt-item.evt-next .evt-name{color:#fff;font-weight:500;}
+.evt-check{font-size:20px;color:#4aab6a;flex-shrink:0;}
 </style>
 </head>
 <body>
@@ -371,6 +398,8 @@ body{background:#02020a;}
 <div class="medico-card" id="medico-card"></div>
 <div class="stats" id="stats-grid"></div>
 
+<div id="eventos-grupo"></div>
+
 <div class="date-overlay" id="date-overlay">
   <div class="date-modal">
     <div class="date-modal-title">🔍 Ver outra data</div>
@@ -388,7 +417,7 @@ body{background:#02020a;}
   <button class="install-btn" id="install-btn">Instalar</button>
 </div>
 
-<script src="schedule-data.js?v=13"></script>
+<script src="schedule-data.js?v=14"></script>
 <script>
 const TEAM_COLORS = {A:'m',B:'t',C:'c',D:'n',E:'x'};
 
@@ -902,6 +931,85 @@ function renderTodayCard() {
     ${teamsHTMLToday()}`;
 }
 
+// ===== EVENTOS GRUPO CULTURAL E DESPORTIVO =====
+// data: 'YYYY-MM-DD' ou null para "a definir"
+const EVENTOS_GRUPO = [
+  {data:'2026-04-18', nome:'18º Convívio de Tiro ao Alvo'},
+  {data:'2026-05-23', nome:'II Grande Prémio Verallia Karting'},
+  {data:'2026-05-30', nome:'Passeio Moto Turismo + Casa de Santar'},
+  {data:'2026-06-06', nome:'7º Ciclo Convívio'},
+  {data:'2026-06-14', nome:'A Corrida Mais Bonita de Portugal'},
+  {data:'2026-06-27', nome:'Descida do Rio Mondego'},
+  {data:'2026-09-29', nome:'Caminhada de Convívio'},
+  {data:'2026-12-19', nome:'Festa de Natal das Crianças + Prenda do Grupo'},
+  {data:null, nome:'XXIIº Torneio de Futsal Verallia Portugal'},
+];
+const EVT_MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+function renderEventosGrupo(){
+  const wrap = document.getElementById('eventos-grupo');
+  if(!wrap) return;
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+
+  // determinar passados e o próximo (primeiro com data >= hoje)
+  let nextIdx = -1;
+  const enriched = EVENTOS_GRUPO.map((ev, i) => {
+    if(!ev.data) return {...ev, past:false, dateObj:null};
+    const [y,m,d] = ev.data.split('-').map(Number);
+    const dt = new Date(y, m-1, d); dt.setHours(0,0,0,0);
+    return {...ev, dateObj:dt, past: dt < hoje};
+  });
+  for(let i=0;i<enriched.length;i++){
+    if(enriched[i].dateObj && !enriched[i].past){ nextIdx = i; break; }
+  }
+  const realizados = enriched.filter(e => e.past).length;
+  const totalComData = enriched.filter(e => e.dateObj).length;
+
+  const isOpen = safeGet('evtOpen') === '1';
+
+  const itemsHTML = enriched.map((ev, i) => {
+    const isNext = i === nextIdx;
+    const cls = ev.past ? 'evt-past' : (isNext ? 'evt-next' : '');
+    let dateHTML;
+    if(ev.dateObj){
+      dateHTML = `<div class="evt-date"><div class="evt-day">${String(ev.dateObj.getDate()).padStart(2,'0')}</div><div class="evt-mon">${EVT_MESES[ev.dateObj.getMonth()]}</div></div>`;
+    } else {
+      dateHTML = `<div class="evt-date"><div class="evt-date-tbd">a def.</div></div>`;
+    }
+    const nameHTML = isNext
+      ? `<div class="evt-name"><div class="evt-next-lbl">★ Próximo evento</div>${ev.nome}</div>`
+      : `<div class="evt-name">${ev.nome}</div>`;
+    const checkHTML = ev.past ? '<i class="ti ti-circle-check evt-check"></i>' : '';
+    return `<div class="evt-item ${cls}">${dateHTML}${nameHTML}${checkHTML}</div>`;
+  }).join('');
+
+  wrap.innerHTML = `
+    <div class="evt-card">
+      <button class="evt-toggle" id="evt-toggle">
+        <span class="evt-toggle-info">
+          <span class="evt-toggle-icon">🏆</span>
+          <span style="min-width:0;">
+            <span class="evt-toggle-title">Grupo Cultural e Desportivo da Verallia Portugal</span>
+            <span class="evt-toggle-sub">Atividades 2026 · ${realizados} de ${totalComData} realizadas</span>
+          </span>
+        </span>
+        <i class="ti ti-chevron-right evt-chev${isOpen?' open':''}" id="evt-chev"></i>
+      </button>
+      <div class="evt-body" id="evt-body" style="display:${isOpen?'flex':'none'};">
+        ${itemsHTML}
+      </div>
+    </div>`;
+
+  document.getElementById('evt-toggle').onclick = () => {
+    const body = document.getElementById('evt-body');
+    const chev = document.getElementById('evt-chev');
+    const open = body.style.display === 'none';
+    body.style.display = open ? 'flex' : 'none';
+    chev.classList.toggle('open', open);
+    safeSet('evtOpen', open ? '1' : '0');
+  };
+}
+
 function renderStats() {
   const grid = document.getElementById('stats-grid');
   if(!grid) return;
@@ -1048,6 +1156,7 @@ document.getElementById('install-btn').onclick = async()=>{
 };
 
 setTeam(curTeam);
+renderEventosGrupo();
 setInterval(renderClock, 1000);
 // Atualizar destaque do turno quando muda a hora de turno (05h/13h/21h)
 let _lastShiftKey = getCurrentShiftKey();
@@ -1071,7 +1180,7 @@ if('serviceWorker' in navigator) {
   navigator.serviceWorker.getRegistrations().then(regs => {
     regs.forEach(r => r.unregister());
   }).then(() => {
-    navigator.serviceWorker.register('sw.js?v=13').then(reg => {
+    navigator.serviceWorker.register('sw.js?v=14').then(reg => {
       reg.addEventListener('updatefound', () => {
         const newSW = reg.installing;
         newSW.addEventListener('statechange', () => {
