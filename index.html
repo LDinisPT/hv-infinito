@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<!--
+  =========================================
+  © 2026 Luís Dinis — Todos os direitos reservados
+  Verallia Portugal — Fontela, Figueira da Foz
+  =========================================
+-->
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#060610">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Verallia Turnos">
+<link rel="manifest" href="manifest.json">
+<title>Verallia Turnos</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css?v=14">
+<link rel="stylesheet" href="css/components.css?v=14">
+<link rel="stylesheet" href="css/hoje.css?v=14">
+<link rel="stylesheet" href="css/onboarding.css?v=14">
+<link rel="stylesheet" href="css/alarm.css?v=14">
+</head>
+<body>
+<div class="app">
+
+  <!-- ===== TOP BAR (cabeçalho grande) ===== -->
+  <div class="topbar">
+    <div class="tb-main">
+      <div class="tb-left">
+        <img src="assets/verallia_logo.avif" alt="Verallia" class="tb-logo-big" onerror="this.style.display='none';this.nextElementSibling.style.display='inline-block'">
+        <div class="tb-logo-fallback" style="display:none">verallia</div>
+        <div class="tb-name">VERALLIA PORTUGAL</div>
+        <div class="tb-sub">Fontela, Figueira da Foz</div>
+        <div class="tb-author">Elaborado por: Luís Dinis</div>
+      </div>
+      <div class="tb-hello" id="tb-hello">Olá 👋</div>
+    </div>
+    <div class="tb-team-row">
+      <div class="team-select-wrap">
+        <select id="team-select" class="team-select">
+          <option value="A">Equipa A</option>
+          <option value="B">Equipa B</option>
+          <option value="C">Equipa C</option>
+          <option value="D">Equipa D</option>
+          <option value="E">Equipa E</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== SEPARADOR: HOJE ===== -->
+  <div class="tab-panel active" id="tab-hoje">
+    <div id="alarm-aviso"></div>
+    <div class="wc-card">
+      <div class="wc-weather" id="weather-widget"></div>
+      <div class="wc-clock">
+        <div class="wc-time" id="clock-time">--:--</div>
+        <div class="wc-day" id="clock-day"></div>
+      </div>
+    </div>
+    <div id="dois-dias"></div>
+    <div class="ciclo-card" id="ciclo-card"></div>
+    <div class="quinzena-card" id="quinzena-card"></div>
+    <div style="padding:10px 12px 4px;">
+      <button class="today-action-btn" id="btn-ver-data" style="width:100%;">🔍 Ver outra data</button>
+    </div>
+  </div>
+
+  <!-- ===== SEPARADOR: MÊS ===== -->
+  <div class="tab-panel" id="tab-mes">
+    <div class="cal-header" style="justify-content:space-between;padding-left:16px;padding-right:16px;">
+      <button class="cal-nav-btn" id="prev-yr">&#171;</button>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <button class="cal-nav-btn" id="prev-mo">&#8249;</button>
+        <div class="month-title" id="month-title"></div>
+        <button class="cal-nav-btn" id="next-mo">&#8250;</button>
+      </div>
+      <button class="cal-nav-btn" id="next-yr">&#187;</button>
+    </div>
+    <div style="display:flex;justify-content:center;padding:0 16px 6px;">
+      <button class="today-action-btn tab-today" id="btn-hoje-mes" style="padding:5px 16px;width:auto;border-radius:18px;">📍 Hoje</button>
+    </div>
+
+    <div class="legend">
+      <div class="leg"><div class="leg-dot" style="background:#FFE600"></div><span style="color:rgba(255,230,0,0.8)">Manhã</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#00BFFF"></div><span style="color:rgba(0,191,255,0.8)">Tarde</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#00FFB4"></div><span style="color:rgba(0,255,180,0.8)">Noite</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#EF9F27"></div><span style="color:rgba(239,159,39,0.7)">Feriado</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#A8D870"></div><span style="color:rgba(168,216,112,0.7)">Folga</span></div>
+      <div class="leg"><div class="leg-dot" style="background:#E24B4A;border-radius:0"></div><span style="color:rgba(226,75,74,0.7)">Hoje</span></div>
+    </div>
+
+    <div class="cal-wrap">
+      <table class="cal">
+        <thead><tr><th style="color:#FFC83D">Dom</th><th style="color:#E8E8F0">Seg</th><th style="color:#FF5A5A">Ter</th><th style="color:#4ADE80">Qua</th><th style="color:#5AA9FF">Qui</th><th style="color:#FF7FB6">Sex</th><th style="color:#B07FFF">Sab</th></tr></thead>
+        <tbody id="cal-body"></tbody>
+      </table>
+    </div>
+
+    <div class="fer-list" id="fer-list">
+      <div class="fer-list-title">Feriados este mês</div>
+      <div id="fer-items"></div>
+    </div>
+  </div>
+
+  <!-- ===== SEPARADOR: MÉDICO ===== -->
+  <div class="tab-panel" id="tab-medico">
+    <div class="medico-card" id="medico-card"></div>
+  </div>
+
+  <!-- ===== SEPARADOR: MAIS ===== -->
+  <div class="tab-panel" id="tab-mais">
+    <div class="panel-title">📊 Estatísticas</div>
+    <div class="stats" id="stats-grid"></div>
+    <div id="eventos-grupo"></div>
+    <div class="panel-title">⏰ Despertador</div>
+    <div id="alarm-config"></div>
+    <div class="panel-title">⚙️ Definições</div>
+    <div class="def-card">
+      <div class="def-row"><span class="def-label">Nome</span><span class="def-val" id="def-name">—</span></div>
+      <div class="def-row" style="margin-top:8px;"><span class="def-label">Equipa</span><span class="def-val" id="def-team">—</span></div>
+      <button class="def-btn" id="def-reconfig">✏️ Alterar nome / equipa</button>
+    </div>
+    <div class="panel-title">❓ Como usar</div>
+    <div class="manual" id="manual">
+      <div class="man-item">
+        <button class="man-q">👥 Escolher a tua equipa<span class="man-arrow">▾</span></button>
+        <div class="man-a">No topo, toca em <b>"Equipa A ▾"</b> e escolhe a tua equipa (A a E). Toda a app passa a mostrar os teus turnos.</div>
+      </div>
+      <div class="man-item">
+        <button class="man-q">📍 Separador Hoje<span class="man-arrow">▾</span></button>
+        <div class="man-a">Mostra o <b>turno em curso</b> (com barra de progresso e tempo que falta), o tempo, e os teus blocos de turnos. O dia de hoje fica com ✓ quando o turno termina.</div>
+      </div>
+      <div class="man-item">
+        <button class="man-q">📅 Separador Mês<span class="man-arrow">▾</span></button>
+        <div class="man-a">Calendário com cores: <b>amarelo</b> = Manhã, <b>azul</b> = Tarde, <b>verde-água</b> = Noite, <b>verde</b> = Folga. Os feriados têm contorno laranja e aparecem na lista em baixo.</div>
+      </div>
+      <div class="man-item">
+        <button class="man-q">⏰ Despertador<span class="man-arrow">▾</span></button>
+        <div class="man-a">Liga o despertador, escolhe a hora de acordar, e toca em <b>"Adicionar Manhãs ao calendário"</b>. Isto cria alarmes no teu calendário para os turnos de Manhã — é o calendário que toca, mesmo com a app fechada.</div>
+      </div>
+      <div class="man-item">
+        <button class="man-q">🔍 Ver outra data<span class="man-arrow">▾</span></button>
+        <div class="man-a">No separador Hoje, em baixo, toca em <b>"Ver outra data"</b> para saberes que equipas trabalham em qualquer dia que escolheres.</div>
+      </div>
+      <div class="man-item">
+        <button class="man-q">📲 Instalar no telemóvel<span class="man-arrow">▾</span></button>
+        <div class="man-a"><b>iPhone:</b> abre no Safari, toca em Partilhar e "Adicionar ao ecrã principal".<br><b>Android:</b> abre no Chrome, menu (⋮) e "Instalar aplicação".</div>
+      </div>
+    </div>
+    <div class="footer-copy" id="footer-copy" style="text-align:center;padding:20px 16px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.6;">© 2026 Luís Dinis<br><span style="color:#FFD93D;">Todos os direitos reservados</span></div>
+  </div>
+
+</div>
+
+<!-- ===== POPUP VER DATA ===== -->
+<div class="date-overlay" id="date-overlay">
+  <div class="date-modal">
+    <div class="date-modal-title">🔍 Ver outra data</div>
+    <div class="date-modal-sub">Escolhe um dia para ver que equipas fazem cada turno.</div>
+    <div class="date-pick-row">
+      <input type="date" class="date-input" id="date-input" min="2026-01-01" max="2036-12-31">
+    </div>
+    <div class="date-result" id="date-result"></div>
+    <button class="date-close" id="date-close">Fechar</button>
+  </div>
+</div>
+
+<!-- ===== INSTALL BAR ===== -->
+<div class="install-bar" id="install-bar">
+  <div class="install-txt">Instala no ecra inicial!</div>
+  <button class="install-btn" id="install-btn">Instalar</button>
+</div>
+
+<!-- ===== ONBOARDING (1ª vez) ===== -->
+<div class="onb-overlay" id="onb-overlay">
+  <div class="onb-card">
+    <div class="onb-logo"></div>
+    <div class="onb-title">Bem-vindo! 👋</div>
+    <div class="onb-sub">Vamos configurar a tua app de turnos.</div>
+    <div class="onb-field">
+      <label>Como te chamas?</label>
+      <input type="text" class="onb-input" id="onb-name" placeholder="O teu nome" maxlength="20" autocomplete="off">
+    </div>
+    <div class="onb-field">
+      <label>Qual é a tua equipa?</label>
+      <div class="onb-teams">
+        <button class="onb-team" data-team="A">A</button>
+        <button class="onb-team" data-team="B">B</button>
+        <button class="onb-team" data-team="C">C</button>
+        <button class="onb-team" data-team="D">D</button>
+        <button class="onb-team" data-team="E">E</button>
+      </div>
+    </div>
+    <button class="onb-start" id="onb-start" disabled>Começar →</button>
+    <div class="onb-hint">Podes mudar isto depois em ⚙️ Mais</div>
+  </div>
+</div>
+
+<!-- ===== BARRA DE SEPARADORES ===== -->
+<div class="tabbar" id="tabbar">
+  <button class="tabbar-btn active" data-tab="hoje"><span class="tb-icon">📍</span><span class="tb-txt">Hoje</span></button>
+  <button class="tabbar-btn" data-tab="mes"><span class="tb-icon">📅</span><span class="tb-txt">Mês</span></button>
+  <button class="tabbar-btn" data-tab="medico"><span class="tb-icon">🩺</span><span class="tb-txt">Médico</span></button>
+  <button class="tabbar-btn" data-tab="mais"><span class="tb-icon">⚙️</span><span class="tb-txt">Mais</span></button>
+</div>
+
+<!-- ===== SCRIPTS (ordem importa) ===== -->
+<script src="js/data.js?v=14"></script>
+<script src="js/core.js?v=14"></script>
+<script src="js/weather.js?v=14"></script>
+<script src="js/medico.js?v=14"></script>
+<script src="js/hoje.js?v=14"></script>
+<script src="js/mes.js?v=14"></script>
+<script src="js/mais.js?v=14"></script>
+<script src="js/timeline.js?v=14"></script>
+<script src="js/onboarding.js?v=14"></script>
+<script src="js/alarm.js?v=14"></script>
+<script src="js/tabs.js?v=14"></script>
+<script src="js/app.js?v=14"></script>
+<script>
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js?v=14').then(reg=>{
+    navigator.serviceWorker.addEventListener('message', e=>{ if(e.data==='reload') location.reload(); });
+  });
+}
+</script>
+</body>
+</html>

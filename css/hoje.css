@@ -1,0 +1,72 @@
+/* ============================================================
+   HOJE — 2 dias (hoje+amanhã) + timeline
+   ============================================================ */
+
+/* 2 dias — layout label à esquerda + turnos à direita (estilo Compact) */
+#dois-dias{padding:12px;}
+
+/* Bloco tempo + relógio */
+.wc-card{display:flex;justify-content:space-between;align-items:center;margin:12px 12px 0;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);border-radius:16px;padding:14px 16px;}
+.wc-weather{display:flex;align-items:center;gap:11px;min-width:0;}
+.wc-weather .w-icon{font-size:38px;line-height:1;}
+.wc-weather .w-temp{font-size:30px;font-weight:700;color:#fff;line-height:1;}
+.wc-weather .w-pills{font-size:11px;color:rgba(255,255,255,0.5);margin-top:4px;}
+.wc-weather .w-desc{display:none;}
+.wc-weather .w-city{display:none;}
+.wc-clock{text-align:right;flex-shrink:0;}
+.wc-time{font-size:30px;font-weight:700;color:#fff;line-height:1;font-variant-numeric:tabular-nums;}
+.wc-day{font-size:12px;color:rgba(255,255,255,0.5);margin-top:5px;text-transform:capitalize;}
+.dd-row{display:grid;grid-template-columns:82px 1fr;gap:9px;align-items:center;padding:10px;border-radius:16px;margin-bottom:8px;}
+.dd-row:last-child{margin-bottom:0;}
+.dd-today{background:rgba(255,230,80,.055);border:1px solid rgba(255,230,80,.16);}
+.dd-label{color:#a1a1aa;font-size:11px;font-weight:700;line-height:1.35;}
+.dd-label b{font-size:12.5px;white-space:nowrap;}
+.dd-fer{color:var(--c-feriado);font-size:10px;}
+.dd-turnos{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.dd-turno{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:8px 5px;text-align:center;min-height:58px;}
+.dd-turno.ativo{position:relative;overflow:hidden;border-color:rgba(74,222,128,.55);box-shadow:0 0 16px rgba(74,222,128,.22);}
+.dd-sweep{position:absolute;left:0;right:0;bottom:0;height:3px;overflow:hidden;border-radius:0 0 14px 14px;}
+.dd-sweep-light{position:absolute;bottom:0;height:3px;width:45%;background:linear-gradient(90deg,transparent,#4ade80,transparent);animation:ddsweep 1.8s linear infinite;}
+@keyframes ddsweep{0%{left:-45%}100%{left:100%}}
+.dd-eq{font-size:19px;font-weight:900;}
+.dd-eq.manha{color:#facc15;}
+.dd-eq.tarde{color:#38bdf8;}
+.dd-eq.noite{color:#86efac;}
+.dd-hora{font-size:10px;color:#7f8794;margin-top:2px;}
+.dd-progress{height:4px;margin-top:5px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;}
+.dd-bar{height:100%;background:linear-gradient(90deg,#22c55e,#a3e635);transition:width 1s linear;}
+.dd-live{margin-top:4px;font-size:9px;color:#a7f3d0;}
+.dd-evento{margin:0 0 8px;padding:8px 10px;border-radius:14px;background:rgba(139,92,246,.10);border:1px dashed rgba(167,139,250,.45);color:#c4b5fd;font-size:12px;font-weight:700;}
+
+/* timeline */
+.tl-title{font-size:11px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:.1em;padding:10px 16px 8px;}
+.tl-wrap{position:relative;padding:2px 12px 8px 54px;}
+.tl-wrap::before{content:'';position:absolute;left:42px;top:8px;bottom:8px;width:2px;background:linear-gradient(180deg,rgba(255,255,255,0.04),rgba(255,255,255,0.12),rgba(255,255,255,0.04));}
+.tl-row{position:relative;margin-bottom:9px;}
+.tl-row:last-child{margin-bottom:0;}
+.tl-date{position:absolute;left:-42px;top:2px;width:32px;text-align:right;}
+.tl-wd{display:block;font-size:9px;color:rgba(255,255,255,0.45);text-transform:uppercase;line-height:1.1;}
+.tl-dnum{font-size:15px;color:#fff;font-weight:600;line-height:1.1;}
+.tl-date-hoje .tl-wd{color:var(--c-verde);font-weight:700;}
+.tl-date-hoje .tl-dnum{color:var(--c-verde);font-weight:700;}
+.tl-dot{position:absolute;left:-12px;top:6px;width:8px;height:8px;border-radius:50%;background:var(--dot,#555);border:2px solid var(--bg);}
+.tl-dot-hoje{width:12px;height:12px;left:-14px;top:5px;box-shadow:0 0 0 3px rgba(74,171,106,0.22);}
+.tl-dot-ev{background:var(--c-evento);}
+.tl-item{border-radius:11px;padding:9px 13px;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);}
+.tl-shift{font-size:13px;font-weight:600;}
+.tl-hrs{font-size:11px;color:rgba(255,255,255,0.35);}
+/* cores por turno */
+.tl-m{background:rgba(255,230,0,0.07);border-color:rgba(255,230,0,0.2);} .tl-m .tl-shift{color:#FFE600;}
+.tl-t{background:rgba(0,191,255,0.07);border-color:rgba(0,191,255,0.2);} .tl-t .tl-shift{color:#00BFFF;}
+.tl-n{background:rgba(0,255,180,0.07);border-color:rgba(0,255,180,0.2);} .tl-n .tl-shift{color:#00FFB4;}
+.tl-f .tl-shift{color:rgba(255,255,255,0.6);}
+.tl-x{background:rgba(255,209,102,0.07);border-color:rgba(255,209,102,0.2);} .tl-x .tl-shift{color:#FFD166;}
+/* hoje destacado (sobrepõe a cor do turno na borda) */
+.tl-hoje{border:1px solid rgba(74,171,106,0.45);}
+/* feriado */
+.tl-fer .tl-shift{color:var(--c-feriado);}
+.tl-fer{background:rgba(239,159,39,0.08);border-color:rgba(239,159,39,0.25);}
+/* evento */
+.tl-ev{background:rgba(155,109,255,0.1);border:1px dashed rgba(155,109,255,0.4);margin-left:-12px;}
+.tl-ev .tl-shift{color:#b89aff;font-size:12px;}
+.tl-row-ev{margin-left:0;}

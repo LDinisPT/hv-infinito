@@ -1,0 +1,30 @@
+/* ============================================================
+   ONBOARDING — ecrã de boas-vindas
+   ============================================================ */
+.onb-overlay{
+  display:none;position:fixed;inset:0;z-index:1000;
+  background:rgba(6,6,16,0.97);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  align-items:center;justify-content:center;padding:22px;
+}
+.onb-card{width:100%;max-width:380px;}
+.onb-logo{width:60px;height:60px;border-radius:16px;background:linear-gradient(135deg,#7ec9a0,#4aab6a);margin:0 auto 16px;}
+.onb-title{text-align:center;color:#fff;font-size:22px;font-weight:800;}
+.onb-sub{text-align:center;color:rgba(255,255,255,0.45);font-size:14px;margin-top:6px;margin-bottom:26px;}
+.onb-field{margin-bottom:20px;}
+.onb-field label{display:block;color:rgba(255,255,255,0.5);font-size:12px;text-transform:uppercase;letter-spacing:.08em;font-weight:600;margin-bottom:9px;}
+.onb-input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:13px;padding:14px 16px;color:#fff;font-size:16px;font-family:inherit;outline:none;transition:border-color .15s;}
+.onb-input:focus{border-color:rgba(74,171,106,0.5);}
+.onb-teams{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
+.onb-team{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px 0;text-align:center;color:rgba(255,255,255,0.6);font-weight:700;font-size:18px;cursor:pointer;font-family:inherit;transition:all .15s;}
+.onb-team.sel{background:rgba(74,171,106,0.15);border-color:#4aab6a;color:#4aab6a;}
+.onb-start{width:100%;background:rgba(74,171,106,0.25);border:none;border-radius:14px;padding:16px;color:rgba(255,255,255,0.5);font-size:16px;font-weight:700;font-family:inherit;cursor:not-allowed;margin-top:6px;transition:all .2s;}
+.onb-start.ready{background:linear-gradient(135deg,#4aab6a,#3d8f58);color:#fff;cursor:pointer;}
+.onb-hint{text-align:center;color:rgba(255,255,255,0.3);font-size:11px;margin-top:14px;}
+
+/* Definições no separador Mais */
+.def-card{margin:14px 12px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px;}
+.def-row{display:flex;justify-content:space-between;align-items:center;}
+.def-label{font-size:13px;color:rgba(255,255,255,0.7);}
+.def-val{font-size:13px;color:#fff;font-weight:600;}
+.def-btn{margin-top:12px;width:100%;background:rgba(255,255,255,0.05);border:0.5px solid rgba(255,255,255,0.12);border-radius:10px;padding:10px;color:rgba(255,255,255,0.8);font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;}
+.def-btn:active{background:rgba(255,255,255,0.1);}
