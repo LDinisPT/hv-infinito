@@ -93,6 +93,17 @@ function initApp(){
   document.querySelectorAll('#manual .man-q').forEach(q => {
     q.onclick = () => q.parentElement.classList.toggle('open');
   });
+
+  // Botão partilhar
+  const shareBtn = document.getElementById('share-btn');
+  if(shareBtn) shareBtn.onclick = async () => {
+    const url = 'https://ldinispt.github.io/hv-infinito/';
+    if(navigator.share){
+      try { await navigator.share({title:'Horário Verallia', text:'App de turnos Verallia Fontela', url}); } catch(e){}
+    } else if(navigator.clipboard){
+      try { await navigator.clipboard.writeText(url); shareBtn.textContent='✅ Link copiado!'; setTimeout(()=>shareBtn.textContent='🔗 Partilhar link',2000); } catch(e){}
+    }
+  };
 }
 
 let deferredPrompt;

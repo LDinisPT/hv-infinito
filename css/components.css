@@ -296,3 +296,12 @@ body{background:#02020a;}
 .man-a{max-height:0;overflow:hidden;transition:max-height .25s ease,padding .25s ease;padding:0 14px;font-size:12px;color:rgba(255,255,255,0.6);line-height:1.5;}
 .man-item.open .man-a{max-height:200px;padding:0 14px 13px;}
 .man-a b{color:rgba(255,255,255,0.85);}
+
+/* Partilhar (QR code) */
+.share-card{margin:0 12px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);border-radius:16px;padding:18px 16px;text-align:center;}
+.share-qr-wrap{display:inline-block;background:#fff;border-radius:14px;padding:10px;}
+.share-qr{width:170px;height:170px;display:block;}
+.share-txt{font-size:12px;color:rgba(255,255,255,0.55);margin-top:12px;line-height:1.45;}
+.share-url{font-size:13px;color:#5cba7d;font-weight:600;margin-top:8px;}
+.share-btn{margin-top:14px;background:linear-gradient(135deg,#4aab6a,#3d8f58);border:none;border-radius:11px;padding:12px 22px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;}
+.share-btn:active{opacity:.85;}

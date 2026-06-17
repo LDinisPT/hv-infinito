@@ -17,11 +17,11 @@
 <link rel="manifest" href="manifest.json">
 <title>Verallia Turnos</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=14">
-<link rel="stylesheet" href="css/components.css?v=14">
-<link rel="stylesheet" href="css/hoje.css?v=14">
-<link rel="stylesheet" href="css/onboarding.css?v=14">
-<link rel="stylesheet" href="css/alarm.css?v=14">
+<link rel="stylesheet" href="css/base.css?v=15">
+<link rel="stylesheet" href="css/components.css?v=15">
+<link rel="stylesheet" href="css/hoje.css?v=15">
+<link rel="stylesheet" href="css/onboarding.css?v=15">
+<link rel="stylesheet" href="css/alarm.css?v=15">
 </head>
 <body>
 <div class="app">
@@ -124,6 +124,13 @@
       <div class="def-row" style="margin-top:8px;"><span class="def-label">Equipa</span><span class="def-val" id="def-team">—</span></div>
       <button class="def-btn" id="def-reconfig">✏️ Alterar nome / equipa</button>
     </div>
+    <div class="panel-title">📤 Partilhar</div>
+    <div class="share-card">
+      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=15" class="share-qr" alt="QR Code da app"></div>
+      <div class="share-txt">Aponta a câmara do telemóvel para abrir ou partilhar a app com os colegas</div>
+      <div class="share-url">ldinispt.github.io/hv-infinito</div>
+      <button class="share-btn" id="share-btn">🔗 Partilhar link</button>
+    </div>
     <div class="panel-title">❓ Como usar</div>
     <div class="manual" id="manual">
       <div class="man-item">
@@ -209,21 +216,21 @@
 </div>
 
 <!-- ===== SCRIPTS (ordem importa) ===== -->
-<script src="js/data.js?v=14"></script>
-<script src="js/core.js?v=14"></script>
-<script src="js/weather.js?v=14"></script>
-<script src="js/medico.js?v=14"></script>
-<script src="js/hoje.js?v=14"></script>
-<script src="js/mes.js?v=14"></script>
-<script src="js/mais.js?v=14"></script>
-<script src="js/timeline.js?v=14"></script>
-<script src="js/onboarding.js?v=14"></script>
-<script src="js/alarm.js?v=14"></script>
-<script src="js/tabs.js?v=14"></script>
-<script src="js/app.js?v=14"></script>
+<script src="js/data.js?v=15"></script>
+<script src="js/core.js?v=15"></script>
+<script src="js/weather.js?v=15"></script>
+<script src="js/medico.js?v=15"></script>
+<script src="js/hoje.js?v=15"></script>
+<script src="js/mes.js?v=15"></script>
+<script src="js/mais.js?v=15"></script>
+<script src="js/timeline.js?v=15"></script>
+<script src="js/onboarding.js?v=15"></script>
+<script src="js/alarm.js?v=15"></script>
+<script src="js/tabs.js?v=15"></script>
+<script src="js/app.js?v=15"></script>
 <script>
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=14').then(reg=>{
+  navigator.serviceWorker.register('sw.js?v=15').then(reg=>{
     navigator.serviceWorker.addEventListener('message', e=>{ if(e.data==='reload') location.reload(); });
   });
 }
