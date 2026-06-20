@@ -17,11 +17,12 @@
 <link rel="manifest" href="manifest.json">
 <title>Verallia Turnos</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=15">
-<link rel="stylesheet" href="css/components.css?v=15">
-<link rel="stylesheet" href="css/hoje.css?v=15">
-<link rel="stylesheet" href="css/onboarding.css?v=15">
-<link rel="stylesheet" href="css/alarm.css?v=15">
+<link rel="stylesheet" href="css/base.css?v=16">
+<link rel="stylesheet" href="css/components.css?v=16">
+<link rel="stylesheet" href="css/hoje.css?v=16">
+<link rel="stylesheet" href="css/onboarding.css?v=16">
+<link rel="stylesheet" href="css/alarm.css?v=16">
+<link rel="stylesheet" href="css/rendimento.css?v=16">
 </head>
 <body>
 <div class="app">
@@ -111,6 +112,26 @@
     <div class="medico-card" id="medico-card"></div>
   </div>
 
+  <!-- ===== SEPARADOR: RENDIMENTO ===== -->
+  <div class="tab-panel" id="tab-rendimento">
+    <div class="panel-title">📈 Rendimento do turno</div>
+    <div class="rend-hint">Modo ao vivo · mete os paletes feitos até agora (o tempo conta desde o início do turno)</div>
+    <div class="rend-stats">
+      <div class="rend-stat"><div class="lbl">Forno 1</div><div class="val" id="rend-avg-f1">—</div></div>
+      <div class="rend-stat"><div class="lbl">Forno 2</div><div class="val" id="rend-avg-f2">—</div></div>
+      <div class="rend-stat"><div class="lbl">Geral</div><div class="val" id="rend-avg-geral">—</div></div>
+    </div>
+    <div class="rend-bestworst">
+      <button class="rend-bw" onclick="rendIrPara('best')"><span class="ico">▲</span><span class="txt">Melhor</span><span class="v" id="rend-best-val">—</span></button>
+      <button class="rend-bw" onclick="rendIrPara('worst')"><span class="ico">▼</span><span class="txt">Pior</span><span class="v" id="rend-worst-val">—</span></button>
+    </div>
+    <div class="rend-actions">
+      <button class="rend-btn-reset" onclick="rendResetTudo()">↻ Repor tudo</button>
+    </div>
+    <div id="rend-wrap"></div>
+    <div class="rend-hint" style="margin-top:12px">Turno atual · início <span id="rend-turno-info">—</span></div>
+  </div>
+
   <!-- ===== SEPARADOR: MAIS ===== -->
   <div class="tab-panel" id="tab-mais">
     <div class="panel-title">📊 Estatísticas</div>
@@ -126,7 +147,7 @@
     </div>
     <div class="panel-title">📤 Partilhar</div>
     <div class="share-card">
-      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=15" class="share-qr" alt="QR Code da app"></div>
+      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=16" class="share-qr" alt="QR Code da app"></div>
       <div class="share-txt">Aponta a câmara do telemóvel para abrir ou partilhar a app com os colegas</div>
       <div class="share-url">ldinispt.github.io/hv-infinito</div>
       <button class="share-btn" id="share-btn">🔗 Partilhar link</button>
@@ -212,25 +233,27 @@
   <button class="tabbar-btn active" data-tab="hoje"><span class="tb-icon">📍</span><span class="tb-txt">Hoje</span></button>
   <button class="tabbar-btn" data-tab="mes"><span class="tb-icon">📅</span><span class="tb-txt">Mês</span></button>
   <button class="tabbar-btn" data-tab="medico"><span class="tb-icon">🩺</span><span class="tb-txt">Médico</span></button>
+  <button class="tabbar-btn" data-tab="rendimento"><span class="tb-icon">📈</span><span class="tb-txt">Rendimento</span></button>
   <button class="tabbar-btn" data-tab="mais"><span class="tb-icon">⚙️</span><span class="tb-txt">Mais</span></button>
 </div>
 
 <!-- ===== SCRIPTS (ordem importa) ===== -->
-<script src="js/data.js?v=15"></script>
-<script src="js/core.js?v=15"></script>
-<script src="js/weather.js?v=15"></script>
-<script src="js/medico.js?v=15"></script>
-<script src="js/hoje.js?v=15"></script>
-<script src="js/mes.js?v=15"></script>
-<script src="js/mais.js?v=15"></script>
-<script src="js/timeline.js?v=15"></script>
-<script src="js/onboarding.js?v=15"></script>
-<script src="js/alarm.js?v=15"></script>
-<script src="js/tabs.js?v=15"></script>
-<script src="js/app.js?v=15"></script>
+<script src="js/data.js?v=16"></script>
+<script src="js/core.js?v=16"></script>
+<script src="js/weather.js?v=16"></script>
+<script src="js/medico.js?v=16"></script>
+<script src="js/hoje.js?v=16"></script>
+<script src="js/mes.js?v=16"></script>
+<script src="js/mais.js?v=16"></script>
+<script src="js/timeline.js?v=16"></script>
+<script src="js/onboarding.js?v=16"></script>
+<script src="js/alarm.js?v=16"></script>
+<script src="js/rendimento.js?v=16"></script>
+<script src="js/tabs.js?v=16"></script>
+<script src="js/app.js?v=16"></script>
 <script>
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=15').then(reg=>{
+  navigator.serviceWorker.register('sw.js?v=16').then(reg=>{
     navigator.serviceWorker.addEventListener('message', e=>{ if(e.data==='reload') location.reload(); });
   });
 }
