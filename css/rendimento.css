@@ -114,3 +114,6 @@
 .rend-tog{display:flex;background:rgba(0,0,0,0.35);border-radius:6px;padding:2px;gap:2px;margin-top:4px;}
 .rend-tog span{flex:1;text-align:center;font-size:10px;font-weight:700;padding:3px 0;border-radius:4px;color:#9aa0b0;cursor:pointer;transition:all .15s;user-select:none;}
 .rend-tog span.rtog-on{background:#ec4899;color:#1a0010;}
+
+/* Resumo fixo ao fazer scroll */
+.rend-sticky{position:sticky;top:0;z-index:20;background:#060610;padding:8px 0 10px;margin-bottom:2px;box-shadow:0 6px 14px -6px rgba(0,0,0,0.8);}

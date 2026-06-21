@@ -109,10 +109,14 @@
   }
 
   // ---- Render ----
+  function tintRend(h,a){h=h.replace('#','');const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return 'rgba('+r+','+g+','+b+','+a+')';}
+  function txtOnRend(h){h=h.replace('#','');const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return (0.299*r+0.587*g+0.114*b)>140?'#1a1205':'#fff';}
   function buildCard(l){
     const s=state[l]; const div=document.createElement('div');
     div.className='rend-card'; div.id='rend-card-'+l;
     const color=COLORS[l]; const pct=calcPct(l);
+    div.style.background=tintRend(color,0.11);
+    div.style.borderColor=tintRend(color,0.35);
     const pctText=pct!==null?pct+'%':'—'; const pc=pctColor(pct);
     div.innerHTML=
       '<div class="rend-card-head">'+
@@ -132,8 +136,8 @@
             ? '<input type="number" inputmode="numeric" min="1" max="480" placeholder="min" value="'+s.minutos+'" oninput="rendSet(\''+l+'\',\'minutos\',this.value)">'
             : '')+
           '<div class="rend-tog">'+
-            '<span class="'+(s.timeMode==='auto'?'rtog-on':'')+'" onclick="rendSetMode(\''+l+'\',\'auto\')">Auto</span>'+
-            '<span class="'+(s.timeMode==='manual'?'rtog-on':'')+'" onclick="rendSetMode(\''+l+'\',\'manual\')">Man</span>'+
+            '<span class="'+(s.timeMode==='auto'?'rtog-on':'')+'"'+(s.timeMode==='auto'?' style="background:'+color+';color:'+txtOnRend(color)+'"':'')+' onclick="rendSetMode(\''+l+'\',\'auto\')">Auto</span>'+
+            '<span class="'+(s.timeMode==='manual'?'rtog-on':'')+'"'+(s.timeMode==='manual'?' style="background:'+color+';color:'+txtOnRend(color)+'"':'')+' onclick="rendSetMode(\''+l+'\',\'manual\')">Man</span>'+
           '</div>'+
         '</div>'+
       '</div>';
