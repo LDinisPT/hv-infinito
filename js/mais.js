@@ -82,26 +82,44 @@ function renderEventosGrupo(){
 function renderStats() {
   const grid = document.getElementById('stats-grid');
   if(!grid) return;
-  let m=0,t=0,n=0,f=0,x=0;
   const yearData = (SCHEDULES[curYear]||{})[curTeam]||[];
-  yearData.forEach(month => month.forEach(row => {
-    const s = row[2];
-    if(s==='5') m++;
-    else if(s==='13') t++;
-    else if(s==='21') n++;
-    else if(s==='X') x++;
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  let m=0,t=0,n=0,f=0, mF=0,tF=0,nF=0, ferTotal=0,ferLivre=0, fdsLivres=0;
+  yearData.forEach((month, mi) => month.forEach(row => {
+    const dia=row[0], s=row[2];
+    const dt = new Date(curYear, mi, dia);
+    const passou = dt < hoje;
+    if(s==='5'){ m++; if(passou)mF++; }
+    else if(s==='13'){ t++; if(passou)tF++; }
+    else if(s==='21'){ n++; if(passou)nF++; }
     else f++;
+    const wd = dt.getDay();
+    if((wd===0||wd===6) && (s==='F'||s==='X')) fdsLivres++;
+    if(getFeriado(curYear, mi, dia)){ ferTotal++; if(s==='F'||s==='X') ferLivre++; }
   }));
-  const stats = [
-    {num:m,lbl:'Manhã',color:'#378ADD'},
-    {num:t,lbl:'Tarde',color:'#1D9E75'},
-    {num:n,lbl:'Noite',color:'#7F77DD'},
-    {num:m+t+n+x,lbl:'Trabalhados',color:'rgba(255,255,255,0.2)'},
-  ];
-  grid.innerHTML = stats.map(s=>`
-    <div class="stat">
-      <div class="stat-bar" style="background:${s.color}"></div>
-      <div><div class="stat-num" style="color:${s.color}">${s.num}</div><div class="stat-lbl">${s.lbl}</div></div>
-    </div>`).join('');
+  const trab=m+t+n, trabF=mF+tF+nF, horas=trab*7.5;
+  const pct = trab>0 ? Math.round(trabF/trab*100) : 0;
+
+  grid.innerHTML = `
+    <div class="panel-title">📊 Os teus turnos · ${curYear}</div>
+    <div class="stats-b">
+      <div class="stat-ic"><span class="ic">☀️</span><div><div class="n" style="color:#378ADD">${m}</div><div class="l">Manhãs</div></div></div>
+      <div class="stat-ic"><span class="ic">🌊</span><div><div class="n" style="color:#1D9E75">${t}</div><div class="l">Tardes</div></div></div>
+      <div class="stat-ic"><span class="ic">🌙</span><div><div class="n" style="color:#7F77DD">${n}</div><div class="l">Noites</div></div></div>
+      <div class="stat-ic"><span class="ic">💼</span><div><div class="n">${trab}</div><div class="l">Trabalhados</div></div></div>
+    </div>
+    <div class="panel-title">📈 O teu ano até agora</div>
+    <div class="prog-card">
+      <div class="prog-top"><b>${trabF} <span class="prog-of">de ${trab} turnos</span></b><span class="prog-pct">${pct}%</span></div>
+      <div class="pbar"><div class="pfill" style="width:${pct}%"></div></div>
+      <div class="psub"><span>Manhãs <b>${mF}/${m}</b></span><span>Tardes <b>${tF}/${t}</b></span><span>Noites <b>${nF}/${n}</b></span></div>
+    </div>
+    <div class="panel-title">🌴 Tempo &amp; descanso</div>
+    <div class="stats-b">
+      <div class="stat-ic"><span class="ic">🌿</span><div><div class="n" style="color:#86efac">${f}</div><div class="l">Folgas no ano</div></div></div>
+      <div class="stat-ic"><span class="ic">⏱️</span><div><div class="n" style="color:#e0a93f">${horas%1===0?horas:horas.toFixed(0)}h</div><div class="l">Horas no ano</div></div></div>
+      <div class="stat-ic"><span class="ic">🎉</span><div><div class="n" style="color:#EF9F27">${ferTotal}</div><div class="l">Feriados <span style="color:#86efac">(${ferLivre} livres)</span></div></div></div>
+      <div class="stat-ic"><span class="ic">🏖️</span><div><div class="n" style="color:#7fc4ff">${fdsLivres}</div><div class="l">FDS livres</div></div></div>
+    </div>`;
 }
 

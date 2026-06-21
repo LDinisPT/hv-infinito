@@ -305,3 +305,19 @@ body{background:#02020a;}
 .share-url{font-size:13px;color:#5cba7d;font-weight:600;margin-top:8px;}
 .share-btn{margin-top:14px;background:linear-gradient(135deg,#4aab6a,#3d8f58);border:none;border-radius:11px;padding:12px 22px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;}
 .share-btn:active{opacity:.85;}
+
+/* Estatísticas estilo B (ícones + progresso) */
+.stats-b{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 12px;}
+.stat-ic{background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:13px;display:flex;align-items:center;gap:11px;}
+.stat-ic .ic{font-size:25px;}
+.stat-ic .n{font-size:22px;font-weight:700;line-height:1;color:#fff;}
+.stat-ic .l{font-size:11px;color:rgba(255,255,255,0.55);margin-top:2px;}
+.prog-card{margin:0 12px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px;}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:9px;}
+.prog-top b{font-size:20px;font-weight:700;color:#fff;}
+.prog-of{font-size:13px;color:rgba(255,255,255,0.5);font-weight:400;}
+.prog-pct{font-size:14px;color:#4ade80;font-weight:700;}
+.pbar{height:10px;background:rgba(255,255,255,0.08);border-radius:99px;overflow:hidden;}
+.pfill{height:100%;background:linear-gradient(90deg,#378ADD,#4ade80);border-radius:99px;transition:width .6s ease;}
+.psub{display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.55);}
+.psub b{color:#fff;}

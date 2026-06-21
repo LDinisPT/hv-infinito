@@ -17,12 +17,12 @@
 <link rel="manifest" href="manifest.json">
 <title>Verallia Turnos</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=21">
-<link rel="stylesheet" href="css/components.css?v=21">
-<link rel="stylesheet" href="css/hoje.css?v=21">
-<link rel="stylesheet" href="css/onboarding.css?v=21">
-<link rel="stylesheet" href="css/alarm.css?v=21">
-<link rel="stylesheet" href="css/rendimento.css?v=21">
+<link rel="stylesheet" href="css/base.css?v=22">
+<link rel="stylesheet" href="css/components.css?v=22">
+<link rel="stylesheet" href="css/hoje.css?v=22">
+<link rel="stylesheet" href="css/onboarding.css?v=22">
+<link rel="stylesheet" href="css/alarm.css?v=22">
+<link rel="stylesheet" href="css/rendimento.css?v=22">
 </head>
 <body>
 <div class="app">
@@ -136,8 +136,7 @@
 
   <!-- ===== SEPARADOR: MAIS ===== -->
   <div class="tab-panel" id="tab-mais">
-    <div class="panel-title">📊 Estatísticas</div>
-    <div class="stats" id="stats-grid"></div>
+    <div id="stats-grid"></div>
     <div id="eventos-grupo"></div>
     <div class="panel-title">⏰ Despertador</div>
     <div id="alarm-config"></div>
@@ -149,7 +148,7 @@
     </div>
     <div class="panel-title">📤 Partilhar</div>
     <div class="share-card">
-      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=21" class="share-qr" alt="QR Code da app"></div>
+      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=22" class="share-qr" alt="QR Code da app"></div>
       <div class="share-txt">Aponta a câmara do telemóvel para abrir ou partilhar a app com os colegas</div>
       <div class="share-url">ldinispt.github.io/hv-infinito</div>
       <button class="share-btn" id="share-btn">🔗 Partilhar link</button>
@@ -240,22 +239,22 @@
 </div>
 
 <!-- ===== SCRIPTS (ordem importa) ===== -->
-<script src="js/data.js?v=21"></script>
-<script src="js/core.js?v=21"></script>
-<script src="js/weather.js?v=21"></script>
-<script src="js/medico.js?v=21"></script>
-<script src="js/hoje.js?v=21"></script>
-<script src="js/mes.js?v=21"></script>
-<script src="js/mais.js?v=21"></script>
-<script src="js/timeline.js?v=21"></script>
-<script src="js/onboarding.js?v=21"></script>
-<script src="js/alarm.js?v=21"></script>
-<script src="js/rendimento.js?v=21"></script>
-<script src="js/tabs.js?v=21"></script>
-<script src="js/app.js?v=21"></script>
+<script src="js/data.js?v=22"></script>
+<script src="js/core.js?v=22"></script>
+<script src="js/weather.js?v=22"></script>
+<script src="js/medico.js?v=22"></script>
+<script src="js/hoje.js?v=22"></script>
+<script src="js/mes.js?v=22"></script>
+<script src="js/mais.js?v=22"></script>
+<script src="js/timeline.js?v=22"></script>
+<script src="js/onboarding.js?v=22"></script>
+<script src="js/alarm.js?v=22"></script>
+<script src="js/rendimento.js?v=22"></script>
+<script src="js/tabs.js?v=22"></script>
+<script src="js/app.js?v=22"></script>
 <script>
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=21').then(reg=>{
+  navigator.serviceWorker.register('sw.js?v=22').then(reg=>{
     navigator.serviceWorker.addEventListener('message', e=>{ if(e.data==='reload') location.reload(); });
   });
 }

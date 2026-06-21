@@ -37,11 +37,11 @@ const FERIADOS_FIXOS = {
   "1-5":  "Dia do Trabalhador",
   "10-6": "Dia de Portugal",
   "24-6": "São João",
-  "15-8": "Assuncao N.Sra.",
-  "5-10": "Implantacao Republica",
+  "15-8": "Assunção N.ª Sra.",
+  "5-10": "Implantação República",
   "1-11": "Todos os Santos",
-  "1-12": "Restauracao Independencia",
-  "8-12": "Imaculada Conceicao",
+  "1-12": "Restauração Independência",
+  "8-12": "Imaculada Conceição",
   "25-12":"Natal"
 };
 
@@ -57,11 +57,11 @@ function calcPascoa(ano){
 function feriadosMoveis(ano){
   const p = calcPascoa(ano);
   const off = (dias) => { const x=new Date(p); x.setDate(x.getDate()+dias); return x.getDate()+'-'+(x.getMonth()+1); };
-  return { [off(-47)]:'Carnaval', [off(-2)]:'Sexta-feira Santa', [off(0)]:'Pascoa', [off(60)]:'Corpo de Deus' };
+  return { [off(-47)]:'Carnaval', [off(-2)]:'Sexta-feira Santa', [off(0)]:'Páscoa', [off(60)]:'Corpo de Deus' };
 }
 
 
-const MONTH_NAMES = ["Janeiro","Fevereiro","Marco","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
+const MONTH_NAMES = ["Janeiro","Fevereiro","Março","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
 
 
 function getFeriado(year, month, day) {
