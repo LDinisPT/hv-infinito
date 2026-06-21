@@ -128,9 +128,13 @@
         '<div class="rend-field rf-vel"><label>Veloc.</label>'+
           '<input type="number" inputmode="numeric" min="0" placeholder="0" value="'+s.veloc+'" oninput="rendSet(\''+l+'\',\'veloc\',this.value)"></div>'+
         '<div class="rend-field rf-tempo"><label>'+tempoLabel(l)+'</label>'+
-          (s.timeMode==='auto'
-            ? '<button class="rend-time-btn" onclick="rendSetMode(\''+l+'\',\'manual\')">&#9201; Auto</button>'
-            : '<input type="number" inputmode="numeric" min="1" max="480" placeholder="min" value="'+s.minutos+'" oninput="rendSet(\''+l+'\',\'minutos\',this.value)" ondblclick="rendSetMode(\''+l+'\',\'auto\')">')+
+          (s.timeMode==='manual'
+            ? '<input type="number" inputmode="numeric" min="1" max="480" placeholder="min" value="'+s.minutos+'" oninput="rendSet(\''+l+'\',\'minutos\',this.value)">'
+            : '')+
+          '<div class="rend-tog">'+
+            '<span class="'+(s.timeMode==='auto'?'rtog-on':'')+'" onclick="rendSetMode(\''+l+'\',\'auto\')">Auto</span>'+
+            '<span class="'+(s.timeMode==='manual'?'rtog-on':'')+'" onclick="rendSetMode(\''+l+'\',\'manual\')">Man</span>'+
+          '</div>'+
         '</div>'+
       '</div>';
     return div;
