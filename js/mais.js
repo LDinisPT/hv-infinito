@@ -93,7 +93,7 @@ function renderStats() {
     else f++;
   }));
   const stats = [
-    {num:m,lbl:'Manha',color:'#378ADD'},
+    {num:m,lbl:'Manhã',color:'#378ADD'},
     {num:t,lbl:'Tarde',color:'#1D9E75'},
     {num:n,lbl:'Noite',color:'#7F77DD'},
     {num:m+t+n+x,lbl:'Trabalhados',color:'rgba(255,255,255,0.2)'},

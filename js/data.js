@@ -45,20 +45,20 @@ const FERIADOS_FIXOS = {
   "25-12":"Natal"
 };
 
-// Feriados moveis - por ano
-const FERIADOS_MOVEIS = {
-  2026: {"17-2":"Carnaval","3-4":"Sexta-feira Santa","5-4":"Pascoa","4-6":"Corpo de Deus"},
-  2027: {"9-2":"Carnaval","26-3":"Sexta-feira Santa","28-3":"Pascoa","27-5":"Corpo de Deus"},
-  2028: {"29-2":"Carnaval","14-4":"Sexta-feira Santa","16-4":"Pascoa","15-6":"Corpo de Deus"},
-  2029: {"13-2":"Carnaval","30-3":"Sexta-feira Santa","1-4":"Pascoa","31-5":"Corpo de Deus"},
-  2030: {"5-3":"Carnaval","19-4":"Sexta-feira Santa","21-4":"Pascoa","20-6":"Corpo de Deus"},
-  2031: {"25-2":"Carnaval","11-4":"Sexta-feira Santa","13-4":"Pascoa","12-6":"Corpo de Deus"},
-  2032: {"10-2":"Carnaval","26-3":"Sexta-feira Santa","28-3":"Pascoa","27-5":"Corpo de Deus"},
-  2033: {"1-3":"Carnaval","15-4":"Sexta-feira Santa","17-4":"Pascoa","16-6":"Corpo de Deus"},
-  2034: {"21-2":"Carnaval","7-4":"Sexta-feira Santa","9-4":"Pascoa","8-6":"Corpo de Deus"},
-  2035: {"6-2":"Carnaval","23-3":"Sexta-feira Santa","25-3":"Pascoa","24-5":"Corpo de Deus"},
-  2036: {"26-2":"Carnaval","11-4":"Sexta-feira Santa","13-4":"Pascoa","12-6":"Corpo de Deus"},
-};
+// Feriados moveis - calculados automaticamente (algoritmo de Computus) para QUALQUER ano
+function calcPascoa(ano){
+  const a=ano%19, b=Math.floor(ano/100), c=ano%100, d=Math.floor(b/4), e=b%4;
+  const f=Math.floor((b+8)/25), g=Math.floor((b-f+1)/3);
+  const h=(19*a+b-d-g+15)%30, i=Math.floor(c/4), k=c%4;
+  const l=(32+2*e+2*i-h-k)%7, m=Math.floor((a+11*h+22*l)/451);
+  const mes=Math.floor((h+l-7*m+114)/31), dia=((h+l-7*m+114)%31)+1;
+  return new Date(ano, mes-1, dia);
+}
+function feriadosMoveis(ano){
+  const p = calcPascoa(ano);
+  const off = (dias) => { const x=new Date(p); x.setDate(x.getDate()+dias); return x.getDate()+'-'+(x.getMonth()+1); };
+  return { [off(-47)]:'Carnaval', [off(-2)]:'Sexta-feira Santa', [off(0)]:'Pascoa', [off(60)]:'Corpo de Deus' };
+}
 
 
 const MONTH_NAMES = ["Janeiro","Fevereiro","Marco","Abril","Maio","Junho","Julho","Agosto","Setembro","Outubro","Novembro","Dezembro"];
@@ -67,8 +67,8 @@ const MONTH_NAMES = ["Janeiro","Fevereiro","Marco","Abril","Maio","Junho","Julho
 function getFeriado(year, month, day) {
   const key = day + '-' + (month+1);
   if(FERIADOS_FIXOS[key]) return FERIADOS_FIXOS[key];
-  const mob = FERIADOS_MOVEIS[year];
-  if(mob && mob[key]) return mob[key];
+  const mob = feriadosMoveis(year);
+  if(mob[key]) return mob[key];
   return '';
 }
 
