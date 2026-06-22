@@ -5,8 +5,13 @@
 const TEAM_COLORS = {A:'m',B:'t',C:'c',D:'n',E:'x'};
 
 const today = new Date();
-const todayY = today.getFullYear();
-const todayD = today.getDate(), todayM = today.getMonth();
+// Dia de turno (escala): a Noite (21h-05h) termina às 05h do dia seguinte.
+// Antes das 05h esse turno ainda decorre, por isso o "dia de hoje" para
+// efeitos de escala é o dia anterior — consistente em todos os ecrãs.
+const _refDay = new Date();
+if(_refDay.getHours() < 5) _refDay.setDate(_refDay.getDate() - 1);
+const todayY = _refDay.getFullYear();
+const todayD = _refDay.getDate(), todayM = _refDay.getMonth();
 
 function safeGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
 function safeSet(k,v){ try { localStorage.setItem(k,v); } catch(e){} }
@@ -16,7 +21,7 @@ let curMonth = todayM;
 
 const SHIFT_CLS = {'5':'dc-m','13':'dc-t','21':'dc-n','F':'dc-f','X':'dc-x'};
 const SHIFT_NUM_LBL = {'5':'05h','13':'13h','21':'21h','F':'Folga','X':'Férias'};
-const SHIFT_EMOJI = {'5':'☀️','13':'🌊','21':'🌙','F':'','X':''};
+const SHIFT_EMOJI = {'5':'🐓','13':'☀️','21':'🌙','F':'','X':''};
 const SHIFT_DESC = {'5':'Manhã 05-13','13':'Tarde 13-21','21':'Noite 21-05','F':'Dia de folga','X':'Férias + Feriado'};
 const STAT_COLORS = {'5':'#FFE600','13':'#00BFFF','21':'#00FFB4'};
 
@@ -139,7 +144,7 @@ function getCurrentShiftKey(){
 }
 
 
-const MONTH_NAMES_PT = ['Janeiro','Fevereiro','Marco','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+const MONTH_NAMES_PT = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
 
 
 

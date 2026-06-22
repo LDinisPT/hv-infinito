@@ -64,8 +64,8 @@ function renderCiclo() {
   }
 
   const SHIFT_INFO = {
-    '5':  { emoji:'☀️', label:'Manhã 05h-13h',  color:'#FFE600', bg:'rgba(255,230,0,0.15)' },
-    '13': { emoji:'🌊', label:'Tarde 13h-21h',  color:'#00BFFF', bg:'rgba(0,191,255,0.15)' },
+    '5':  { emoji:'🐓', label:'Manhã 05h-13h',  color:'#FFE600', bg:'rgba(255,230,0,0.15)' },
+    '13': { emoji:'☀️', label:'Tarde 13h-21h',  color:'#00BFFF', bg:'rgba(0,191,255,0.15)' },
     '21': { emoji:'🌙', label:'Noite 21h-05h',  color:'#00FFB4', bg:'rgba(0,255,180,0.15)' },
     'F':  { emoji:'🌿', label:'Folga',           color:'#A8D870', bg:'rgba(168,216,112,0.15)' },
   };
@@ -213,8 +213,8 @@ function renderQuinzena() {
 
 function gridForDate(tt, mineTeam){
   const items = [
-    {lbl:'☀️ Manhã', team:tt.M||'—', cls:'m', hrs:'05-13'},
-    {lbl:'🌊 Tarde', team:tt.T||'—', cls:'t', hrs:'13-21'},
+    {lbl:'🐓 Manhã', team:tt.M||'—', cls:'m', hrs:'05-13'},
+    {lbl:'☀️ Tarde', team:tt.T||'—', cls:'t', hrs:'13-21'},
     {lbl:'🌙 Noite', team:tt.N||'—', cls:'n', hrs:'21-05'},
   ];
   return `<div class="teams-today-grid">
@@ -260,8 +260,8 @@ function closeDatePopup(){ document.getElementById('date-overlay').classList.rem
 function teamsGridHTML(tt, cur, showHours){
   if(showHours === undefined) showHours = true;
   const items = [
-    {k:'M', emoji:'☀️', team:tt.M||'—', cls:'m', hrs:'05-13'},
-    {k:'T', emoji:'🌊', team:tt.T||'—', cls:'t', hrs:'13-21'},
+    {k:'M', emoji:'🐓', team:tt.M||'—', cls:'m', hrs:'05-13'},
+    {k:'T', emoji:'☀️', team:tt.T||'—', cls:'t', hrs:'13-21'},
     {k:'N', emoji:'🌙', team:tt.N||'—', cls:'n', hrs:'21-05'},
   ];
   return `<div class="teams-today-grid">
@@ -292,7 +292,7 @@ function teamsHTMLToday(){
 function renderTodayCard() {
   const t = new Date(todayY, todayM, todayD);
   const fer = getFeriadoLocal(todayD, todayM);
-  const wdays = ['Domingo','Segunda','Terca','Quarta','Quinta','Sexta','Sabado'];
+  const wdays = ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'];
   const mns = (typeof MONTH_NAMES !== 'undefined' ? MONTH_NAMES : MONTH_NAMES_PT);
   const now = new Date();
   const greeting = getGreeting();

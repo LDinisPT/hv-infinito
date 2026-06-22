@@ -103,8 +103,8 @@ function renderStats() {
   grid.innerHTML = `
     <div class="panel-title">📊 Os teus turnos · ${curYear}</div>
     <div class="stats-b">
-      <div class="stat-ic"><span class="ic">☀️</span><div><div class="n" style="color:#378ADD">${m}</div><div class="l">Manhãs</div></div></div>
-      <div class="stat-ic"><span class="ic">🌊</span><div><div class="n" style="color:#1D9E75">${t}</div><div class="l">Tardes</div></div></div>
+      <div class="stat-ic"><span class="ic">🐓</span><div><div class="n" style="color:#378ADD">${m}</div><div class="l">Manhãs</div></div></div>
+      <div class="stat-ic"><span class="ic">☀️</span><div><div class="n" style="color:#1D9E75">${t}</div><div class="l">Tardes</div></div></div>
       <div class="stat-ic"><span class="ic">🌙</span><div><div class="n" style="color:#7F77DD">${n}</div><div class="l">Noites</div></div></div>
       <div class="stat-ic"><span class="ic">💼</span><div><div class="n">${trab}</div><div class="l">Trabalhados</div></div></div>
     </div>

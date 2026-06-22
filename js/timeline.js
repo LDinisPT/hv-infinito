@@ -3,8 +3,8 @@
 // ============================================================
 
 const TL_SHIFT = {
-  '5':  {emoji:'☀️', nome:'Manhã', hrs:'05-13', cls:'m', dot:'#FFE600'},
-  '13': {emoji:'🌊', nome:'Tarde', hrs:'13-21', cls:'t', dot:'#00BFFF'},
+  '5':  {emoji:'🐓', nome:'Manhã', hrs:'05-13', cls:'m', dot:'#FFE600'},
+  '13': {emoji:'☀️', nome:'Tarde', hrs:'13-21', cls:'t', dot:'#00BFFF'},
   '21': {emoji:'🌙', nome:'Noite', hrs:'21-05', cls:'n', dot:'#00FFB4'},
   'F':  {emoji:'🌿', nome:'Folga', hrs:'',      cls:'f', dot:'#A8D870'},
   'X':  {emoji:'🏖️', nome:'Férias', hrs:'',     cls:'x', dot:'#FFD166'},
@@ -37,8 +37,8 @@ function getShiftProgress(shiftKey){
 // ---- HTML dos 3 turnos (colunas), com barra no turno em curso ----
 function turnosHTML(tt, cur, withProgress){
   const items = [
-    {k:'M', emoji:'☀️', team:tt.M||'—', cls:'manha', hrs:'05-13'},
-    {k:'T', emoji:'🌊', team:tt.T||'—', cls:'tarde', hrs:'13-21'},
+    {k:'M', emoji:'🐓', team:tt.M||'—', cls:'manha', hrs:'05-13'},
+    {k:'T', emoji:'☀️', team:tt.T||'—', cls:'tarde', hrs:'13-21'},
     {k:'N', emoji:'🌙', team:tt.N||'—', cls:'noite', hrs:'21-05'},
   ];
   return `<div class="dd-turnos">${items.map(it=>{

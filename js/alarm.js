@@ -66,7 +66,7 @@ function renderAlarmAviso(){
   const amanhaManha = getShift(curTeam, tom.getFullYear(), tom.getMonth(), tom.getDate()) === '5';
   if(amanhaManha){
     box.innerHTML = `<div class="aa-card">
-      <span class="aa-txt">⏰ <b class="aa-turno">☀️ Turno da Manhã</b> · acordar às <b class="aa-hora">${getAlarmTime()}</b></span>
+      <span class="aa-txt">⏰ <b class="aa-turno">🐓 Turno da Manhã</b> · acordar às <b class="aa-hora">${getAlarmTime()}</b></span>
       <button class="aa-btn" id="aa-btn">📅</button>
     </div>`;
     document.getElementById('aa-btn').onclick = downloadMorningICS;

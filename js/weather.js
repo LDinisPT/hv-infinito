@@ -43,7 +43,7 @@ async function fetchWeather() {
     const dd = document.getElementById('dd-weather');
     if(dd) dd.textContent = ` · ${icon} ${temp}°`;
   } catch(e) {
-    console.log('Weather unavailable');
+    /* tempo indisponível — falha silenciosa, é opcional */
   }
 }
 
