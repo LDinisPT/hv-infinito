@@ -132,15 +132,23 @@ function initAusenciasUI(){
       if(!file) return;
       const reader = new FileReader();
       reader.onload = (ev) => {
+        const msg = document.getElementById('ics-msg');
+        const texto = ev.target.result || '';
+        // Valida pelo CONTEÚDO (não pela extensão) — funciona com .ics e .ics.txt
+        if(!texto.includes('BEGIN:VCALENDAR') && !texto.includes('BEGIN:VEVENT')){
+          if(msg){ msg.textContent = '❌ Esse ficheiro não parece o calendário do portal. Exporta o Ausências do portal e tenta de novo.'; }
+          inp.value = ''; return;
+        }
         try {
-          const n = importarICS(ev.target.result);
+          const n = importarICS(texto);
           renderAusencias();
           if(typeof renderCalendar === 'function') renderCalendar();
-          const msg = document.getElementById('ics-msg');
-          if(msg){ msg.textContent = `✅ Importadas ${n} ausências!`; setTimeout(()=>msg.textContent='',3500); }
+          if(msg){
+            msg.textContent = n > 0 ? `✅ Importadas ${n} ausências!` : '⚠️ Não encontrei ausências nesse ficheiro.';
+            setTimeout(()=>msg.textContent='', 3500);
+          }
         } catch(err){
-          const msg = document.getElementById('ics-msg');
-          if(msg){ msg.textContent = '❌ Não consegui ler o ficheiro. É um .ics do portal?'; }
+          if(msg){ msg.textContent = '❌ Não consegui ler o ficheiro. É o Ausências do portal?'; }
         }
         inp.value = '';
       };

@@ -17,12 +17,12 @@
 <link rel="manifest" href="manifest.json">
 <title>Verallia Turnos</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=30">
-<link rel="stylesheet" href="css/components.css?v=30">
-<link rel="stylesheet" href="css/hoje.css?v=30">
-<link rel="stylesheet" href="css/onboarding.css?v=30">
-<link rel="stylesheet" href="css/alarm.css?v=30">
-<link rel="stylesheet" href="css/rendimento.css?v=30">
+<link rel="stylesheet" href="css/base.css?v=31">
+<link rel="stylesheet" href="css/components.css?v=31">
+<link rel="stylesheet" href="css/hoje.css?v=31">
+<link rel="stylesheet" href="css/onboarding.css?v=31">
+<link rel="stylesheet" href="css/alarm.css?v=31">
+<link rel="stylesheet" href="css/rendimento.css?v=31">
 </head>
 <body>
 <div class="app">
@@ -149,7 +149,7 @@
       <div class="aus-acc-body">
         <div class="aus-import">
           <label class="aus-btn" for="ics-input">📥 Importar ficheiro (.ics)</label>
-          <input type="file" id="ics-input" accept=".ics,text/calendar" hidden>
+          <input type="file" id="ics-input" accept=".ics,.txt,text/calendar,text/plain" hidden>
           <div class="aus-msg" id="ics-msg"></div>
         </div>
         <div id="ausencias-box"></div>
@@ -165,7 +165,7 @@
     </div>
     <div class="panel-title">📤 Partilhar</div>
     <div class="share-card">
-      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=30" class="share-qr" alt="QR Code da app"></div>
+      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=31" class="share-qr" alt="QR Code da app"></div>
       <div class="share-txt">Aponta a câmara do telemóvel para abrir ou partilhar a app com os colegas</div>
       <div class="share-url">ldinispt.github.io/hv-infinito</div>
       <button class="share-btn" id="share-btn">🔗 Partilhar link</button>
@@ -201,7 +201,8 @@
         <div class="man-a"><b>1) Exportar do portal:</b><br>
         Entra em <b>veralliaportugal.primaveraspace.com</b> → <b>Ausências</b> (Ver mapa) → escolhe <b>Calendário Anual</b> → carrega no botão <b>Exportar Eventos</b> → <b>Exportar</b>. Fica gravado o ficheiro <b>Ausências.ics</b> no telemóvel.<br><br>
         <b>2) Importar na app:</b><br>
-        Aqui no separador <b>Mais</b>, abre <b>"🌴 Férias"</b> → <b>Importar ficheiro (.ics)</b> → escolhe o <b>Ausências.ics</b> que acabaste de gravar.<br><br>
+        Aqui no separador <b>Mais</b>, abre <b>"🌴 Férias"</b> → <b>Importar ficheiro (.ics)</b> → escolhe o <b>Ausências.ics</b> que acabaste de gravar.<br>
+        <i>(No telemóvel o ficheiro pode aparecer como <b>Ausências.ics.txt</b> — não faz mal, a app aceita à mesma.)</i><br><br>
         Pronto! As tuas férias, formações e outras ausências aparecem no calendário com cores próprias. 🌴 Sempre que marcares férias novas, repete o processo para atualizar.</div>
       </div>
     </div>
@@ -277,24 +278,24 @@
 </div>
 
 <!-- ===== SCRIPTS (ordem importa) ===== -->
-<script src="js/data.js?v=30"></script>
-<script src="js/core.js?v=30"></script>
-<script src="js/weather.js?v=30"></script>
-<script src="js/medico.js?v=30"></script>
-<script src="js/hoje.js?v=30"></script>
-<script src="js/mes.js?v=30"></script>
-<script src="js/mais.js?v=30"></script>
-<script src="js/timeline.js?v=30"></script>
-<script src="js/onboarding.js?v=30"></script>
-<script src="js/alarm.js?v=30"></script>
-<script src="js/rendimento.js?v=30"></script>
-<script src="js/ausencias.js?v=30"></script>
-<script src="js/news.js?v=30"></script>
-<script src="js/tabs.js?v=30"></script>
-<script src="js/app.js?v=30"></script>
+<script src="js/data.js?v=31"></script>
+<script src="js/core.js?v=31"></script>
+<script src="js/weather.js?v=31"></script>
+<script src="js/medico.js?v=31"></script>
+<script src="js/hoje.js?v=31"></script>
+<script src="js/mes.js?v=31"></script>
+<script src="js/mais.js?v=31"></script>
+<script src="js/timeline.js?v=31"></script>
+<script src="js/onboarding.js?v=31"></script>
+<script src="js/alarm.js?v=31"></script>
+<script src="js/rendimento.js?v=31"></script>
+<script src="js/ausencias.js?v=31"></script>
+<script src="js/news.js?v=31"></script>
+<script src="js/tabs.js?v=31"></script>
+<script src="js/app.js?v=31"></script>
 <script>
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=30').then(reg=>{
+  navigator.serviceWorker.register('sw.js?v=31').then(reg=>{
     navigator.serviceWorker.addEventListener('message', e=>{ if(e.data==='reload') location.reload(); });
   });
 }
