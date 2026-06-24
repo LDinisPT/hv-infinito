@@ -33,6 +33,7 @@ function initOnboarding(){
     if(!nome || !onbTeam) return;
     safeSet('userName', nome);
     safeSet('team', onbTeam);
+    if(typeof marcarTodasNovidadesVistas === 'function') marcarTodasNovidadesVistas();
     overlay.style.display = 'none';
     applyUserName(nome);
     setTeam(onbTeam);

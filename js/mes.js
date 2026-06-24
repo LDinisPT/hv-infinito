@@ -63,14 +63,24 @@ function renderCalendar() {
         const isX = shift==='X';
         const isQuinzena = shift==='F' && quinzenaDays.has(`${curMonth}-${day}`);
         const cls = SHIFT_CLS[shift]||'dc-f';
+        const aus = (typeof getAusencia==='function') ? getAusencia(curYear, curMonth, day) : null;
         const div = document.createElement('div');
-        div.className = `day-cell ${cls}${hasFer?' has-fer':''}`;
-        const faixaHTML = isX
-          ? '<div class="faixa faixa-x"><span>FÉRIAS</span></div>'
-          : hasFer ? '<div class="faixa faixa-fer"><span>FERIADO</span></div>' : '';
-        const emoji = SHIFT_EMOJI[shift] || '';
-        const label = shift==='F' ? 'Folga' : SHIFT_NUM_LBL[shift];
-        const dayLbl = emoji ? `${emoji} ${label}` : label;
+        div.className = `day-cell ${cls}${hasFer?' has-fer':''}${aus?' has-aus':''}`;
+        let faixaHTML, dayLbl;
+        if(aus){
+          const inf = AUSENCIA_INFO[aus.tipo]||AUSENCIA_INFO.outro;
+          div.style.background = inf.cor;
+          div.style.color = inf.txt;
+          faixaHTML = '';
+          dayLbl = `${inf.emoji} ${inf.nome}`;
+        } else {
+          faixaHTML = isX
+            ? '<div class="faixa faixa-x"><span>FÉRIAS</span></div>'
+            : hasFer ? '<div class="faixa faixa-fer"><span>FERIADO</span></div>' : '';
+          const emoji = SHIFT_EMOJI[shift] || '';
+          const label = shift==='F' ? 'Folga' : SHIFT_NUM_LBL[shift];
+          dayLbl = emoji ? `${emoji} ${label}` : label;
+        }
         div.innerHTML = `${faixaHTML}<span class="day-num">${day}</span><span class="day-lbl">${dayLbl}</span>`;
         if(isToday){
           const wrap = document.createElement('div');

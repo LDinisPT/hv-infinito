@@ -321,3 +321,37 @@ body{background:#02020a;}
 .pfill{height:100%;background:linear-gradient(90deg,#378ADD,#4ade80);border-radius:99px;transition:width .6s ease;}
 .psub{display:flex;justify-content:space-between;margin-top:10px;font-size:11px;color:rgba(255,255,255,0.55);}
 .psub b{color:#fff;}
+
+/* Ausências (importar .ics) — dropdown */
+.aus-acc{margin:0 12px 8px;}
+.aus-acc-head{width:100%;display:flex;justify-content:space-between;align-items:center;background:rgba(168,85,247,0.1);border:1px solid rgba(168,85,247,0.3);border-radius:12px;padding:13px 16px;color:#C77DFF;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;}
+.aus-acc-count{font-size:12px;color:rgba(255,255,255,0.5);font-weight:400;margin-left:4px;}
+.aus-acc-arrow{transition:transform .25s;font-size:12px;}
+.aus-acc.open .aus-acc-arrow{transform:rotate(180deg);}
+.aus-acc-body{max-height:0;overflow:hidden;transition:max-height .35s ease;}
+.aus-acc.open .aus-acc-body{max-height:4000px;}
+.aus-import{text-align:center;padding:12px 0 10px;}
+.aus-btn{display:inline-block;background:linear-gradient(135deg,#A855F7,#7C3AED);border:none;border-radius:11px;padding:11px 20px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;}
+.aus-btn:active{opacity:.85;}
+.aus-msg{font-size:12px;color:#86efac;margin-top:8px;min-height:16px;}
+.aus-resumo{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-bottom:10px;}
+.aus-chip{font-size:11px;font-weight:600;padding:4px 10px;border-radius:99px;border:1px solid;}
+.aus-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;border:1px solid;border-radius:11px;padding:11px 14px;}
+.aus-dt{font-size:14px;font-weight:600;color:#fff;}
+.aus-dur{font-size:11px;margin-top:2px;font-weight:600;}
+.aus-empty{text-align:center;color:rgba(255,255,255,0.45);font-size:13px;line-height:1.6;padding:6px 10px 12px;}
+.aus-clear{display:block;margin:10px auto 4px;background:rgba(226,75,74,0.12);border:1px solid rgba(226,75,74,0.35);border-radius:10px;padding:9px 18px;color:#E24B4A;font-size:13px;font-weight:600;font-family:inherit;cursor:pointer;}
+.day-cell.has-aus{font-weight:700;}
+
+/* Popup de novidades */
+.news-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.7);backdrop-filter:blur(3px);align-items:center;justify-content:center;padding:24px;}
+.news-modal{background:linear-gradient(160deg,#1a1430,#0d0a1a);border:1px solid rgba(168,85,247,0.4);border-radius:20px;padding:26px 22px;text-align:center;max-width:340px;box-shadow:0 20px 60px rgba(0,0,0,0.6);animation:newsPop .3s ease;}
+@keyframes newsPop{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+.news-ico{font-size:46px;}
+.news-title{font-size:20px;font-weight:800;margin-top:10px;background:linear-gradient(90deg,#C77DFF,#A855F7);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+.news-sub{font-size:14px;color:rgba(255,255,255,0.7);line-height:1.5;margin-top:12px;}
+.news-sub b{color:#C77DFF;}
+.news-btns{margin-top:22px;display:flex;flex-direction:column;gap:9px;}
+.news-btn-main{background:linear-gradient(135deg,#A855F7,#7C3AED);border:none;border-radius:12px;padding:13px;color:#fff;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;}
+.news-btn-main:active{opacity:.85;}
+.news-btn-skip{background:none;border:none;color:rgba(255,255,255,0.45);font-size:13px;padding:4px;font-family:inherit;cursor:pointer;}

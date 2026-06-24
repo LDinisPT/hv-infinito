@@ -13,6 +13,7 @@ function setTeam(t){
   renderFeriados();
   renderMedico();
   renderStats();
+  if(typeof initAusenciasUI === 'function') initAusenciasUI();
   renderQuinzena();
   if(typeof renderAlarmAviso === 'function') renderAlarmAviso();
   // Definições
@@ -104,6 +105,11 @@ function initApp(){
       try { await navigator.clipboard.writeText(url); shareBtn.textContent='✅ Link copiado!'; setTimeout(()=>shareBtn.textContent='🔗 Partilhar link',2000); } catch(e){}
     }
   };
+
+  // Novidades: só para quem já usava a app (utilizador novo vê tudo de origem)
+  if(safeGet('userName') && typeof mostrarNovidade === 'function'){
+    setTimeout(mostrarNovidade, 600);
+  }
 }
 
 let deferredPrompt;
