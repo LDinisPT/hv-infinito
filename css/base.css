@@ -50,9 +50,9 @@ body::after{content:'';position:fixed;top:-60px;right:-60px;width:220px;height:2
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px);}to{opacity:1;transform:translateY(0);}}
 
 .tabbar{position:fixed;bottom:0;left:0;right:0;z-index:200;background:rgba(13,13,26,0.97);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:0.5px solid rgba(255,255,255,0.08);display:flex;max-width:440px;margin:0 auto;padding:8px 0 12px;}
-.tabbar-btn{flex:1;background:none;border:none;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,0.45);transition:color .15s;padding:2px 0;}
-.tabbar-btn .tb-icon{font-size:20px;line-height:1;}
-.tabbar-btn .tb-txt{font-size:10px;font-weight:600;}
+.tabbar-btn{flex:1;background:none;border:none;cursor:pointer;font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:3px;color:rgba(255,255,255,0.45);transition:color .15s;padding:2px 1px;min-width:0;}
+.tabbar-btn .tb-icon{font-size:19px;line-height:1;}
+.tabbar-btn .tb-txt{font-size:9px;font-weight:600;white-space:nowrap;}
 .tabbar-btn.active{color:var(--c-verde);}
 
 /* Seletor de equipa (chip na topbar / Hoje) */

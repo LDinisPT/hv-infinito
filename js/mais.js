@@ -99,6 +99,17 @@ function renderStats() {
   }));
   const trab=m+t+n, trabF=mF+tF+nF, horas=trab*7.5;
   const pct = trab>0 ? Math.round(trabF/trab*100) : 0;
+  const totalDias = trab + f;
+  const pctTrab = totalDias>0 ? Math.round(trab/totalDias*100) : 0;
+  const pctDesc = 100 - pctTrab;
+  const semFolga = Math.round(f/7);
+  const caps = [
+    `😎 ${f} folgas dão para <b>${semFolga} semanas</b> de descanso no ano!`,
+    `🌙 Passas <b>${(n*7.5)|0}h</b> a trabalhar enquanto o país dorme.`,
+    `🍻 Por cada ~3 dias de trabalho, tens <b>2 de folga</b>. Nada mau!`,
+    `🏖️ ${pctDesc}% do ano é todo teu. Aproveita!`
+  ];
+  const capDivertida = caps[Math.floor(Math.random()*caps.length)];
 
   grid.innerHTML = `
     <div class="panel-title">📊 Os teus turnos · ${curYear}</div>
@@ -120,6 +131,15 @@ function renderStats() {
       <div class="stat-ic"><span class="ic">⏱️</span><div><div class="n" style="color:#e0a93f">${horas%1===0?horas:horas.toFixed(0)}h</div><div class="l">Horas no ano</div></div></div>
       <div class="stat-ic"><span class="ic">🎉</span><div><div class="n" style="color:#EF9F27">${ferTotal}</div><div class="l">Feriados <span style="color:#86efac">(${ferLivre} livres)</span></div></div></div>
       <div class="stat-ic"><span class="ic">🏖️</span><div><div class="n" style="color:#7fc4ff">${fdsLivres}</div><div class="l">FDS livres</div></div></div>
+    </div>
+    <div class="panel-title">⚖️ Trabalho vs Descanso</div>
+    <div class="prog-card">
+      <div class="wd-bar">
+        <div class="wd-work" style="width:${pctTrab}%">${pctTrab}%</div>
+        <div class="wd-rest" style="width:${pctDesc}%">${pctDesc}%</div>
+      </div>
+      <div class="wd-legend"><span>💼 Trabalho</span><span>🌿 Descanso</span></div>
+      <div class="wd-cap">${capDivertida}</div>
     </div>`;
 }
 

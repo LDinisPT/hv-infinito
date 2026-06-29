@@ -355,3 +355,11 @@ body{background:#02020a;}
 .news-btn-main{background:linear-gradient(135deg,#A855F7,#7C3AED);border:none;border-radius:12px;padding:13px;color:#fff;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;}
 .news-btn-main:active{opacity:.85;}
 .news-btn-skip{background:none;border:none;color:rgba(255,255,255,0.45);font-size:13px;padding:4px;font-family:inherit;cursor:pointer;}
+
+/* Barra trabalho vs descanso */
+.wd-bar{display:flex;height:34px;border-radius:10px;overflow:hidden;background:rgba(255,255,255,0.06);}
+.wd-work{background:linear-gradient(135deg,#5B9FED,#3B82F6);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:13px;min-width:36px;}
+.wd-rest{background:linear-gradient(135deg,#4ade80,#22c55e);display:flex;align-items:center;justify-content:center;color:#04300f;font-weight:800;font-size:13px;min-width:36px;}
+.wd-legend{display:flex;justify-content:space-between;margin-top:8px;font-size:11px;color:rgba(255,255,255,0.6);}
+.wd-cap{margin-top:11px;font-size:12.5px;color:rgba(255,255,255,0.7);text-align:center;line-height:1.5;background:rgba(255,255,255,0.03);border-radius:9px;padding:9px 12px;}
+.wd-cap b{color:#fff;}
