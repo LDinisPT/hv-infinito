@@ -75,6 +75,12 @@ function renderCiclo() {
   const nextInfo = nextShift ? SHIFT_INFO[grp(nextShift)==='F'?'F':nextShift] : null;
 
   // Build dots
+  // % real do turno a decorrer (para o líquido subir até ao nível certo)
+  let pctTurno = 0;
+  if(typeof getCurrentShiftKey === 'function' && typeof getShiftProgress === 'function'){
+    const _ck = getCurrentShiftKey();
+    if(_ck){ const _pp = getShiftProgress(_ck); if(_pp) pctTurno = _pp.pct; }
+  }
   let dotsHTML = '';
   for(let i=0; i<total; i++) {
     if(i < done) {
@@ -84,7 +90,7 @@ function renderCiclo() {
         // hoje, mas o turno já terminou → cortado (✓) com borda da cor do dia
         dotsHTML += `<div class="ciclo-dot ciclo-dot-done ciclo-dot-today-done" style="border-color:${info.color};"></div>`;
       } else {
-        dotsHTML += `<div class="ciclo-dot ciclo-dot-today" style="background:${info.bg};border-color:${info.color};"><span style="color:${info.color}">${i+1}</span></div>`;
+        dotsHTML += `<div class="ciclo-dot ciclo-dot-today" style="background:${info.bg};border-color:${info.color};"><div class="dot-fill" style="height:${Math.max(pctTurno,4)}%;background:${info.color};"></div><span style="color:${info.color};position:relative;z-index:2;">${i+1}</span></div>`;
       }
     } else {
       dotsHTML += `<div class="ciclo-dot ciclo-dot-future"><span>${i+1}</span></div>`;

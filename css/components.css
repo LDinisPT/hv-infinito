@@ -166,7 +166,9 @@
 .ciclo-dot-done::after{content:'✓';font-size:14px;color:rgba(74,222,128,0.6);}
 .ciclo-dot-today-done{border-width:2px;background:rgba(255,255,255,0.05);}
 .ciclo-dot-today-done::after{color:#4ade80;}
-.ciclo-dot-today{border-width:2px;}
+.ciclo-dot-today{border-width:2px;overflow:hidden;}
+.dot-fill{position:absolute;left:0;right:0;bottom:0;opacity:0.5;transform-origin:bottom;animation:dotRise 2.6s ease-in-out infinite;will-change:transform;}
+@keyframes dotRise{0%{transform:scaleY(0)}50%{transform:scaleY(1)}100%{transform:scaleY(0)}}
 .ciclo-dot-future{background:rgba(255,255,255,0.02);border-color:rgba(255,255,255,0.06);}
 .ciclo-dot-future span{color:rgba(255,255,255,0.35);font-size:12px;}
 .ciclo-next{padding-top:10px;border-top:0.5px solid rgba(255,255,255,0.05);display:flex;align-items:center;justify-content:space-between;}
