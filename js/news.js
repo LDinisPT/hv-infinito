@@ -10,6 +10,13 @@ const NOVIDADES = [
     titulo: 'Novidade: Férias!',
     texto: 'Agora podes importar as tuas <b>férias e ausências</b> do portal e vê-las no calendário, mesmo ao lado dos turnos.<br><br>Vai a <b>Mais → "Como usar"</b> e abre <b>"🌴 Importar as minhas férias"</b> para veres o passo-a-passo.',
     manualMatch: 'Importar as minhas férias'
+  },
+  {
+    chave: 'modelos-v35',
+    ico: '📦',
+    titulo: 'Novidade: Modelos de garrafa!',
+    texto: 'No separador <b>Rendimento</b>, agora podes <b>escolher o modelo de garrafa</b> em cada linha — a velocidade e as garrafas/palete preenchem-se sozinhas! 🎉<br><br>O catálogo é <b>partilhado por todos os colegas</b>: qualquer um pode adicionar ou corrigir modelos e aparece logo a toda a gente.<br><br>Vê em <b>Mais → "Como usar"</b> → <b>"📦 Modelos de garrafa"</b>.',
+    manualMatch: 'Modelos de garrafa'
   }
 ];
 

@@ -16,7 +16,7 @@
 
   const STORE_KEY = 'verallia_rendimento_turno';
   const state = {};
-  LINES.forEach(l => state[l] = {paletes:'',garrafas:'',veloc:'',minutos:'',timeMode:'auto'});
+  LINES.forEach(l => state[l] = {modelo:'',paletes:'',garrafas:'',veloc:'',minutos:'',timeMode:'auto'});
 
   let bestLine=null, worstLine=null;
   let started=false;
@@ -111,6 +111,13 @@
   // ---- Render ----
   function tintRend(h,a){h=h.replace('#','');const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return 'rgba('+r+','+g+','+b+','+a+')';}
   function txtOnRend(h){h=h.replace('#','');const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return (0.299*r+0.587*g+0.114*b)>140?'#1a1205':'#fff';}
+  function modelLabel(l){
+    const code=state[l].modelo;
+    if(!code) return '<span class="rend-model-empty">➕ Escolher modelo</span>';
+    const b=(window.BottlesDB && window.BottlesDB.getByCode(code))||null;
+    const nome = b ? (b.codigo+' · '+b.modelo) : code;
+    return '<span class="rend-model-on">📦 '+nome+'</span>';
+  }
   function buildCard(l){
     const s=state[l]; const div=document.createElement('div');
     div.className='rend-card'; div.id='rend-card-'+l;
@@ -124,6 +131,8 @@
         '<button class="rend-reset-line" onclick="rendResetLinha(\''+l+'\')">&#8635;</button>'+
         '<span class="rend-line-pct '+(pct===null?'rend-pct-none':'')+'" style="color:'+pc+'">'+pctText+'</span>'+
       '</div>'+
+      '<button class="rend-model-sel" onclick="rendOpenPicker(\''+l+'\')">'+
+        modelLabel(l)+'<span class="rend-model-arrow">▾</span></button>'+
       '<div class="rend-card-form">'+
         '<div class="rend-field rf-pal"><label>Paletes</label>'+
           '<input type="number" inputmode="numeric" min="0" placeholder="0" value="'+s.paletes+'" oninput="rendSet(\''+l+'\',\'paletes\',this.value)"></div>'+
@@ -190,7 +199,7 @@
     if(m==='manual' && !state[l].minutos) state[l].minutos='480';
     save(); refreshCard(l); updateSummary();
   };
-  function limpar(l){ state[l]={paletes:'',garrafas:'',veloc:'',minutos:'',timeMode:'auto'}; }
+  function limpar(l){ state[l]={modelo:'',paletes:'',garrafas:'',veloc:'',minutos:'',timeMode:'auto'}; }
   window.rendResetLinha=function(l){
     if(!confirm('Limpar a Linha '+l+'?'))return;
     limpar(l); save(); refreshCard(l); updateSummary();
@@ -211,12 +220,233 @@
     card.classList.remove('rend-flash'); void card.offsetWidth; card.classList.add('rend-flash');
   };
 
+  // ============================================================
+  // CATÁLOGO DE MODELOS (Firestore via window.BottlesDB)
+  // ============================================================
+  let pickerLine=null;   // linha a que o picker se aplica
+  let editingId=null;    // id do modelo a editar (null = novo)
+
+  // 🔒 Proteção por PIN para adicionar/editar/apagar modelos.
+  // Consultar e escolher modelos NÃO precisa de PIN. Altera o PIN aqui:
+  const EDIT_PIN='2468';
+  let editUnlocked=false; // desbloqueado nesta sessão (volta a pedir ao reabrir a app)
+  let pinPending=null;    // ação a executar depois do PIN correto
+
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function dbAll(){ return (window.BottlesDB && window.BottlesDB.getAll()) || []; }
+  function dbReady(){ return !!(window.BottlesDB && window.BottlesDB.isReady()); }
+  function show(id){ const el=document.getElementById(id); if(el)el.classList.add('open'); }
+  function hide(id){ const el=document.getElementById(id); if(el)el.classList.remove('open'); }
+
+  function buildModals(){
+    if(document.getElementById('bdb-picker'))return;
+    const html=
+    '<div class="bdb-overlay" id="bdb-picker">'+
+      '<div class="bdb-modal">'+
+        '<div class="bdb-head"><div class="bdb-title">Escolher modelo</div>'+
+          '<button class="bdb-x" onclick="rendClosePicker()">✕</button></div>'+
+        '<input class="bdb-search" id="bdb-picker-search" placeholder="🔍 Código ou modelo…" oninput="rendRenderPicker(this.value)">'+
+        '<div class="bdb-list" id="bdb-picker-list"></div>'+
+        '<button class="bdb-foot-btn" onclick="rendPickModel(\'\')">Sem modelo (limpar)</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="bdb-overlay" id="bdb-manager">'+
+      '<div class="bdb-modal">'+
+        '<div class="bdb-head"><div class="bdb-title">📦 Modelos de garrafa</div>'+
+          '<button class="bdb-x" onclick="rendCloseManager()">✕</button></div>'+
+        '<input class="bdb-search" id="bdb-mgr-search" placeholder="🔍 Código ou modelo…" oninput="rendRenderManager(this.value)">'+
+        '<div class="bdb-list" id="bdb-mgr-list"></div>'+
+        '<button class="bdb-foot-btn bdb-add" onclick="rendOpenForm(null)">➕ Adicionar modelo</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="bdb-overlay" id="bdb-pin">'+
+      '<div class="bdb-modal bdb-modal-form">'+
+        '<div class="bdb-head"><div class="bdb-title">🔒 Código de edição</div>'+
+          '<button class="bdb-x" onclick="rendClosePin()">✕</button></div>'+
+        '<div class="bdb-pin-sub">Introduz o PIN para adicionar, editar ou apagar modelos.</div>'+
+        '<input class="bdb-input bdb-pin-in" id="bdb-pin-input" type="password" inputmode="numeric" '+
+          'placeholder="PIN" autocomplete="off" onkeydown="if(event.key===\'Enter\')rendPinOk()">'+
+        '<div class="bdb-form-msg" id="bdb-pin-msg"></div>'+
+        '<div class="bdb-form-btns"><button class="bdb-save" onclick="rendPinOk()">🔓 Desbloquear</button></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="bdb-overlay" id="bdb-form">'+
+      '<div class="bdb-modal bdb-modal-form">'+
+        '<div class="bdb-head"><div class="bdb-title" id="bdb-form-title">Novo modelo</div>'+
+          '<button class="bdb-x" onclick="rendCloseForm()">✕</button></div>'+
+        '<label class="bdb-lbl">Código</label>'+
+        '<input class="bdb-input" id="bdb-f-codigo" placeholder="ex: 5633-W1" autocomplete="off">'+
+        '<label class="bdb-lbl">Modelo / descrição</label>'+
+        '<input class="bdb-input" id="bdb-f-modelo" placeholder="ex: Bord. 75 BVS" autocomplete="off">'+
+        '<label class="bdb-lbl">Velocidade (garr./min)</label>'+
+        '<input class="bdb-input" id="bdb-f-veloc" type="number" inputmode="numeric" min="0" placeholder="ex: 320">'+
+        '<label class="bdb-lbl">Garrafas por palete</label>'+
+        '<input class="bdb-input" id="bdb-f-garr" type="number" inputmode="numeric" min="0" placeholder="ex: 1500">'+
+        '<div class="bdb-form-msg" id="bdb-form-msg"></div>'+
+        '<div class="bdb-form-btns">'+
+          '<button class="bdb-del" id="bdb-f-del" onclick="rendDeleteCurrent()">🗑️ Apagar</button>'+
+          '<button class="bdb-save" onclick="rendSaveForm()">💾 Guardar</button>'+
+        '</div>'+
+      '</div>'+
+    '</div>';
+    const wrap=document.createElement('div'); wrap.innerHTML=html;
+    while(wrap.firstChild) document.body.appendChild(wrap.firstChild);
+    // fechar ao tocar fora
+    ['bdb-picker','bdb-manager','bdb-form','bdb-pin'].forEach(id=>{
+      const ov=document.getElementById(id);
+      ov.addEventListener('click',e=>{ if(e.target===ov) ov.classList.remove('open'); });
+    });
+  }
+
+  function emptyMsg(){
+    if(!dbReady()) return '<div class="bdb-empty">A ligar ao catálogo…<br><small>(precisa de internet na 1ª vez)</small></div>';
+    return '<div class="bdb-empty">Ainda não há modelos.<br><small>Toca em "Adicionar modelo".</small></div>';
+  }
+
+  // ---- Picker (escolher modelo p/ uma linha) ----
+  window.rendOpenPicker=function(l){
+    pickerLine=l; buildModals();
+    const s=document.getElementById('bdb-picker-search'); if(s)s.value='';
+    rendRenderPicker('');
+    show('bdb-picker');
+  };
+  window.rendClosePicker=function(){ hide('bdb-picker'); };
+  window.rendRenderPicker=function(filter){
+    const box=document.getElementById('bdb-picker-list'); if(!box)return;
+    const f=(filter||'').toLowerCase().trim();
+    let list=dbAll();
+    if(f) list=list.filter(b=>(b.codigo+' '+b.modelo).toLowerCase().includes(f));
+    if(!list.length){ box.innerHTML=emptyMsg(); return; }
+    const sel=pickerLine?state[pickerLine].modelo:'';
+    box.innerHTML=list.map(b=>
+      '<button class="bdb-item'+(b.codigo===sel?' bdb-item-sel':'')+'" onclick="rendPickModel(\''+esc(b.codigo).replace(/'/g,"\\'")+'\')">'+
+        '<div class="bdb-item-main"><span class="bdb-item-code">'+esc(b.codigo)+'</span>'+
+          '<span class="bdb-item-name">'+esc(b.modelo)+'</span></div>'+
+        '<div class="bdb-item-vals"><span>⚡ '+esc(b.velocidade)+'</span><span>📦 '+esc(b.garrafas)+'</span></div>'+
+      '</button>'
+    ).join('');
+  };
+  window.rendPickModel=function(code){
+    const l=pickerLine; if(!l)return;
+    if(!code){
+      state[l].modelo=''; save(); refreshCard(l); updateSummary(); hide('bdb-picker'); return;
+    }
+    const b=window.BottlesDB && window.BottlesDB.getByCode(code);
+    state[l].modelo=code;
+    if(b){ state[l].veloc=String(b.velocidade); state[l].garrafas=String(b.garrafas); }
+    save(); refreshCard(l); updateSummary(); hide('bdb-picker');
+  };
+
+  // ---- Manager (gerir catálogo) ----
+  window.rendOpenManager=function(){
+    buildModals();
+    const s=document.getElementById('bdb-mgr-search'); if(s)s.value='';
+    rendRenderManager('');
+    show('bdb-manager');
+  };
+  window.rendCloseManager=function(){ hide('bdb-manager'); };
+  window.rendRenderManager=function(filter){
+    const box=document.getElementById('bdb-mgr-list'); if(!box)return;
+    const f=(filter||'').toLowerCase().trim();
+    let list=dbAll();
+    if(f) list=list.filter(b=>(b.codigo+' '+b.modelo).toLowerCase().includes(f));
+    if(!list.length){ box.innerHTML=emptyMsg(); return; }
+    box.innerHTML=list.map(b=>
+      '<button class="bdb-item" onclick="rendOpenForm(\''+esc(b.id).replace(/'/g,"\\'")+'\')">'+
+        '<div class="bdb-item-main"><span class="bdb-item-code">'+esc(b.codigo)+'</span>'+
+          '<span class="bdb-item-name">'+esc(b.modelo)+'</span></div>'+
+        '<div class="bdb-item-vals"><span>⚡ '+esc(b.velocidade)+'</span><span>📦 '+esc(b.garrafas)+'</span>'+
+          '<span class="bdb-item-edit">✏️</span></div>'+
+      '</button>'
+    ).join('');
+  };
+
+  // ---- PIN (protege adicionar/editar/apagar) ----
+  function ensureUnlocked(cb){
+    if(editUnlocked){ cb(); return; }
+    buildModals();
+    pinPending=cb;
+    const inp=document.getElementById('bdb-pin-input'); if(inp)inp.value='';
+    const msg=document.getElementById('bdb-pin-msg'); if(msg)msg.textContent='';
+    show('bdb-pin');
+    setTimeout(()=>{ const i=document.getElementById('bdb-pin-input'); if(i)i.focus(); },120);
+  }
+  window.rendClosePin=function(){ hide('bdb-pin'); pinPending=null; };
+  window.rendPinOk=function(){
+    const inp=document.getElementById('bdb-pin-input');
+    const v=(inp?inp.value:'').trim();
+    if(v===EDIT_PIN){
+      editUnlocked=true; hide('bdb-pin');
+      const cb=pinPending; pinPending=null; if(cb)cb();
+    }else{
+      const msg=document.getElementById('bdb-pin-msg'); if(msg)msg.textContent='⚠️ PIN errado.';
+      if(inp){ inp.value=''; inp.focus(); }
+    }
+  };
+
+  // ---- Formulário (criar/editar/apagar) ----
+  window.rendOpenForm=function(id){
+    ensureUnlocked(()=>_openForm(id));
+  };
+  function _openForm(id){
+    buildModals();
+    editingId=id||null;
+    const b=id?(window.BottlesDB && window.BottlesDB.getById(id)):null;
+    document.getElementById('bdb-form-title').textContent=id?'Editar modelo':'Novo modelo';
+    document.getElementById('bdb-f-codigo').value=b?b.codigo:'';
+    document.getElementById('bdb-f-modelo').value=b?b.modelo:'';
+    document.getElementById('bdb-f-veloc').value=b?b.velocidade:'';
+    document.getElementById('bdb-f-garr').value=b?b.garrafas:'';
+    document.getElementById('bdb-form-msg').textContent='';
+    document.getElementById('bdb-f-del').style.display=id?'block':'none';
+    show('bdb-form');
+  };
+  window.rendCloseForm=function(){ hide('bdb-form'); };
+  window.rendSaveForm=async function(){
+    const msg=document.getElementById('bdb-form-msg');
+    const codigo=document.getElementById('bdb-f-codigo').value.trim();
+    const modelo=document.getElementById('bdb-f-modelo').value.trim();
+    const veloc=document.getElementById('bdb-f-veloc').value;
+    const garr=document.getElementById('bdb-f-garr').value;
+    if(!codigo){ msg.textContent='⚠️ Falta o código.'; return; }
+    if(!veloc||!garr){ msg.textContent='⚠️ Falta velocidade ou garrafas.'; return; }
+    if(!window.BottlesDB){ msg.textContent='⚠️ Sem ligação ao catálogo.'; return; }
+    const data={codigo,modelo,velocidade:veloc,garrafas:garr,editadoPor:(safeGet('userName')||'—')};
+    msg.textContent='A guardar…';
+    try{
+      if(editingId) await window.BottlesDB.update(editingId,data);
+      else await window.BottlesDB.add(data);
+      hide('bdb-form');
+    }catch(e){ msg.textContent='⚠️ Erro a guardar: '+(e.message||e); }
+  };
+  window.rendDeleteCurrent=async function(){
+    if(!editingId||!window.BottlesDB)return;
+    if(!confirm('Apagar este modelo do catálogo de todos?'))return;
+    try{ await window.BottlesDB.remove(editingId); hide('bdb-form'); }
+    catch(e){ alert('Erro a apagar: '+(e.message||e)); }
+  };
+
+  // Quando o catálogo muda (qualquer colega editou) — atualiza o que está aberto
+  function onBottlesChanged(){
+    if(document.getElementById('bdb-picker') && document.getElementById('bdb-picker').classList.contains('open'))
+      rendRenderPicker(document.getElementById('bdb-picker-search').value);
+    if(document.getElementById('bdb-manager') && document.getElementById('bdb-manager').classList.contains('open'))
+      rendRenderManager(document.getElementById('bdb-mgr-search').value);
+    // atualiza os rótulos de modelo nos cartões
+    LINES.forEach(l=>{
+      const card=document.getElementById('rend-card-'+l);
+      if(card){ const ms=card.querySelector('.rend-model-sel'); if(ms) ms.innerHTML=modelLabel(l)+'<span class="rend-model-arrow">▾</span>'; }
+    });
+  }
+  window.addEventListener('bottles-changed', onBottlesChanged);
+
   // ---- Init (corre só uma vez, quando o painel existe) ----
   function initRendimento(){
     if(started)return;
     const wrap=document.getElementById('rend-wrap'); if(!wrap)return;
     started=true;
     load();
+    buildModals();
     renderAll();
     setInterval(()=>{
       LINES.forEach(l=>{ if(state[l].timeMode==='auto')renderLineLight(l); });

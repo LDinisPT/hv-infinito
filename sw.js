@@ -1,32 +1,33 @@
-const CACHE = 'verallia-v2-034';
+const CACHE = 'verallia-v2-036';
 const FILES = [
   './',
   './index.html',
   './manifest.json',
-  './css/base.css?v=34',
-  './css/components.css?v=34',
-  './css/hoje.css?v=34',
-  './css/onboarding.css?v=34',
-  './css/alarm.css?v=34',
-  './css/rendimento.css?v=34',
-  './js/data.js?v=34',
-  './js/core.js?v=34',
-  './js/weather.js?v=34',
-  './js/medico.js?v=34',
-  './js/hoje.js?v=34',
-  './js/mes.js?v=34',
-  './js/mais.js?v=34',
-  './js/timeline.js?v=34',
-  './js/onboarding.js?v=34',
-  './js/alarm.js?v=34',
-  './js/rendimento.js?v=34',
-  './js/ausencias.js?v=34',
-  './js/news.js?v=34',
-  './js/tabs.js?v=34',
-  './js/app.js?v=34',
+  './css/base.css?v=36',
+  './css/components.css?v=36',
+  './css/hoje.css?v=36',
+  './css/onboarding.css?v=36',
+  './css/alarm.css?v=36',
+  './css/rendimento.css?v=36',
+  './js/data.js?v=36',
+  './js/core.js?v=36',
+  './js/weather.js?v=36',
+  './js/medico.js?v=36',
+  './js/hoje.js?v=36',
+  './js/mes.js?v=36',
+  './js/mais.js?v=36',
+  './js/timeline.js?v=36',
+  './js/onboarding.js?v=36',
+  './js/alarm.js?v=36',
+  './js/rendimento.js?v=36',
+  './js/ausencias.js?v=36',
+  './js/news.js?v=36',
+  './js/tabs.js?v=36',
+  './js/app.js?v=36',
+  './js/firebase.js?v=36',
   './assets/verallia_logo.avif',
   './assets/verallia_logo.png',
-  './assets/qrcode.png?v=34',
+  './assets/qrcode.png?v=36',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
@@ -51,13 +52,22 @@ self.addEventListener('activate', e => {
 
 // Network first, fallback to cache
 self.addEventListener('fetch', e => {
+  const req = e.request;
+  // Só tratamos GET. Firestore (POST/canal em tempo real) passa direto à rede.
+  if(req.method !== 'GET') return;
+  const url = new URL(req.url);
+  if(url.hostname.endsWith('googleapis.com') || url.hostname.endsWith('firebaseio.com')) return;
+
   e.respondWith(
-    fetch(e.request)
+    fetch(req)
       .then(res => {
-        const clone = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
+        // Só guardamos respostas válidas (evita cachear erros/opacas indevidamente)
+        if(res && res.ok){
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(req, clone)).catch(()=>{});
+        }
         return res;
       })
-      .catch(() => caches.match(e.request))
+      .catch(() => caches.match(req))
   );
 });

@@ -29,13 +29,19 @@
 .rend-bw .txt{font-size:12px;color:#9aa3b2;}
 .rend-bw .v{font-size:13px;font-weight:700;}
 
-.rend-actions{display:flex;justify-content:center;margin-bottom:6px;}
+.rend-actions{display:flex;justify-content:center;gap:8px;margin-bottom:6px;}
 .rend-btn-reset{
   font-size:13px;padding:8px 18px;border:1px solid rgba(239,68,68,0.35);
   border-radius:18px;background:rgba(239,68,68,0.06);color:#ff7676;
   font-family:inherit;font-weight:600;cursor:pointer;
 }
 .rend-btn-reset:active{transform:scale(0.97);}
+.rend-btn-modelos{
+  font-size:13px;padding:8px 18px;border:1px solid rgba(96,165,250,0.4);
+  border-radius:18px;background:rgba(96,165,250,0.1);color:#7db4ff;
+  font-family:inherit;font-weight:600;cursor:pointer;
+}
+.rend-btn-modelos:active{transform:scale(0.97);}
 
 /* Cabeçalho de cada forno */
 .rend-forno-head{
@@ -117,3 +123,91 @@
 
 /* Resumo fixo ao fazer scroll */
 .rend-sticky{position:sticky;top:0;z-index:20;background:#060610;padding:8px 0 10px;margin-bottom:2px;box-shadow:0 6px 14px -6px rgba(0,0,0,0.8);}
+
+/* ============================================================
+   CATÁLOGO DE MODELOS — botão na linha + menus (picker/gestão)
+   ============================================================ */
+.rend-model-sel{
+  display:flex;align-items:center;justify-content:center;gap:6px;width:calc(100% - 24px);
+  margin:0 12px 2px;padding:8px 10px;border:1px dashed rgba(255,255,255,0.22);
+  border-radius:10px;background:rgba(255,255,255,0.04);color:#e8e8f0;
+  font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.rend-model-sel:active{transform:scale(0.99);}
+.rend-model-empty{color:#9aa3b2;}
+.rend-model-on{color:#7db4ff;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.rend-model-arrow{color:#7a7a92;font-size:11px;flex-shrink:0;}
+
+/* Overlays dos menus */
+.bdb-overlay{
+  position:fixed;inset:0;z-index:200;display:none;align-items:flex-end;justify-content:center;
+  background:rgba(0,0,0,0.6);backdrop-filter:blur(3px);padding:0;
+}
+.bdb-overlay.open{display:flex;}
+.bdb-modal{
+  width:100%;max-width:520px;max-height:88vh;display:flex;flex-direction:column;
+  background:#0d0d18;border:1px solid rgba(255,255,255,0.1);
+  border-radius:20px 20px 0 0;padding:14px 14px calc(14px + env(safe-area-inset-bottom));
+  animation:bdbUp .22s ease;
+}
+@keyframes bdbUp{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.bdb-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.bdb-title{font-size:16px;font-weight:700;color:#fff;}
+.bdb-x{
+  width:32px;height:32px;border:none;border-radius:50%;background:rgba(255,255,255,0.08);
+  color:#cfcfe0;font-size:14px;cursor:pointer;flex-shrink:0;
+}
+.bdb-x:active{transform:scale(0.92);}
+.bdb-search{
+  width:100%;padding:11px 14px;border:1px solid rgba(255,255,255,0.12);border-radius:12px;
+  background:rgba(255,255,255,0.05);color:#fff;font-family:inherit;font-size:14px;margin-bottom:10px;
+}
+.bdb-search:focus{outline:2px solid rgba(96,165,250,0.4);}
+.bdb-list{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:7px;-webkit-overflow-scrolling:touch;}
+.bdb-item{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;
+  padding:10px 12px;border:1px solid rgba(255,255,255,0.09);border-radius:12px;
+  background:rgba(255,255,255,0.035);color:#e8e8f0;font-family:inherit;cursor:pointer;text-align:left;
+}
+.bdb-item:active{transform:scale(0.99);background:rgba(255,255,255,0.06);}
+.bdb-item-sel{border-color:rgba(96,165,250,0.6);background:rgba(96,165,250,0.12);}
+.bdb-item-main{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1;}
+.bdb-item-code{font-size:14px;font-weight:700;color:#7db4ff;}
+.bdb-item-name{font-size:12px;color:#aeb4c2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.bdb-item-vals{display:flex;align-items:center;gap:10px;font-size:12px;color:#cfcfe0;flex-shrink:0;font-weight:600;}
+.bdb-item-edit{opacity:0.6;}
+.bdb-empty{text-align:center;color:#7a7a92;padding:28px 10px;font-size:14px;line-height:1.6;}
+.bdb-empty small{font-size:11px;color:#5a5a6e;}
+.bdb-foot-btn{
+  margin-top:10px;width:100%;padding:12px;border:1px solid rgba(255,255,255,0.14);
+  border-radius:12px;background:rgba(255,255,255,0.05);color:#cfcfe0;
+  font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;
+}
+.bdb-foot-btn:active{transform:scale(0.99);}
+.bdb-add{border-color:rgba(96,165,250,0.45);background:rgba(96,165,250,0.12);color:#7db4ff;}
+
+/* Formulário criar/editar */
+.bdb-modal-form{max-height:none;}
+.bdb-lbl{font-size:11px;font-weight:600;color:#9aa3b2;margin:8px 2px 4px;}
+.bdb-input{
+  width:100%;padding:11px 14px;border:1px solid rgba(255,255,255,0.12);border-radius:12px;
+  background:rgba(255,255,255,0.05);color:#fff;font-family:inherit;font-size:15px;
+}
+.bdb-input:focus{outline:2px solid rgba(96,165,250,0.4);}
+.bdb-form-msg{font-size:12.5px;color:#ffb454;min-height:16px;margin:10px 2px 4px;}
+.bdb-form-btns{display:flex;gap:8px;margin-top:6px;}
+.bdb-save{
+  flex:1;padding:13px;border:none;border-radius:12px;background:#2563eb;color:#fff;
+  font-family:inherit;font-size:15px;font-weight:700;cursor:pointer;
+}
+.bdb-save:active{transform:scale(0.98);}
+.bdb-del{
+  padding:13px 16px;border:1px solid rgba(239,68,68,0.4);border-radius:12px;
+  background:rgba(239,68,68,0.1);color:#ff7676;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;
+}
+.bdb-del:active{transform:scale(0.98);}
+
+/* PIN de edição */
+.bdb-pin-sub{font-size:13px;color:#9aa3b2;line-height:1.5;margin:2px 2px 12px;}
+.bdb-pin-in{text-align:center;letter-spacing:6px;font-size:20px;font-weight:700;}
