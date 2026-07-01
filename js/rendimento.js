@@ -278,7 +278,8 @@
         '<input class="bdb-input" id="bdb-f-codigo" placeholder="ex: 5633-W1" autocomplete="off" '+
           'oninput="rendFmtCodigo(this,event)">'+
         '<label class="bdb-lbl">Modelo / descrição</label>'+
-        '<input class="bdb-input" id="bdb-f-modelo" placeholder="ex: Bord. 75 BVS" autocomplete="off">'+
+        '<input class="bdb-input" id="bdb-f-modelo" placeholder="ex: BORD. 75 BVS" autocomplete="off" '+
+          'oninput="rendUpper(this)">'+
         '<label class="bdb-lbl">Velocidade (garr./min)</label>'+
         '<input class="bdb-input" id="bdb-f-veloc" type="number" inputmode="numeric" min="0" placeholder="ex: 320">'+
         '<label class="bdb-lbl">Garrafas por palete</label>'+
@@ -403,6 +404,12 @@
     show('bdb-form');
   };
   window.rendCloseForm=function(){ hide('bdb-form'); };
+  // Força o nome do modelo a MAIÚSCULAS (mantendo a posição do cursor)
+  window.rendUpper=function(el){
+    const s=el.selectionStart, e=el.selectionEnd;
+    el.value=el.value.toUpperCase();
+    try{ el.setSelectionRange(s,e); }catch(_){}
+  };
   // Auto-formata o código: maiúsculas + "-" depois dos 4 primeiros caracteres
   window.rendFmtCodigo=function(el,ev){
     const deleting = ev && ev.inputType && ev.inputType.indexOf('delete')===0;
@@ -416,7 +423,7 @@
   window.rendSaveForm=async function(){
     const msg=document.getElementById('bdb-form-msg');
     const codigo=document.getElementById('bdb-f-codigo').value.trim().replace(/-+$/,'');
-    const modelo=document.getElementById('bdb-f-modelo').value.trim();
+    const modelo=document.getElementById('bdb-f-modelo').value.trim().toUpperCase();
     const veloc=document.getElementById('bdb-f-veloc').value;
     const garr=document.getElementById('bdb-f-garr').value;
     if(!codigo){ msg.textContent='⚠️ Falta o código.'; return; }
