@@ -116,7 +116,7 @@
     if(!code) return '<span class="rend-model-empty">➕ Escolher modelo</span>';
     const b=(window.BottlesDB && window.BottlesDB.getByCode(code))||null;
     const nome = b ? (b.codigo+' · '+b.modelo) : code;
-    return '<span class="rend-model-on">📦 '+nome+'</span>';
+    return '<span class="rend-model-on">🍾 '+nome+'</span>';
   }
   function buildCard(l){
     const s=state[l]; const div=document.createElement('div');
@@ -233,6 +233,8 @@
   let pinPending=null;    // ação a executar depois do PIN correto
 
   function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  // Pesquisa sem acentos: "generic" encontra "GENÉRIC"
+  function norm(s){ return String(s==null?'':s).toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,''); }
   function dbAll(){ return (window.BottlesDB && window.BottlesDB.getAll()) || []; }
   function dbReady(){ return !!(window.BottlesDB && window.BottlesDB.isReady()); }
   function show(id){ const el=document.getElementById(id); if(el)el.classList.add('open'); }
@@ -252,11 +254,20 @@
     '</div>'+
     '<div class="bdb-overlay" id="bdb-manager">'+
       '<div class="bdb-modal">'+
-        '<div class="bdb-head"><div class="bdb-title">📦 Modelos de garrafa</div>'+
+        '<div class="bdb-head"><div class="bdb-title">🍾 Modelos de garrafa</div>'+
           '<button class="bdb-x" onclick="rendCloseManager()">✕</button></div>'+
         '<input class="bdb-search" id="bdb-mgr-search" placeholder="🔍 Código ou modelo…" oninput="rendRenderManager(this.value)">'+
         '<div class="bdb-list" id="bdb-mgr-list"></div>'+
         '<button class="bdb-foot-btn bdb-add" onclick="rendOpenForm(null)">➕ Adicionar modelo</button>'+
+      '</div>'+
+    '</div>'+
+    '<div class="bdb-overlay" id="bdb-resumo">'+
+      '<div class="bdb-modal">'+
+        '<div class="bdb-head"><div class="bdb-title">🍾 Resumo do turno</div>'+
+          '<button class="bdb-x" onclick="rendCloseResumo()">✕</button></div>'+
+        '<div class="rsm-sub" id="bdb-resumo-sub"></div>'+
+        '<div class="bdb-list" id="bdb-resumo-body"></div>'+
+        '<button class="bdb-foot-btn" onclick="rendCloseResumo()">Fechar</button>'+
       '</div>'+
     '</div>'+
     '<div class="bdb-overlay" id="bdb-pin">'+
@@ -294,7 +305,7 @@
     const wrap=document.createElement('div'); wrap.innerHTML=html;
     while(wrap.firstChild) document.body.appendChild(wrap.firstChild);
     // fechar ao tocar fora
-    ['bdb-picker','bdb-manager','bdb-form','bdb-pin'].forEach(id=>{
+    ['bdb-picker','bdb-manager','bdb-form','bdb-pin','bdb-resumo'].forEach(id=>{
       const ov=document.getElementById(id);
       ov.addEventListener('click',e=>{ if(e.target===ov) ov.classList.remove('open'); });
     });
@@ -315,16 +326,16 @@
   window.rendClosePicker=function(){ hide('bdb-picker'); };
   window.rendRenderPicker=function(filter){
     const box=document.getElementById('bdb-picker-list'); if(!box)return;
-    const f=(filter||'').toLowerCase().trim();
+    const f=norm(filter).trim();
     let list=dbAll();
-    if(f) list=list.filter(b=>(b.codigo+' '+b.modelo).toLowerCase().includes(f));
+    if(f) list=list.filter(b=>norm(b.codigo+' '+b.modelo).includes(f));
     if(!list.length){ box.innerHTML=emptyMsg(); return; }
     const sel=pickerLine?state[pickerLine].modelo:'';
     box.innerHTML=list.map(b=>
       '<button class="bdb-item'+(b.codigo===sel?' bdb-item-sel':'')+'" onclick="rendPickModel(\''+esc(b.codigo).replace(/'/g,"\\'")+'\')">'+
         '<div class="bdb-item-main"><span class="bdb-item-code">'+esc(b.codigo)+'</span>'+
           '<span class="bdb-item-name">'+esc(b.modelo)+'</span></div>'+
-        '<div class="bdb-item-vals"><span>⚡ '+esc(b.velocidade)+'</span><span>📦 '+esc(b.garrafas)+'</span></div>'+
+        '<div class="bdb-item-vals"><span>⚡ '+esc(b.velocidade)+'</span><span>🍾 '+esc(b.garrafas)+'</span></div>'+
       '</button>'
     ).join('');
   };
@@ -349,19 +360,46 @@
   window.rendCloseManager=function(){ hide('bdb-manager'); };
   window.rendRenderManager=function(filter){
     const box=document.getElementById('bdb-mgr-list'); if(!box)return;
-    const f=(filter||'').toLowerCase().trim();
+    const f=norm(filter).trim();
     let list=dbAll();
-    if(f) list=list.filter(b=>(b.codigo+' '+b.modelo).toLowerCase().includes(f));
+    if(f) list=list.filter(b=>norm(b.codigo+' '+b.modelo).includes(f));
     if(!list.length){ box.innerHTML=emptyMsg(); return; }
     box.innerHTML=list.map(b=>
       '<button class="bdb-item" onclick="rendOpenForm(\''+esc(b.id).replace(/'/g,"\\'")+'\')">'+
         '<div class="bdb-item-main"><span class="bdb-item-code">'+esc(b.codigo)+'</span>'+
           '<span class="bdb-item-name">'+esc(b.modelo)+'</span></div>'+
-        '<div class="bdb-item-vals"><span>⚡ '+esc(b.velocidade)+'</span><span>📦 '+esc(b.garrafas)+'</span>'+
+        '<div class="bdb-item-vals"><span>⚡ '+esc(b.velocidade)+'</span><span>🍾 '+esc(b.garrafas)+'</span>'+
           '<span class="bdb-item-edit">✏️</span></div>'+
       '</button>'
     ).join('');
   };
+
+  // ---- Resumo (todas as linhas num só ecrã, barras) ----
+  function rsmRow(l){
+    const p=calcPct(l); const pc=pctColor(p);
+    return '<div class="rsm-row">'+
+      '<span class="rsm-badge" style="background:'+COLORS[l]+'">'+l+'</span>'+
+      '<div class="rsm-track"><div class="rsm-fill" style="width:'+(p===null?0:Math.min(p,100))+'%;background:'+pc+'"></div></div>'+
+      '<span class="rsm-pct" style="color:'+pc+'">'+(p===null?'—':p+'%')+'</span>'+
+    '</div>';
+  }
+  function rsmForno(n,list){
+    const m=mediaForno(list);
+    return '<div class="rsm-forno"><span>Forno '+n+'</span>'+
+      '<span style="color:'+pctColor(m)+'">Média '+(m===null?'—':m+'%')+'</span></div>'+
+      list.map(rsmRow).join('');
+  }
+  window.rendOpenResumo=function(){
+    buildModals();
+    const g=mediaForno(LINES);
+    const sub=document.getElementById('bdb-resumo-sub');
+    if(sub) sub.innerHTML='Turno '+String(turnoInicio()).padStart(2,'0')+'h · '+
+      formatTime(new Date())+' · Geral <b style="color:'+pctColor(g)+'">'+(g===null?'—':g+'%')+'</b>';
+    const body=document.getElementById('bdb-resumo-body');
+    if(body) body.innerHTML=rsmForno(1,FORNO1)+rsmForno(2,FORNO2);
+    show('bdb-resumo');
+  };
+  window.rendCloseResumo=function(){ hide('bdb-resumo'); };
 
   // ---- PIN (protege adicionar/editar/apagar) ----
   function ensureUnlocked(cb){
@@ -420,7 +458,7 @@
     else out = clean;
     el.value = out;
   };
-  window.rendSaveForm=async function(){
+  window.rendSaveForm=function(){
     const msg=document.getElementById('bdb-form-msg');
     const codigo=document.getElementById('bdb-f-codigo').value.trim().replace(/-+$/,'');
     const modelo=document.getElementById('bdb-f-modelo').value.trim().toUpperCase();
@@ -428,20 +466,23 @@
     const garr=document.getElementById('bdb-f-garr').value;
     if(!codigo){ msg.textContent='⚠️ Falta o código.'; return; }
     if(!veloc||!garr){ msg.textContent='⚠️ Falta velocidade ou garrafas.'; return; }
+    if(!(Number(veloc)>0)||!(Number(garr)>0)){ msg.textContent='⚠️ Velocidade e garrafas têm de ser maiores que 0.'; return; }
     if(!window.BottlesDB){ msg.textContent='⚠️ Sem ligação ao catálogo.'; return; }
+    // Impede códigos duplicados (outro modelo com o mesmo código)
+    const dup=dbAll().find(b=>b.codigo===codigo && b.id!==editingId);
+    if(dup){ msg.textContent='⚠️ Já existe um modelo com o código '+codigo+'.'; return; }
     const data={codigo,modelo,velocidade:veloc,garrafas:garr,editadoPor:(safeGet('userName')||'—')};
-    msg.textContent='A guardar…';
-    try{
-      if(editingId) await window.BottlesDB.update(editingId,data);
-      else await window.BottlesDB.add(data);
-      hide('bdb-form');
-    }catch(e){ msg.textContent='⚠️ Erro a guardar: '+(e.message||e); }
+    // Não espera pela rede: fecha já e sincroniza por trás (funciona offline).
+    // Se o servidor recusar (ex: regras), avisa quando a resposta chegar.
+    const p=editingId?window.BottlesDB.update(editingId,data):window.BottlesDB.add(data);
+    p.catch(e=>alert('⚠️ O modelo '+codigo+' não ficou guardado: '+(e.message||e)));
+    hide('bdb-form');
   };
-  window.rendDeleteCurrent=async function(){
+  window.rendDeleteCurrent=function(){
     if(!editingId||!window.BottlesDB)return;
     if(!confirm('Apagar este modelo do catálogo de todos?'))return;
-    try{ await window.BottlesDB.remove(editingId); hide('bdb-form'); }
-    catch(e){ alert('Erro a apagar: '+(e.message||e)); }
+    window.BottlesDB.remove(editingId).catch(e=>alert('⚠️ Erro a apagar: '+(e.message||e)));
+    hide('bdb-form');
   };
 
   // Quando o catálogo muda (qualquer colega editou) — atualiza o que está aberto

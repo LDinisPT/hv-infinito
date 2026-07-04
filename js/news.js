@@ -13,9 +13,9 @@ const NOVIDADES = [
   },
   {
     chave: 'modelos-v35',
-    ico: '📦',
+    ico: '🍾',
     titulo: 'Novidade: Modelos de garrafa!',
-    texto: 'No separador <b>Rendimento</b>, agora podes <b>escolher o modelo de garrafa</b> em cada linha — a velocidade e as garrafas/palete preenchem-se sozinhas! 🎉<br><br>O catálogo é <b>partilhado por todos os colegas</b>: qualquer um pode adicionar ou corrigir modelos e aparece logo a toda a gente.<br><br>Vê em <b>Mais → "Como usar"</b> → <b>"📦 Modelos de garrafa"</b>.',
+    texto: 'No separador <b>Rendimento</b>, agora podes <b>escolher o modelo de garrafa</b> em cada linha — a velocidade e as garrafas/palete preenchem-se sozinhas! 🎉<br><br>O catálogo é <b>partilhado por todos os colegas</b>: qualquer um pode adicionar ou corrigir modelos e aparece logo a toda a gente.<br><br>Vê em <b>Mais → "Como usar"</b> → <b>"🍾 Modelos de garrafa"</b>.',
     manualMatch: 'Modelos de garrafa'
   }
 ];

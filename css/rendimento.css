@@ -29,19 +29,25 @@
 .rend-bw .txt{font-size:12px;color:#9aa3b2;}
 .rend-bw .v{font-size:13px;font-weight:700;}
 
-.rend-actions{display:flex;justify-content:center;gap:8px;margin-bottom:6px;}
+.rend-actions{display:flex;justify-content:center;gap:8px;margin-bottom:6px;flex-wrap:wrap;}
 .rend-btn-reset{
-  font-size:13px;padding:8px 18px;border:1px solid rgba(239,68,68,0.35);
+  font-size:13px;padding:8px 14px;border:1px solid rgba(239,68,68,0.35);
   border-radius:18px;background:rgba(239,68,68,0.06);color:#ff7676;
   font-family:inherit;font-weight:600;cursor:pointer;
 }
 .rend-btn-reset:active{transform:scale(0.97);}
 .rend-btn-modelos{
-  font-size:13px;padding:8px 18px;border:1px solid rgba(96,165,250,0.4);
+  font-size:13px;padding:8px 14px;border:1px solid rgba(96,165,250,0.4);
   border-radius:18px;background:rgba(96,165,250,0.1);color:#7db4ff;
   font-family:inherit;font-weight:600;cursor:pointer;
 }
 .rend-btn-modelos:active{transform:scale(0.97);}
+.rend-btn-resumo{
+  font-size:13px;padding:8px 14px;border:1px solid rgba(34,197,94,0.4);
+  border-radius:18px;background:rgba(34,197,94,0.1);color:#6ee7a0;
+  font-family:inherit;font-weight:600;cursor:pointer;
+}
+.rend-btn-resumo:active{transform:scale(0.97);}
 
 /* Cabeçalho de cada forno */
 .rend-forno-head{
@@ -207,6 +213,35 @@
   background:rgba(239,68,68,0.1);color:#ff7676;font-family:inherit;font-size:14px;font-weight:600;cursor:pointer;
 }
 .bdb-del:active{transform:scale(0.98);}
+
+/* Resumo do turno (barras) — compacto p/ caber SEM scroll */
+#bdb-resumo .bdb-modal{padding:12px 14px calc(10px + env(safe-area-inset-bottom));}
+#bdb-resumo .bdb-head{margin-bottom:4px;}
+#bdb-resumo .bdb-list{overflow-y:visible;}
+#bdb-resumo .bdb-foot-btn{margin-top:8px;padding:9px;}
+.rsm-sub{text-align:center;font-size:11px;color:#7a7a92;margin:0 0 6px;}
+.rsm-forno{
+  display:flex;justify-content:space-between;align-items:center;
+  margin:7px 2px 5px;font-size:12.5px;font-weight:700;color:#e8e8f0;
+}
+.rsm-row{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.rsm-badge{
+  color:#fff;font-size:10px;font-weight:700;padding:2px 0;border-radius:6px;
+  width:40px;text-align:center;flex-shrink:0;
+}
+.rsm-track{flex:1;height:14px;background:rgba(255,255,255,0.06);border-radius:7px;overflow:hidden;}
+.rsm-fill{height:100%;border-radius:7px;transition:width .3s ease;}
+.rsm-pct{width:52px;text-align:right;font-size:13px;font-weight:700;flex-shrink:0;}
+/* Ecrãs baixos: encolhe mais para nunca precisar de scroll */
+@media (max-height:720px){
+  .rsm-track{height:11px;}
+  .rsm-row{margin-bottom:3px;}
+  .rsm-forno{margin:5px 2px 3px;font-size:12px;}
+  .rsm-pct{font-size:11.5px;width:48px;}
+  .rsm-badge{font-size:9px;width:36px;}
+  #bdb-resumo .bdb-foot-btn{margin-top:6px;padding:7px;font-size:13px;}
+  #bdb-resumo .bdb-title{font-size:14px;}
+}
 
 /* PIN de edição */
 .bdb-pin-sub{font-size:13px;color:#9aa3b2;line-height:1.5;margin:2px 2px 12px;}

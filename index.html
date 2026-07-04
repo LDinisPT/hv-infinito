@@ -17,12 +17,12 @@
 <link rel="manifest" href="manifest.json">
 <title>Verallia Turnos</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=38">
-<link rel="stylesheet" href="css/components.css?v=38">
-<link rel="stylesheet" href="css/hoje.css?v=38">
-<link rel="stylesheet" href="css/onboarding.css?v=38">
-<link rel="stylesheet" href="css/alarm.css?v=38">
-<link rel="stylesheet" href="css/rendimento.css?v=38">
+<link rel="stylesheet" href="css/base.css?v=43">
+<link rel="stylesheet" href="css/components.css?v=43">
+<link rel="stylesheet" href="css/hoje.css?v=43">
+<link rel="stylesheet" href="css/onboarding.css?v=43">
+<link rel="stylesheet" href="css/alarm.css?v=43">
+<link rel="stylesheet" href="css/rendimento.css?v=43">
 </head>
 <body>
 <div class="app">
@@ -136,7 +136,7 @@
   </div>
 
   <div class="tab-panel" id="tab-rendimento">
-    <div class="panel-title">📈 Rendimento do turno</div>
+    <div class="panel-title">🍾 Rendimento do turno</div>
     <div class="rend-hint">Modo ao vivo · mete os paletes feitos até agora (o tempo conta desde o início do turno)</div>
     <div class="rend-sticky">
       <div class="rend-stats">
@@ -149,8 +149,9 @@
         <button class="rend-bw" onclick="rendIrPara('worst')"><span class="ico">▼</span><span class="txt">Pior</span><span class="v" id="rend-worst-val">—</span></button>
       </div>
       <div class="rend-actions">
-        <button class="rend-btn-modelos" onclick="rendOpenManager()">📦 Modelos</button>
+        <button class="rend-btn-modelos" onclick="rendOpenManager()">🍾 Modelos</button>
         <button class="rend-btn-reset" onclick="rendResetTudo()">↻ Repor tudo</button>
+        <button class="rend-btn-resumo" onclick="rendOpenResumo()">📊 Resumo</button>
       </div>
     </div>
     <div id="rend-wrap"></div>
@@ -169,7 +170,7 @@
     </div>
     <div class="panel-title">📤 Partilhar</div>
     <div class="share-card">
-      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=38" class="share-qr" alt="QR Code da app"></div>
+      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=43" class="share-qr" alt="QR Code da app"></div>
       <div class="share-txt">Aponta a câmara do telemóvel para abrir ou partilhar a app com os colegas</div>
       <div class="share-url">ldinispt.github.io/hv-infinito</div>
       <button class="share-btn" id="share-btn">🔗 Partilhar link</button>
@@ -210,14 +211,14 @@
         Pronto! As tuas férias, formações e outras ausências aparecem no calendário com cores próprias. 🌴 Sempre que marcares férias novas, repete o processo para atualizar.</div>
       </div>
       <div class="man-item">
-        <button class="man-q">📦 Modelos de garrafa (Rendimento)<span class="man-arrow">▾</span></button>
+        <button class="man-q">🍾 Modelos de garrafa (Rendimento)<span class="man-arrow">▾</span></button>
         <div class="man-a">No separador <b>Rendimento</b>, em cada linha toca em <b>"Escolher modelo"</b> e seleciona a garrafa que está a produzir. A <b>Velocidade</b> e as <b>Garrafas/palete</b> preenchem-se sozinhas — só metes os paletes feitos.<br><br>
-        O catálogo é <b>partilhado por todos os colegas</b>: toca em <b>"📦 Modelos"</b> (em cima) para <b>adicionar, editar ou apagar</b> modelos. Tudo o que mudares aparece automaticamente a toda a gente. 🤝<br>
+        O catálogo é <b>partilhado por todos os colegas</b>: toca em <b>"🍾 Modelos"</b> (em cima) para <b>adicionar, editar ou apagar</b> modelos. Tudo o que mudares aparece automaticamente a toda a gente. 🤝<br>
         🔒 Para <b>adicionar, editar ou apagar</b> é preciso um <b>PIN</b> (pede ao Luís). Consultar e escolher modelos não precisa de PIN.<br>
         <i>(Funciona offline depois da 1ª vez; as alterações sincronizam quando voltares a ter internet.)</i></div>
       </div>
     </div>
-    <div class="footer-copy" id="footer-copy" style="text-align:center;padding:20px 16px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7;">© <span style="color:#5cba7d;font-weight:700;">2026</span> <b style="color:#ffffff;font-weight:700;">Luís Dinis</b><br><span style="color:#FFD93D;">Todos os direitos reservados</span><br><span style="color:#E24B4A;font-size:10px;font-weight:700;">V2.38</span></div>
+    <div class="footer-copy" id="footer-copy" style="text-align:center;padding:20px 16px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7;">© <span style="color:#5cba7d;font-weight:700;">2026</span> <b style="color:#ffffff;font-weight:700;">Luís Dinis</b><br><span style="color:#FFD93D;">Todos os direitos reservados</span><br><span style="color:#E24B4A;font-size:10px;font-weight:700;">V2.43</span></div>
   </div>
 
 </div>
@@ -290,25 +291,25 @@
 </div>
 
 <!-- ===== SCRIPTS (ordem importa) ===== -->
-<script src="js/data.js?v=38"></script>
-<script src="js/core.js?v=38"></script>
-<script src="js/weather.js?v=38"></script>
-<script src="js/medico.js?v=38"></script>
-<script src="js/hoje.js?v=38"></script>
-<script src="js/mes.js?v=38"></script>
-<script src="js/mais.js?v=38"></script>
-<script src="js/timeline.js?v=38"></script>
-<script src="js/onboarding.js?v=38"></script>
-<script src="js/alarm.js?v=38"></script>
-<script src="js/rendimento.js?v=38"></script>
-<script src="js/ausencias.js?v=38"></script>
-<script src="js/news.js?v=38"></script>
-<script src="js/tabs.js?v=38"></script>
-<script src="js/app.js?v=38"></script>
-<script type="module" src="js/firebase.js?v=38"></script>
+<script src="js/data.js?v=43"></script>
+<script src="js/core.js?v=43"></script>
+<script src="js/weather.js?v=43"></script>
+<script src="js/medico.js?v=43"></script>
+<script src="js/hoje.js?v=43"></script>
+<script src="js/mes.js?v=43"></script>
+<script src="js/mais.js?v=43"></script>
+<script src="js/timeline.js?v=43"></script>
+<script src="js/onboarding.js?v=43"></script>
+<script src="js/alarm.js?v=43"></script>
+<script src="js/rendimento.js?v=43"></script>
+<script src="js/ausencias.js?v=43"></script>
+<script src="js/news.js?v=43"></script>
+<script src="js/tabs.js?v=43"></script>
+<script src="js/app.js?v=43"></script>
+<script type="module" src="js/firebase.js?v=43"></script>
 <script>
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=38').then(reg=>{
+  navigator.serviceWorker.register('sw.js?v=43').then(reg=>{
     navigator.serviceWorker.addEventListener('message', e=>{ if(e.data==='reload') location.reload(); });
   });
 }
