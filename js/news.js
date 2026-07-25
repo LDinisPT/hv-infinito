@@ -17,6 +17,13 @@ const NOVIDADES = [
     titulo: 'Novidade: Modelos de garrafa!',
     texto: 'No separador <b>Rendimento</b>, agora podes <b>escolher o modelo de garrafa</b> em cada linha — a velocidade e as garrafas/palete preenchem-se sozinhas! 🎉<br><br>O catálogo é <b>partilhado por todos os colegas</b>: qualquer um pode adicionar ou corrigir modelos e aparece logo a toda a gente.<br><br>Vê em <b>Mais → "Como usar"</b> → <b>"🍾 Modelos de garrafa"</b>.',
     manualMatch: 'Modelos de garrafa'
+  },
+  {
+    chave: 'resumo-v44',
+    ico: '📊',
+    titulo: 'Novidade: Resumo do turno!',
+    texto: 'No separador <b>Rendimento</b>, o novo botão <b>"📊 Resumo"</b> mostra-te <b>as 12 linhas de uma só vez</b>, com barras coloridas e as médias de cada forno — tudo num ecrã, sem rolar. 🎉<br><br>Aproveitámos para melhorar a escrita dos códigos (o <b>-</b> aparece sozinho) e a pesquisa de modelos.<br><br>Vê em <b>Mais → "Como usar"</b> → <b>"📊 Resumo do turno"</b>.',
+    manualMatch: 'Resumo do turno'
   }
 ];
 
