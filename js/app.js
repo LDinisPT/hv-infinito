@@ -80,7 +80,8 @@ function initApp(){
   let _lastShiftKey = getCurrentShiftKey();
   setInterval(() => {
     const k = getCurrentShiftKey();
-    if(k !== _lastShiftKey){ _lastShiftKey = k; renderHoje(); }
+    // Ao mudar de turno refaz também o bloco (o ✓ do dia e o líquido do dia de hoje)
+    if(k !== _lastShiftKey){ _lastShiftKey = k; renderHoje(); renderCiclo(); }
   }, 30000);
   setInterval(fetchWeather, 1800000);
 

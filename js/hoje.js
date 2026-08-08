@@ -1,6 +1,30 @@
 // ============================================================
 // HOJE — card de hoje, ciclo, quinzena, ver-data
 // ============================================================
+
+// % do turno de hoje DA EQUIPA SELECIONADA.
+// Devolve 0 se o turno dela ainda não começou (ou já acabou) — mesmo que
+// esteja outro turno a decorrer na fábrica. Ex.: às 16h, uma equipa que só
+// entra às 21h fica a 0 e não herda a % do turno da tarde.
+function pctTurnoEquipa(turnoHoje){
+  const SK = {'5':'M','13':'T','21':'N'};
+  const k = SK[turnoHoje];
+  if(!k) return 0;
+  if(typeof getCurrentShiftKey !== 'function' || typeof getShiftProgress !== 'function') return 0;
+  if(getCurrentShiftKey() !== k) return 0;   // o turno a decorrer não é o desta equipa
+  const p = getShiftProgress(k);
+  return p ? p.pct : 0;
+}
+
+// Sobe o "líquido" do dia de hoje ao vivo (chamado a cada segundo pelo relógio)
+function updateCicloFill(){
+  const fill = document.querySelector('.ciclo-dot-today .dot-fill');
+  if(!fill || typeof getShiftRefDate !== 'function' || typeof getShift !== 'function') return;
+  const d = getShiftRefDate();
+  const pct = pctTurnoEquipa(getShift(curTeam, d.getFullYear(), d.getMonth(), d.getDate()));
+  fill.style.height = (pct > 0 ? Math.max(pct, 4) : 0) + '%';
+}
+
 function renderCiclo() {
   const card = document.getElementById('ciclo-card');
   if(!card) return;
@@ -75,12 +99,8 @@ function renderCiclo() {
   const nextInfo = nextShift ? SHIFT_INFO[grp(nextShift)==='F'?'F':nextShift] : null;
 
   // Build dots
-  // % real do turno a decorrer (para o líquido subir até ao nível certo)
-  let pctTurno = 0;
-  if(typeof getCurrentShiftKey === 'function' && typeof getShiftProgress === 'function'){
-    const _ck = getCurrentShiftKey();
-    if(_ck){ const _pp = getShiftProgress(_ck); if(_pp) pctTurno = _pp.pct; }
-  }
+  // % do turno DESTA equipa (0 enquanto o turno dela não começar)
+  const pctTurno = pctTurnoEquipa(todayShift);
   let dotsHTML = '';
   for(let i=0; i<total; i++) {
     if(i < done) {
@@ -90,7 +110,7 @@ function renderCiclo() {
         // hoje, mas o turno já terminou → cortado (✓) com borda da cor do dia
         dotsHTML += `<div class="ciclo-dot ciclo-dot-done ciclo-dot-today-done" style="border-color:${info.color};"></div>`;
       } else {
-        dotsHTML += `<div class="ciclo-dot ciclo-dot-today" style="background:${info.bg};border-color:${info.color};"><div class="dot-fill" style="height:${Math.max(pctTurno,4)}%;background:${info.color};"></div><span style="color:${info.color};position:relative;z-index:2;">${i+1}</span></div>`;
+        dotsHTML += `<div class="ciclo-dot ciclo-dot-today" style="background:${info.bg};border-color:${info.color};"><div class="dot-fill" style="height:${pctTurno>0?Math.max(pctTurno,4):0}%;background:${info.color};"></div><span style="color:${info.color};position:relative;z-index:2;">${i+1}</span></div>`;
       }
     } else {
       dotsHTML += `<div class="ciclo-dot ciclo-dot-future"><span>${i+1}</span></div>`;
@@ -131,6 +151,7 @@ function renderClock() {
     dayEl.textContent = `${dias[now.getDay()]}, ${now.getDate()} ${meses[now.getMonth()]}`;
   }
   if(typeof updateShiftProgress === 'function') updateShiftProgress();
+  updateCicloFill();
 }
 
 
