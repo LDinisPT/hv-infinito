@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <!--
   =========================================
   © 2026 Luís Dinis — Todos os direitos reservados
@@ -17,12 +17,13 @@
 <link rel="manifest" href="manifest.json">
 <title>Verallia Turnos</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=45">
-<link rel="stylesheet" href="css/components.css?v=45">
-<link rel="stylesheet" href="css/hoje.css?v=45">
-<link rel="stylesheet" href="css/onboarding.css?v=45">
-<link rel="stylesheet" href="css/alarm.css?v=45">
-<link rel="stylesheet" href="css/rendimento.css?v=45">
+<link rel="stylesheet" href="css/base.css?v=46">
+<link rel="stylesheet" href="css/components.css?v=46">
+<link rel="stylesheet" href="css/hoje.css?v=46">
+<link rel="stylesheet" href="css/onboarding.css?v=46">
+<link rel="stylesheet" href="css/alarm.css?v=46">
+<link rel="stylesheet" href="css/rendimento.css?v=46">
+<link rel="stylesheet" href="css/semana.css?v=46">
 </head>
 <body>
 <div class="app">
@@ -71,6 +72,12 @@
     <div style="padding:10px 12px 4px;">
       <button class="today-action-btn" id="btn-ver-data" style="width:100%;">🔍 Ver outra data</button>
     </div>
+  </div>
+
+  <!-- ===== SEPARADOR: SEMANA ===== -->
+  <div class="tab-panel" id="tab-semana">
+    <div class="panel-title">📋 Semana</div>
+    <div id="semana-wrap"></div>
   </div>
 
   <!-- ===== SEPARADOR: MÊS ===== -->
@@ -170,7 +177,7 @@
     </div>
     <div class="panel-title">📤 Partilhar</div>
     <div class="share-card">
-      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=45" class="share-qr" alt="QR Code da app"></div>
+      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=46" class="share-qr" alt="QR Code da app"></div>
       <div class="share-txt">Aponta a câmara do telemóvel para abrir ou partilhar a app com os colegas</div>
       <div class="share-url">ldinispt.github.io/hv-infinito</div>
       <button class="share-btn" id="share-btn">🔗 Partilhar link</button>
@@ -184,6 +191,13 @@
       <div class="man-item">
         <button class="man-q">📍 Separador Hoje<span class="man-arrow">▾</span></button>
         <div class="man-a">Mostra o <b>turno em curso</b> (com barra de progresso e tempo que falta), o tempo, e os teus blocos de turnos. O dia de hoje fica com ✓ quando o turno termina.</div>
+      </div>
+      <div class="man-item">
+        <button class="man-q">📋 Separador Semana<span class="man-arrow">▾</span></button>
+        <div class="man-a">Mostra a escala de <b>Segunda a Domingo</b> com <b>todos os turnos</b>: que equipa faz a Manhã, a Tarde e a Noite em cada dia.<br><br>
+        Os dias seguidos da mesma equipa aparecem <b>agrupados num bloco</b>, com o <b>picotado</b> a separar cada dia e o total do ciclo por baixo (ex: "4 dias"). As setas <b>▲▼</b> avisam que o ciclo vem da semana anterior ou continua para a seguinte — por isso o número é sempre o ciclo <b>completo</b>, mesmo que só parte apareça na semana.<br><br>
+        O dia de hoje tem uma <b>seta vermelha ▶</b> a apontar, a tua equipa fica com <b>contorno branco</b> e os feriados aparecem a laranja. Em baixo vês quem está de <b>quinzena</b> ou de folga a semana toda.<br><br>
+        Usa as setas <b>‹ ›</b> em cima para ver outras semanas e <b>"📍 Esta semana"</b> para voltares.</div>
       </div>
       <div class="man-item">
         <button class="man-q">📅 Separador Mês<span class="man-arrow">▾</span></button>
@@ -224,7 +238,7 @@
         No topo vês o <b>turno, a hora e a média geral</b>, e cada forno mostra a sua própria média.</div>
       </div>
     </div>
-    <div class="footer-copy" id="footer-copy" style="text-align:center;padding:20px 16px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7;">© <span style="color:#5cba7d;font-weight:700;">2026</span> <b style="color:#ffffff;font-weight:700;">Luís Dinis</b><br><span style="color:#FFD93D;">Todos os direitos reservados</span><br><span style="color:#E24B4A;font-size:10px;font-weight:700;">V2.45</span></div>
+    <div class="footer-copy" id="footer-copy" style="text-align:center;padding:20px 16px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7;">© <span style="color:#5cba7d;font-weight:700;">2026</span> <b style="color:#ffffff;font-weight:700;">Luís Dinis</b><br><span style="color:#FFD93D;">Todos os direitos reservados</span><br><span style="color:#E24B4A;font-size:10px;font-weight:700;">V2.46</span></div>
   </div>
 
 </div>
@@ -289,6 +303,7 @@
 <!-- ===== BARRA DE SEPARADORES ===== -->
 <div class="tabbar" id="tabbar">
   <button class="tabbar-btn active" data-tab="hoje"><span class="tb-icon">📍</span><span class="tb-txt">Hoje</span></button>
+  <button class="tabbar-btn" data-tab="semana"><span class="tb-icon">📋</span><span class="tb-txt">Semana</span></button>
   <button class="tabbar-btn" data-tab="mes"><span class="tb-icon">📅</span><span class="tb-txt">Mês</span></button>
   <button class="tabbar-btn" data-tab="medico"><span class="tb-icon">🩺</span><span class="tb-txt">Médico</span></button>
   <button class="tabbar-btn" data-tab="estatisticas"><span class="tb-icon">📊</span><span class="tb-txt">Stats</span></button>
@@ -297,25 +312,26 @@
 </div>
 
 <!-- ===== SCRIPTS (ordem importa) ===== -->
-<script src="js/data.js?v=45"></script>
-<script src="js/core.js?v=45"></script>
-<script src="js/weather.js?v=45"></script>
-<script src="js/medico.js?v=45"></script>
-<script src="js/hoje.js?v=45"></script>
-<script src="js/mes.js?v=45"></script>
-<script src="js/mais.js?v=45"></script>
-<script src="js/timeline.js?v=45"></script>
-<script src="js/onboarding.js?v=45"></script>
-<script src="js/alarm.js?v=45"></script>
-<script src="js/rendimento.js?v=45"></script>
-<script src="js/ausencias.js?v=45"></script>
-<script src="js/news.js?v=45"></script>
-<script src="js/tabs.js?v=45"></script>
-<script src="js/app.js?v=45"></script>
-<script type="module" src="js/firebase.js?v=45"></script>
+<script src="js/data.js?v=46"></script>
+<script src="js/core.js?v=46"></script>
+<script src="js/weather.js?v=46"></script>
+<script src="js/medico.js?v=46"></script>
+<script src="js/hoje.js?v=46"></script>
+<script src="js/mes.js?v=46"></script>
+<script src="js/semana.js?v=46"></script>
+<script src="js/mais.js?v=46"></script>
+<script src="js/timeline.js?v=46"></script>
+<script src="js/onboarding.js?v=46"></script>
+<script src="js/alarm.js?v=46"></script>
+<script src="js/rendimento.js?v=46"></script>
+<script src="js/ausencias.js?v=46"></script>
+<script src="js/news.js?v=46"></script>
+<script src="js/tabs.js?v=46"></script>
+<script src="js/app.js?v=46"></script>
+<script type="module" src="js/firebase.js?v=46"></script>
 <script>
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=45').then(reg=>{
+  navigator.serviceWorker.register('sw.js?v=46').then(reg=>{
     navigator.serviceWorker.addEventListener('message', e=>{ if(e.data==='reload') location.reload(); });
   });
 }

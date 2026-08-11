@@ -9,6 +9,7 @@ function setTeam(t){
   if(sel){ sel.value = t; sel.className = 'team-select sel-' + t; }
   renderHoje();
   renderCiclo();
+  if(typeof renderSemana === 'function') renderSemana();
   renderCalendar();
   renderFeriados();
   renderMedico();
@@ -81,7 +82,10 @@ function initApp(){
   setInterval(() => {
     const k = getCurrentShiftKey();
     // Ao mudar de turno refaz também o bloco (o ✓ do dia e o líquido do dia de hoje)
-    if(k !== _lastShiftKey){ _lastShiftKey = k; renderHoje(); renderCiclo(); }
+    if(k !== _lastShiftKey){
+      _lastShiftKey = k; renderHoje(); renderCiclo();
+      if(typeof renderSemana === 'function') renderSemana();   // a seta de hoje muda às 05h
+    }
   }, 30000);
   setInterval(fetchWeather, 1800000);
 

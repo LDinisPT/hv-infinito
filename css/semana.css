@@ -1,0 +1,112 @@
+/* ============================================================
+   SEMANA — escala Segunda a Domingo com todos os turnos
+   © 2026 Luís Dinis — Verallia Portugal
+   ============================================================ */
+
+#tab-semana{ padding:0 12px 12px; }
+
+/* ---- Navegação entre semanas ---- */
+.sem-nav{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:2px;
+}
+.sem-nav-btn{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);
+  color:#cfcfe0;width:32px;height:32px;border-radius:9px;font-size:16px;
+  cursor:pointer;font-family:inherit;flex-shrink:0;line-height:1;
+}
+.sem-nav-btn:active{ transform:scale(0.92); }
+.sem-nav-mid{ text-align:center;flex:1;min-width:0; }
+.sem-nav-num{ font-size:14px;font-weight:700;color:#e8e8f0;line-height:1.2; }
+.sem-nav-num span{ color:#7a7a92;font-weight:600; }
+.sem-nav-dat{ font-size:10.5px;color:#8a8aa0;font-weight:600;margin-top:1px; }
+
+.sem-btn-esta{
+  display:block;margin:8px auto 0;background:rgba(226,75,74,0.1);
+  border:1px solid rgba(226,75,74,0.4);color:#ff8f8e;font-size:11px;font-weight:600;
+  padding:5px 15px;border-radius:15px;cursor:pointer;font-family:inherit;
+}
+.sem-btn-esta:active{ transform:scale(0.96); }
+
+/* ---- Cabeçalho dos turnos ---- */
+.sem-head{
+  display:grid;grid-template-columns:14px 46px 1fr 1fr 1fr;gap:5px;margin:12px 0 6px;
+}
+.sem-head div{
+  text-align:center;font-size:9.5px;font-weight:700;
+  text-transform:uppercase;letter-spacing:.03em;white-space:nowrap;
+}
+
+/* ---- Grelha ---- */
+.sem-grid{
+  display:grid;grid-template-columns:14px 46px 1fr 1fr 1fr;
+  grid-template-rows:repeat(7,40px);gap:5px;position:relative;
+}
+
+/* coluna dos dias */
+.sem-d{
+  grid-column:2;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;font-size:9.5px;text-transform:uppercase;color:#9aa3b2;
+  font-weight:700;line-height:1.15;
+}
+.sem-d b{ font-size:14px;color:#e8e8f0;display:block; }
+.sem-d-fer b{ color:#EF9F27; }
+.sem-d-hoje{ color:#ff8f8e; }
+.sem-d-hoje b{ color:#E24B4A; }
+.sem-star{ color:#EF9F27;font-size:8.5px;font-weight:800;line-height:1; }
+
+/* seta do dia de hoje */
+.sem-seta{
+  grid-column:1;display:flex;align-items:center;justify-content:center;
+  color:#E24B4A;font-size:13px;line-height:1;
+  filter:drop-shadow(0 0 5px rgba(226,75,74,0.85));
+}
+
+/* faixa do feriado (por trás de tudo) */
+.sem-fer-band{
+  grid-column:1 / span 5;pointer-events:none;z-index:0;margin:-3px;
+  background:rgba(239,159,39,0.09);border-radius:10px;
+}
+
+/* blocos de ciclo */
+.sem-c{
+  border-radius:8px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;position:relative;overflow:hidden;
+}
+.sem-c .sem-l{ font-size:15px;font-weight:800;line-height:1;position:relative;z-index:2; }
+.sem-c .sem-n{ font-size:8.5px;opacity:.65;font-weight:700;margin-top:2px;position:relative;z-index:2; }
+.sem-eu{ box-shadow:inset 0 0 0 2px #fff; }
+
+/* picotado a separar os dias dentro do bloco */
+.sem-sep{
+  position:absolute;left:5px;right:5px;height:0;z-index:1;
+  border-top:1px dashed rgba(255,255,255,0.30);
+}
+
+/* setas de ciclo que entra/sai da semana */
+.sem-ar{
+  position:absolute;left:0;right:0;text-align:center;font-size:9px;
+  line-height:1;opacity:.85;z-index:2;font-weight:700;
+}
+.sem-ar-up{ top:2px; }
+.sem-ar-dn{ bottom:2px; }
+
+/* ---- Rodapé ---- */
+.sem-foot{ margin-top:11px;display:flex;flex-direction:column;gap:5px; }
+.sem-line{
+  font-size:10.5px;font-weight:600;border-radius:8px;padding:6px 9px;text-align:center;
+}
+.sem-quin{ color:#C9A227;background:rgba(255,216,61,0.08);border:1px solid rgba(255,216,61,0.22); }
+.sem-folga{ color:#A8D870;background:rgba(168,216,112,0.07);border:1px solid rgba(168,216,112,0.2); }
+.sem-fer{ color:#EF9F27;background:rgba(239,159,39,0.08);border:1px solid rgba(239,159,39,0.25); }
+.sem-leg{ text-align:center;font-size:9.5px;color:#6a6a80;line-height:1.7;margin-top:3px; }
+.sem-chip{
+  outline:2px solid #fff;padding:0 5px;border-radius:4px;color:#e8e8f0;font-weight:800;
+}
+
+/* ecrãs estreitos */
+@media (max-width:340px){
+  .sem-head{ grid-template-columns:12px 40px 1fr 1fr 1fr; }
+  .sem-grid{ grid-template-columns:12px 40px 1fr 1fr 1fr;grid-template-rows:repeat(7,37px); }
+  .sem-head div{ font-size:8.5px; }
+  .sem-c .sem-l{ font-size:14px; }
+}

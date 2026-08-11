@@ -24,6 +24,13 @@ const NOVIDADES = [
     titulo: 'Novidade: Resumo do turno!',
     texto: 'No separador <b>Rendimento</b>, o novo botão <b>"📊 Resumo"</b> mostra-te <b>as 12 linhas de uma só vez</b>, com barras coloridas e as médias de cada forno — tudo num ecrã, sem rolar. 🎉<br><br>Aproveitámos para melhorar a escrita dos códigos (o <b>-</b> aparece sozinho) e a pesquisa de modelos.<br><br>Vê em <b>Mais → "Como usar"</b> → <b>"📊 Resumo do turno"</b>.',
     manualMatch: 'Resumo do turno'
+  },
+  {
+    chave: 'semana-v46',
+    ico: '📋',
+    titulo: 'Novidade: separador Semana!',
+    texto: 'Há um separador novo entre o <b>Hoje</b> e o <b>Mês</b>: a escala de <b>Segunda a Domingo</b> com <b>todos os turnos</b> — vês num relance que equipa faz a Manhã, a Tarde e a Noite em cada dia. 🎉<br><br>Os dias seguidos da mesma equipa aparecem <b>agrupados</b>, com o total do ciclo, e o dia de hoje tem uma seta a apontar.<br><br>Vê em <b>Mais → "Como usar"</b> → <b>"📋 Separador Semana"</b>.',
+    manualMatch: 'Separador Semana'
   }
 ];
 
