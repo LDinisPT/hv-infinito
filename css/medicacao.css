@@ -1,7 +1,6 @@
 /* ============================================================
-   MEDICAÇÃO — lembrete diário
+   MEDICAÇÃO — medicamentos + horários por momento
    ============================================================ */
-/* Config no Mais */
 #med-config{margin:14px 12px;background:rgba(255,255,255,0.03);border:0.5px solid rgba(255,255,255,0.08);border-radius:14px;padding:14px;}
 .med-row{display:flex;justify-content:space-between;align-items:center;}
 .med-label{font-size:14px;color:#fff;font-weight:600;}
@@ -10,37 +9,127 @@
 .med-knob{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .2s;}
 .med-toggle.on .med-knob{left:23px;}
 .med-body{margin-top:14px;}
-.med-time-big{text-align:center;font-size:38px;font-weight:800;color:#c084fc;font-variant-numeric:tabular-nums;}
-.med-hoje-sub{text-align:center;font-size:12px;color:rgba(255,255,255,0.45);margin-bottom:14px;}
-.med-secao{font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:.06em;margin:14px 0 8px;}
-.med-linha{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;margin-bottom:6px;}
-.med-turno{display:flex;flex-direction:column;line-height:1.25;}
-.med-turno b{font-size:13px;color:#fff;font-weight:700;}
-.med-turno span{font-size:10px;color:rgba(255,255,255,0.35);}
-.med-picker{display:flex;align-items:center;gap:2px;background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.4);border-radius:9px;padding:5px 8px;flex-shrink:0;}
-.med-sel{background:transparent;border:none;color:#e9d5ff;font-size:17px;font-weight:700;font-family:inherit;font-variant-numeric:tabular-nums;padding:2px 0;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center;text-align-last:center;}
+.med-secao{font-size:10px;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:.06em;margin:15px 2px 8px;}
+.med-resumo{text-align:center;font-size:12.5px;color:#c084fc;font-weight:700;background:rgba(192,132,252,0.08);border:1px solid rgba(192,132,252,0.22);border-radius:11px;padding:8px;}
+.med-vazio{text-align:center;font-size:13px;color:rgba(255,255,255,0.45);line-height:1.6;padding:14px 6px;}
+.med-vazio small{font-size:11px;color:rgba(255,255,255,0.3);}
+
+/* ---- Lista de medicamentos ---- */
+.med-item{display:flex;align-items:center;gap:10px;width:100%;text-align:left;background:rgba(192,132,252,0.07);border:1px solid rgba(192,132,252,0.22);border-radius:12px;padding:10px 12px;margin-bottom:7px;font-family:inherit;cursor:pointer;}
+.med-item:active{transform:scale(0.99);}
+.med-item-ok{background:rgba(74,222,128,0.06);border-color:rgba(74,222,128,0.25);}
+.med-item-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px;}
+.med-item-n{font-size:14px;font-weight:700;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.med-item-s{font-size:11px;color:#9aa3b2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.med-item-s b{color:#c084fc;}
+.med-item-ok .med-item-s b{color:#4ade80;}
+.med-item-q{font-size:11px;color:#e9d5ff;background:rgba(192,132,252,0.16);border:1px solid rgba(192,132,252,0.32);border-radius:11px;padding:3px 9px;font-weight:700;white-space:nowrap;flex-shrink:0;}
+.med-item-e{color:rgba(255,255,255,0.4);font-size:13px;flex-shrink:0;}
+.med-addbtn{width:100%;margin-top:4px;padding:12px;border:1px dashed rgba(192,132,252,0.5);border-radius:12px;background:rgba(192,132,252,0.07);color:#c084fc;font-size:13.5px;font-weight:700;font-family:inherit;cursor:pointer;}
+.med-addbtn:active{transform:scale(0.99);}
+
+/* ---- Horários (tabela) ---- */
+.med-fold{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:11px 13px;font-size:13px;font-weight:700;color:#e8e8f0;font-family:inherit;cursor:pointer;}
+.med-fold.aberto{border-color:rgba(192,132,252,0.4);background:rgba(192,132,252,0.06);}
+.med-fold small{display:block;font-size:10px;color:rgba(255,255,255,0.35);font-weight:500;margin-top:2px;}
+.med-fold-a{color:#c084fc;flex-shrink:0;}
+.med-tab{margin-top:8px;border:1px solid rgba(255,255,255,0.1);border-radius:12px;overflow:hidden;}
+.med-tr{display:grid;grid-template-columns:1.15fr 1fr 1fr 1fr 1fr;}
+.med-th{font-size:11px;text-align:center;padding:6px 1px;background:rgba(255,255,255,0.05);}
+.med-th.l{text-align:left;padding-left:9px;font-size:9.5px;font-weight:700;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:.04em;}
+.med-th.agora{background:rgba(192,132,252,0.18);}
+.med-td{text-align:center;padding:7px 1px;border-top:1px solid rgba(255,255,255,0.07);}
+.med-td.l{text-align:left;padding-left:9px;font-size:10.5px;color:#e8e8f0;font-weight:600;display:flex;align-items:center;}
+.med-td.agora{background:rgba(192,132,252,0.09);}
+.med-picker{display:inline-flex;align-items:center;}
+.med-sel{background:transparent;border:none;color:#e9d5ff;font-size:12.5px;font-weight:700;font-family:inherit;font-variant-numeric:tabular-nums;padding:0;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center;text-align-last:center;}
 .med-sel:focus{outline:none;}
 .med-sel option{background:#14141f;color:#e9d5ff;}
-.med-sep{color:#c084fc;font-size:17px;font-weight:700;}
-.med-h24{color:rgba(233,213,255,0.45);font-size:11px;font-weight:700;margin-left:3px;}
-.med-reset{width:100%;background:transparent;border:1px dashed rgba(255,255,255,0.15);border-radius:10px;padding:9px;color:rgba(255,255,255,0.45);font-size:12px;font-family:inherit;cursor:pointer;margin-top:4px;}
+.med-sep{color:rgba(192,132,252,0.7);font-size:12.5px;font-weight:700;}
+.med-tab-nota{font-size:10px;color:rgba(255,255,255,0.3);text-align:center;margin-top:7px;line-height:1.5;}
+.med-reset{width:100%;margin-top:8px;background:transparent;border:1px dashed rgba(255,255,255,0.15);border-radius:10px;padding:9px;color:rgba(255,255,255,0.45);font-size:12px;font-family:inherit;cursor:pointer;}
+
+/* ---- Avisos ---- */
 .med-acao{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:13px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin-bottom:8px;}
 .med-acao.ativa{background:rgba(192,132,252,0.15);border-color:#c084fc;color:#e9d5ff;}
 .med-acao.med-cal{background:linear-gradient(135deg,#8b5cf6,#6d3fc4);border:none;}
 .med-acao:active{opacity:.85;}
 .med-note{font-size:11px;color:rgba(255,255,255,0.35);margin-top:6px;line-height:1.45;}
 
-/* Cartão no Hoje */
+/* ---- Formulário (abre por cima) ---- */
+.medform-overlay{position:fixed;inset:0;z-index:210;display:none;align-items:flex-end;justify-content:center;background:rgba(0,0,0,0.65);backdrop-filter:blur(3px);}
+.medform-overlay.open{display:flex;}
+.medform-modal{width:100%;max-width:520px;background:#0d0d18;border:1px solid rgba(255,255,255,0.1);border-radius:20px 20px 0 0;padding:16px 14px calc(16px + env(safe-area-inset-bottom));animation:medUp .22s ease;max-height:92vh;overflow-y:auto;}
+@keyframes medUp{from{transform:translateY(40px);opacity:0;}to{transform:translateY(0);opacity:1;}}
+.medform-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.medform-title{font-size:16px;font-weight:700;color:#fff;}
+.medform-x{width:32px;height:32px;border:none;border-radius:50%;background:rgba(255,255,255,0.08);color:#cfcfe0;font-size:14px;cursor:pointer;flex-shrink:0;font-family:inherit;}
+.medform-lbl{display:block;font-size:11.5px;color:rgba(255,255,255,0.5);font-weight:700;margin:14px 2px 6px;}
+.medform-input{width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.16);border-radius:11px;padding:12px 13px;color:#fff;font-size:15px;font-family:inherit;font-weight:600;}
+.medform-input:focus{outline:none;border-color:#c084fc;}
+.medform-input::placeholder{color:rgba(255,255,255,0.28);font-weight:500;}
+.medform-qrow{display:flex;align-items:center;justify-content:center;gap:14px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:8px;}
+.medform-qb{width:38px;height:38px;border-radius:10px;background:rgba(192,132,252,0.18);border:1px solid rgba(192,132,252,0.35);color:#e9d5ff;font-size:20px;font-weight:800;line-height:1;cursor:pointer;font-family:inherit;}
+.medform-qb:active{transform:scale(0.92);}
+.medform-qv{font-size:24px;font-weight:800;color:#fff;min-width:44px;text-align:center;font-variant-numeric:tabular-nums;}
+.medform-qu{font-size:11px;color:rgba(255,255,255,0.4);}
+.medform-mgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;}
+.medform-mb{display:flex;flex-direction:column;align-items:center;gap:3px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:10px 3px;cursor:pointer;font-family:inherit;}
+.medform-mb.on{background:rgba(192,132,252,0.16);border-color:#c084fc;}
+.medform-mb:active{transform:scale(0.97);}
+.medform-mb .e{font-size:18px;line-height:1;}
+.medform-mb .n{font-size:10px;font-weight:700;color:#e8e8f0;text-align:center;line-height:1.2;}
+.medform-prev{margin-top:10px;text-align:center;font-size:11.5px;color:#9aa3b2;background:rgba(192,132,252,0.07);border:1px solid rgba(192,132,252,0.2);border-radius:10px;padding:8px;line-height:1.5;}
+.medform-prev b{color:#c084fc;font-size:15px;}
+.medform-prev small{font-size:10px;opacity:.75;}
+.medform-msg{font-size:12px;color:#ffb454;min-height:15px;margin:9px 2px 0;text-align:center;}
+.medform-save{width:100%;margin-top:4px;padding:13px;border:none;border-radius:12px;background:linear-gradient(135deg,#8b5cf6,#6d3fc4);color:#fff;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;}
+.medform-save:active{opacity:.88;}
+.medform-del{width:100%;margin-top:8px;padding:10px;border:1px solid rgba(239,68,68,0.3);border-radius:11px;background:rgba(239,68,68,0.07);color:#ff7676;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;}
+
+/* ---- Cartão no Hoje ---- */
 #med-aviso:not(:empty){padding:0 12px;margin-top:12px;}
 .med-card{display:flex;align-items:center;justify-content:space-between;gap:10px;background:rgba(192,132,252,0.08);border:1px solid rgba(192,132,252,0.3);border-radius:12px;padding:11px 14px;}
 .med-txt{font-size:13px;color:rgba(255,255,255,0.85);line-height:1.45;}
-.med-hora{color:#c084fc;}
+.med-txt b{color:#fff;}
+.med-hora-l{display:inline-block;color:#c084fc;font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;margin-left:5px;vertical-align:-1px;}
 .med-sub{display:block;font-size:11px;color:rgba(255,255,255,0.45);margin-top:1px;}
 .med-btn{background:rgba(192,132,252,0.15);border:0.5px solid rgba(192,132,252,0.45);border-radius:9px;padding:8px 12px;color:#e9d5ff;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;flex-shrink:0;}
 .med-card.med-agora{background:rgba(192,132,252,0.18);border-color:#c084fc;animation:medPulse 1.6s ease-in-out infinite;}
 .med-card.med-tarde{background:rgba(226,75,74,0.1);border-color:rgba(226,75,74,0.45);}
-.med-card.med-tarde .med-hora{color:#ff8b8a;}
+.med-card.med-tarde .med-hora-l{color:#ff8b8a;}
 .med-card.med-done{background:rgba(74,222,128,0.08);border-color:rgba(74,222,128,0.3);}
-.med-card.med-done .med-hora{color:#4ade80;}
 .med-btn.med-undo{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);padding:8px 11px;}
 @keyframes medPulse{0%,100%{box-shadow:0 0 0 0 rgba(192,132,252,0.35);}50%{box-shadow:0 0 0 6px rgba(192,132,252,0);}}
+.med-prog{display:flex;align-items:center;gap:6px;margin-top:7px;padding:0 3px;}
+.med-dot{width:13px;height:13px;border-radius:50%;border:1.5px solid rgba(192,132,252,0.5);flex-shrink:0;}
+.med-dot.ok{background:#c084fc;border-color:#c084fc;}
+.med-cont{font-size:10.5px;color:rgba(255,255,255,0.4);font-weight:600;margin-left:3px;}
+
+/* escolha do som */
+.med-som-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:-2px 0 6px;}
+.med-somb{display:flex;flex-direction:column;align-items:center;gap:1px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:8px 2px;cursor:pointer;font-family:inherit;}
+.med-somb.on{background:rgba(192,132,252,0.16);border-color:#c084fc;}
+.med-somb:active{transform:scale(0.95);}
+.med-somb .e{font-size:16px;line-height:1.1;}
+.med-somb .n{font-size:10px;font-weight:700;color:#e8e8f0;}
+.med-somb .d{font-size:8.5px;color:rgba(255,255,255,0.35);line-height:1.1;text-align:center;}
+.med-somb.on .d{color:rgba(233,213,255,0.6);}
+.med-som-nota{font-size:10px;color:rgba(255,255,255,0.3);text-align:center;margin-bottom:9px;}
+
+/* tipos alternativos no formulario (hora fixa / intervalo) */
+.medform-tipos{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:6px;}
+.medform-tb{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:10px 4px;color:#e8e8f0;font-size:11.5px;font-weight:700;font-family:inherit;cursor:pointer;}
+.medform-tb.on{background:rgba(192,132,252,0.16);border-color:#c084fc;}
+.medform-tb:active{transform:scale(0.97);}
+.medform-extra{margin-top:8px;}
+.medform-linha{display:flex;align-items:center;justify-content:space-between;gap:8px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:11px;padding:9px 11px;margin-bottom:6px;font-size:12px;color:rgba(255,255,255,0.6);font-weight:600;}
+.medform-hora{display:inline-flex;align-items:center;gap:2px;background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.4);border-radius:9px;padding:4px 8px;flex-shrink:0;}
+.medform-hora select{background:transparent;border:none;color:#e9d5ff;font-size:16px;font-weight:700;font-family:inherit;font-variant-numeric:tabular-nums;-webkit-appearance:none;appearance:none;text-align:center;text-align-last:center;cursor:pointer;}
+.medform-hora select:focus{outline:none;}
+.medform-hora select option{background:#14141f;color:#e9d5ff;}
+.medform-hora span{color:#c084fc;font-size:16px;font-weight:700;}
+.medform-cada{display:inline-flex;gap:4px;flex-shrink:0;}
+.medform-cb{width:40px;padding:6px 0;border:1px solid rgba(255,255,255,0.14);border-radius:9px;background:rgba(255,255,255,0.04);color:#e8e8f0;font-size:12.5px;font-weight:700;font-family:inherit;cursor:pointer;}
+.medform-cb.on{background:rgba(192,132,252,0.2);border-color:#c084fc;color:#e9d5ff;}
+.medform-conflito{color:#EF9F27!important;background:rgba(239,159,39,0.1);border:1px solid rgba(239,159,39,0.3);border-radius:9px;padding:8px 10px;text-align:left!important;line-height:1.5;}

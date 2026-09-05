@@ -38,6 +38,13 @@ const NOVIDADES = [
     titulo: 'Novidade: lembrete de medicação!',
     texto: 'Já não precisas de andar a mudar o alarme conforme o turno: a app <b>escolhe a hora sozinha</b> a partir da tua escala. 🎉<br><br>🐓 Manhã e 🌙 Noite → <b>14:00</b> · ☀️ Tarde → <b>12:00</b> · 🏖️ Folga → <b>14:00</b> (e podes mudar cada uma).<br><br>Liga em <b>Mais → 💊 Medicação</b> e escolhe avisos no telemóvel, no calendário, ou os dois.',
     manualMatch: 'Lembrete de medicação'
+  },
+  {
+    chave: 'med-varias-v49',
+    ico: '💊',
+    titulo: 'Medicação: vários medicamentos!',
+    texto: 'O lembrete deixou de ser um por dia — agora podes ter <b>os medicamentos que precisares</b>, cada um com <b>nome e quantidade</b>. Ex: 1 comprimido ao acordar, 2 ao almoço e 1 ao fim do dia. 🎉<br><br>Há também <b>💊 antibióticos de 6, 8 ou 12 em 12 horas</b> (a app cria as tomas todas sozinha) e <b>🕐 hora fixa</b> para quem precisa.<br><br>E podes escolher o <b>som do aviso</b> entre quatro.<br><br>Vê em <b>Mais → "Como usar"</b> → <b>"💊 Lembrete de medicação"</b>.',
+    manualMatch: 'Lembrete de medicação'
   }
 ];
 

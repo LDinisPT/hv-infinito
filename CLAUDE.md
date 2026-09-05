@@ -84,7 +84,9 @@ A exceção é a medicação: as horas do lembrete (12h/14h) caem sempre dentro 
 
 Tudo é `localStorage`, sempre através de `safeGet`/`safeSet` (que engolem exceções — em navegação privada o `localStorage` pode rebentar). Não uses `localStorage` diretamente.
 
-Chaves: `team`, `userName`, `lastTab`, `novidadesVistas`, `evtOpen`, `ausencias`, `alarmOn`, `alarmTime`, `medOn`, `medTimes`, `medTaken`, `medTakenAt`, `medNotif`, `medNotified`, `verallia_rendimento_turno`.
+Chaves: `team`, `userName`, `lastTab`, `novidadesVistas`, `evtOpen`, `ausencias`, `alarmOn`, `alarmTime`, `medOn`, `medMeds`, `medHorarios`, `medTomadas`, `medNotif`, `medNotificadas`, `medSom`, `medSomTipo`, `verallia_rendimento_turno`.
+
+`medTimes` (uma hora por turno, da versão de uma toma só) já não é escrita: é lida uma vez por `medMigrar()` para converter quem vinha da V2.48, e depois fica lá esquecida.
 
 A única coisa **partilhada entre colegas** é o catálogo de modelos de garrafa, no Firestore (`js/firebase.js`, coleção `bottles`). Expõe `window.BottlesDB` para o `rendimento.js` (que é um IIFE, ao contrário do resto) e sincroniza em tempo real com cache offline. Editar modelos pede um PIN, definido em claro no `rendimento.js` — não é segurança a sério, é só para evitar asneiras.
 

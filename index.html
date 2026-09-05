@@ -17,14 +17,14 @@
 <link rel="manifest" href="manifest.json">
 <title>Verallia Turnos</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/base.css?v=48">
-<link rel="stylesheet" href="css/components.css?v=48">
-<link rel="stylesheet" href="css/hoje.css?v=48">
-<link rel="stylesheet" href="css/onboarding.css?v=48">
-<link rel="stylesheet" href="css/alarm.css?v=48">
-<link rel="stylesheet" href="css/medicacao.css?v=48">
-<link rel="stylesheet" href="css/rendimento.css?v=48">
-<link rel="stylesheet" href="css/semana.css?v=48">
+<link rel="stylesheet" href="css/base.css?v=49">
+<link rel="stylesheet" href="css/components.css?v=49">
+<link rel="stylesheet" href="css/hoje.css?v=49">
+<link rel="stylesheet" href="css/onboarding.css?v=49">
+<link rel="stylesheet" href="css/alarm.css?v=49">
+<link rel="stylesheet" href="css/medicacao.css?v=49">
+<link rel="stylesheet" href="css/rendimento.css?v=49">
+<link rel="stylesheet" href="css/semana.css?v=49">
 </head>
 <body>
 <div class="app">
@@ -181,7 +181,7 @@
     </div>
     <div class="panel-title">📤 Partilhar</div>
     <div class="share-card">
-      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=48" class="share-qr" alt="QR Code da app"></div>
+      <div class="share-qr-wrap"><img src="assets/qrcode.png?v=49" class="share-qr" alt="QR Code da app"></div>
       <div class="share-txt">Aponta a câmara do telemóvel para abrir ou partilhar a app com os colegas</div>
       <div class="share-url">ldinispt.github.io/hv-infinito</div>
       <button class="share-btn" id="share-btn">🔗 Partilhar link</button>
@@ -213,16 +213,21 @@
       </div>
       <div class="man-item">
         <button class="man-q">💊 Lembrete de medicação<span class="man-arrow">▾</span></button>
-        <div class="man-a">No separador <b>Mais</b> liga o <b>"Lembrete de medicação"</b>. A app olha para o teu turno de cada dia e escolhe sozinha a hora:<br><br>
-        🐓 <b>Manhã (05h-13h)</b> → <b>14:00</b><br>
-        ☀️ <b>Tarde (13h-21h)</b> → <b>12:00</b><br>
-        🌙 <b>Noite (21h-05h)</b> → <b>14:00</b><br>
-        🏖️ <b>Folga / férias</b> → <b>14:00</b><br><br>
-        Podes mudar qualquer uma destas horas (e voltar às de origem com <b>"↺ Repor"</b>).<br><br>
-        Para seres avisado tens duas opções, e podes usar as duas:<br>
-        • <b>🔔 Avisos no telemóvel</b> — a app toca à hora certa, com ela aberta ou em segundo plano.<br>
-        • <b>📅 Adicionar 90 dias ao calendário</b> — cria os lembretes no calendário do telemóvel, já com a hora certa de cada dia. É o mais fiável: toca <b>mesmo com a app fechada</b>. Repete de 3 em 3 meses.<br><br>
-        No separador <b>Hoje</b> aparece um cartão com a hora de hoje e o tempo que falta. Quando tomares, toca em <b>"✓ Tomei"</b> — fica verde e deixa de avisar até ao dia seguinte.</div>
+        <div class="man-a">No separador <b>Mais</b> liga o <b>"Lembrete de medicação"</b>. Podes ter <b>os medicamentos que precisares</b> ao longo do dia — por exemplo 1 comprimido ao acordar, 2 ao almoço e 1 ao fim do dia.<br><br>
+        <b>Adicionar um medicamento</b> são três perguntas: como se chama, quantos comprimidos, e quando tomas. Antes de guardares, a app diz-te a que horas seria hoje.<br><br>
+        No <b>"quando"</b> tens cinco opções:<br>
+        • <b>🌅 Ao acordar · 🍽️ Ao almoço · 🌜 Fim do dia</b> — acompanham o turno (é o normal).<br>
+        • <b>🕐 Hora fixa</b> — sempre à mesma hora, aconteça o que acontecer.<br>
+        • <b>💊 De N em N horas</b> — para antibióticos. Escolhes <b>6h, 8h ou 12h</b> e a hora da 1ª toma, e a app cria as restantes sozinha (8h a partir das 08:00 dá 08:00, 16:00 e 00:00).<br><br>
+        Nas duas últimas, se a hora te apanhar ao trabalho a app <b>avisa</b> — mas deixa-te guardar à mesma, a decisão é tua.<br><br>
+        <b>A hora muda sozinha com o turno.</b> Se estás na <b>Manhã</b> o almoço é às <b>14:00</b> (já saíste do turno); se estás na <b>Tarde</b> passa para as <b>12:00</b> (antes de entrares). Não tens de mexer em nada — a app olha para a tua escala e escolhe.<br><br>
+        <b>Mudar as horas:</b> em <b>"🕐 Horas de cada momento"</b> tens uma tabela com os três momentos e os quatro turnos. Defines a hora do almoço <b>uma vez</b> e vale para todos os medicamentos que tomes a essa hora. Se trabalhas de Noite podes até pôr uma hora depois da meia-noite: a app sabe que ainda pertence a esse turno.<br><br>
+        <b>No separador Hoje</b> aparece o <b>próximo medicamento</b> com o nome, a quantidade, a hora e o tempo que falta. Os <b>pontinhos</b> mostram quantos já tomaste. Toca em <b>"✓ Tomei"</b> e salta para o seguinte.<br><br>
+        Para seres avisado tens três opções, e podes usar todas:<br>
+        • <b>🔊 Som e vibração</b> — escolhes entre 🔔 Bip, ⏰ Alarme, 🛎️ Sino ou 🚨 Urgente (toca em cada um para o ouvires). Só toca com a <b>app aberta</b>.<br>
+        • <b>🔔 Avisos no telemóvel</b> — usam o som de notificação do sistema. No iPhone só funcionam com a app instalada no ecrã principal.<br>
+        • <b>📅 Adicionar 90 dias ao calendário</b> — cria um lembrete por cada toma no calendário do telemóvel, já com a hora certa de cada dia. É o mais fiável e o único que toca <b>com a app fechada</b>. Repete de 3 em 3 meses.<br><br>
+        <i>Tudo isto é só teu: os medicamentos, as horas e o som ficam guardados no teu telemóvel e não são partilhados com ninguém.</i></div>
       </div>
       <div class="man-item">
         <button class="man-q">🔍 Ver outra data<span class="man-arrow">▾</span></button>
@@ -255,7 +260,7 @@
         No topo vês o <b>turno, a hora e a média geral</b>, e cada forno mostra a sua própria média.</div>
       </div>
     </div>
-    <div class="footer-copy" id="footer-copy" style="text-align:center;padding:20px 16px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7;">© <span id="footer-year" style="color:#5cba7d;font-weight:700;">2026</span> <b style="color:#ffffff;font-weight:700;">Luís Dinis</b><br><span style="color:#FFD93D;">Todos os direitos reservados</span><br><span style="color:#E24B4A;font-size:10px;font-weight:700;">V2.48</span></div>
+    <div class="footer-copy" id="footer-copy" style="text-align:center;padding:20px 16px;font-size:11px;color:rgba(255,255,255,0.35);line-height:1.7;">© <span id="footer-year" style="color:#5cba7d;font-weight:700;">2026</span> <b style="color:#ffffff;font-weight:700;">Luís Dinis</b><br><span style="color:#FFD93D;">Todos os direitos reservados</span><br><span style="color:#E24B4A;font-size:10px;font-weight:700;">V2.49</span></div>
   </div>
 
 </div>
@@ -329,27 +334,27 @@
 </div>
 
 <!-- ===== SCRIPTS (ordem importa) ===== -->
-<script src="js/data.js?v=48"></script>
-<script src="js/core.js?v=48"></script>
-<script src="js/weather.js?v=48"></script>
-<script src="js/medico.js?v=48"></script>
-<script src="js/hoje.js?v=48"></script>
-<script src="js/mes.js?v=48"></script>
-<script src="js/semana.js?v=48"></script>
-<script src="js/mais.js?v=48"></script>
-<script src="js/timeline.js?v=48"></script>
-<script src="js/onboarding.js?v=48"></script>
-<script src="js/alarm.js?v=48"></script>
-<script src="js/medicacao.js?v=48"></script>
-<script src="js/rendimento.js?v=48"></script>
-<script src="js/ausencias.js?v=48"></script>
-<script src="js/news.js?v=48"></script>
-<script src="js/tabs.js?v=48"></script>
-<script src="js/app.js?v=48"></script>
-<script type="module" src="js/firebase.js?v=48"></script>
+<script src="js/data.js?v=49"></script>
+<script src="js/core.js?v=49"></script>
+<script src="js/weather.js?v=49"></script>
+<script src="js/medico.js?v=49"></script>
+<script src="js/hoje.js?v=49"></script>
+<script src="js/mes.js?v=49"></script>
+<script src="js/semana.js?v=49"></script>
+<script src="js/mais.js?v=49"></script>
+<script src="js/timeline.js?v=49"></script>
+<script src="js/onboarding.js?v=49"></script>
+<script src="js/alarm.js?v=49"></script>
+<script src="js/medicacao.js?v=49"></script>
+<script src="js/rendimento.js?v=49"></script>
+<script src="js/ausencias.js?v=49"></script>
+<script src="js/news.js?v=49"></script>
+<script src="js/tabs.js?v=49"></script>
+<script src="js/app.js?v=49"></script>
+<script type="module" src="js/firebase.js?v=49"></script>
 <script>
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js?v=48').then(reg=>{
+  navigator.serviceWorker.register('sw.js?v=49').then(reg=>{
     navigator.serviceWorker.addEventListener('message', e=>{ if(e.data==='reload') location.reload(); });
   });
 }
