@@ -17,6 +17,7 @@ function setTeam(t){
   if(typeof initAusenciasUI === 'function') initAusenciasUI();
   renderQuinzena();
   if(typeof renderAlarmAviso === 'function') renderAlarmAviso();
+  if(typeof renderMedAviso === 'function') renderMedAviso();
   // Definições
   const dn = document.getElementById('def-name');
   const dt = document.getElementById('def-team');
@@ -74,6 +75,7 @@ function initApp(){
   setTeam(curTeam);
   renderEventosGrupo();
   renderAlarmConfig();
+  if(typeof initMedicacao === 'function') initMedicacao();
   fetchWeather();
 
   // Relógio + atualização de turno

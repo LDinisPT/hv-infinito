@@ -31,6 +31,13 @@ const NOVIDADES = [
     titulo: 'Novidade: separador Semana!',
     texto: 'Há um separador novo entre o <b>Hoje</b> e o <b>Mês</b>: a escala de <b>Segunda a Domingo</b> com <b>todos os turnos</b> — vês num relance que equipa faz a Manhã, a Tarde e a Noite em cada dia. 🎉<br><br>Os dias seguidos da mesma equipa aparecem <b>agrupados</b>, com o total do ciclo, e o dia de hoje tem uma seta a apontar.<br><br>Vê em <b>Mais → "Como usar"</b> → <b>"📋 Separador Semana"</b>.',
     manualMatch: 'Separador Semana'
+  },
+  {
+    chave: 'medicacao-v47',
+    ico: '💊',
+    titulo: 'Novidade: lembrete de medicação!',
+    texto: 'Já não precisas de andar a mudar o alarme conforme o turno: a app <b>escolhe a hora sozinha</b> a partir da tua escala. 🎉<br><br>🐓 Manhã e 🌙 Noite → <b>14:00</b> · ☀️ Tarde → <b>12:00</b> · 🏖️ Folga → <b>14:00</b> (e podes mudar cada uma).<br><br>Liga em <b>Mais → 💊 Medicação</b> e escolhe avisos no telemóvel, no calendário, ou os dois.',
+    manualMatch: 'Lembrete de medicação'
   }
 ];
 
