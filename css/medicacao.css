@@ -17,7 +17,12 @@
 .med-turno{display:flex;flex-direction:column;line-height:1.25;}
 .med-turno b{font-size:13px;color:#fff;font-weight:700;}
 .med-turno span{font-size:10px;color:rgba(255,255,255,0.35);}
-.med-input{background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.4);border-radius:9px;padding:7px 9px;color:#e9d5ff;font-size:15px;font-weight:700;font-family:inherit;font-variant-numeric:tabular-nums;}
+.med-picker{display:flex;align-items:center;gap:2px;background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.4);border-radius:9px;padding:5px 8px;flex-shrink:0;}
+.med-sel{background:transparent;border:none;color:#e9d5ff;font-size:17px;font-weight:700;font-family:inherit;font-variant-numeric:tabular-nums;padding:2px 0;cursor:pointer;-webkit-appearance:none;appearance:none;text-align:center;text-align-last:center;}
+.med-sel:focus{outline:none;}
+.med-sel option{background:#14141f;color:#e9d5ff;}
+.med-sep{color:#c084fc;font-size:17px;font-weight:700;}
+.med-h24{color:rgba(233,213,255,0.45);font-size:11px;font-weight:700;margin-left:3px;}
 .med-reset{width:100%;background:transparent;border:1px dashed rgba(255,255,255,0.15);border-radius:10px;padding:9px;color:rgba(255,255,255,0.45);font-size:12px;font-family:inherit;cursor:pointer;margin-top:4px;}
 .med-acao{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.12);border-radius:11px;padding:13px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;margin-bottom:8px;}
 .med-acao.ativa{background:rgba(192,132,252,0.15);border-color:#c084fc;color:#e9d5ff;}

@@ -17,6 +17,23 @@ const MED_LBL = {
 };
 
 function medPad2(n){ return String(n).padStart(2,'0'); }
+
+// Seletor de hora em formato 24h (o <input type="time"> nativo segue a
+// língua do telemóvel e nalguns mostra AM/PM — aqui somos nós a mandar).
+function medHoraPicker(shift, hhmm){
+  const [hh, mm] = hhmm.split(':');
+  const horas = Array.from({length:24}, (_,i) => medPad2(i));
+  const mins = Array.from({length:12}, (_,i) => medPad2(i*5));
+  if(!mins.includes(mm)) mins.push(mm), mins.sort();
+  return `<span class="med-picker">
+    <select class="med-sel" data-shift="${shift}" data-part="h" aria-label="Hora">
+      ${horas.map(h => `<option value="${h}"${h===hh?' selected':''}>${h}</option>`).join('')}
+    </select><span class="med-sep">:</span>
+    <select class="med-sel" data-shift="${shift}" data-part="m" aria-label="Minutos">
+      ${mins.map(m => `<option value="${m}"${m===mm?' selected':''}>${m}</option>`).join('')}
+    </select><span class="med-h24">h</span>
+  </span>`;
+}
 function medDateKey(d){ return `${d.getFullYear()}-${medPad2(d.getMonth()+1)}-${medPad2(d.getDate())}`; }
 
 function getMedEnabled(){ return safeGet('medOn') === '1'; }
@@ -172,7 +189,7 @@ function renderMedConfig(){
       ${MED_ORDER.map(s => `
         <div class="med-linha">
           <span class="med-turno"><b>${MED_LBL[s].emo} ${MED_LBL[s].nome}</b><span>${MED_LBL[s].desc}</span></span>
-          <input type="time" class="med-input" data-shift="${s}" value="${times[s]}" step="300">
+          ${medHoraPicker(s, times[s])}
         </div>`).join('')}
       <button class="med-reset" id="med-reset">↺ Repor horas de origem</button>
 
@@ -189,10 +206,11 @@ function renderMedConfig(){
     renderMedAviso();
   };
   if(on){
-    box.querySelectorAll('.med-input').forEach(inp => {
-      inp.onchange = () => {
-        if(!inp.value) return;
-        setMedTime(inp.dataset.shift, inp.value);
+    box.querySelectorAll('.med-sel').forEach(sel => {
+      sel.onchange = () => {
+        const sh = sel.dataset.shift;
+        const [hh, mm] = getMedTimes()[sh].split(':');
+        setMedTime(sh, sel.dataset.part === 'h' ? `${sel.value}:${mm}` : `${hh}:${sel.value}`);
         renderMedConfig(); renderMedAviso();
       };
     });
