@@ -1,27 +1,64 @@
 // ============================================================
 // MAIS — estatísticas, eventos do grupo
 // ============================================================
-const EVENTOS_GRUPO = [
-  {data:'2026-04-18', nome:'18º Convívio de Tiro ao Alvo'},
-  {data:'2026-05-23', nome:'II Grande Prémio Verallia Karting'},
-  {data:'2026-05-30', nome:'Passeio Moto Turismo + Casa de Santar'},
-  {data:'2026-06-06', nome:'7º Ciclo Convívio'},
-  {data:'2026-06-14', nome:'A Corrida Mais Bonita de Portugal'},
-  {data:'2026-06-27', nome:'Descida do Rio Mondego'},
-  {data:'2026-09-29', nome:'Caminhada de Convívio'},
-  {data:'2026-12-19', nome:'Festa de Natal das Crianças + Prenda do Grupo'},
-  {data:null, nome:'XXIIº Torneio de Futsal Verallia Portugal'},
-];
+// Atividades do Grupo Cultural e Desportivo, ano a ano.
+// PARA ATUALIZAR: quando o Grupo publicar o calendário do ano seguinte,
+// junta aqui uma entrada nova (ex.: 2027: [...]) com as datas. Mais nada
+// é preciso — a app passa a mostrar esse ano sozinha. Enquanto o ano novo
+// não for acrescentado, a app avisa que o calendário ainda não está feito
+// em vez de mostrar as atividades do ano anterior como se fossem deste.
+const EVENTOS_GRUPO_ANOS = {
+  2026: [
+    {data:'2026-04-18', nome:'18º Convívio de Tiro ao Alvo'},
+    {data:'2026-05-23', nome:'II Grande Prémio Verallia Karting'},
+    {data:'2026-05-30', nome:'Passeio Moto Turismo + Casa de Santar'},
+    {data:'2026-06-06', nome:'7º Ciclo Convívio'},
+    {data:'2026-06-14', nome:'A Corrida Mais Bonita de Portugal'},
+    {data:'2026-06-27', nome:'Descida do Rio Mondego'},
+    {data:'2026-09-29', nome:'Caminhada de Convívio'},
+    {data:'2026-12-19', nome:'Festa de Natal das Crianças + Prenda do Grupo'},
+    {data:null, nome:'XXIIº Torneio de Futsal Verallia Portugal'},
+  ]
+};
+
+// Todos os anos numa só lista — usada pela timeline do separador Hoje.
+const EVENTOS_GRUPO = Object.keys(EVENTOS_GRUPO_ANOS)
+  .sort()
+  .reduce((acc, ano) => acc.concat(EVENTOS_GRUPO_ANOS[ano]), []);
 const EVT_MESES = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
 
 function renderEventosGrupo(){
   const wrap = document.getElementById('eventos-grupo');
   if(!wrap) return;
   const hoje = new Date(); hoje.setHours(0,0,0,0);
+  const ano = curYear;
+  const lista = EVENTOS_GRUPO_ANOS[ano];
+
+  // Ano ainda sem calendário publicado — avisa em vez de mostrar o ano errado
+  if(!lista){
+    const anos = Object.keys(EVENTOS_GRUPO_ANOS).sort();
+    const ultimo = anos[anos.length-1];
+    wrap.innerHTML = `
+      <div class="evt-card">
+        <div class="evt-toggle" style="cursor:default">
+          <span class="evt-toggle-info">
+            <span class="evt-toggle-icon">🏆</span>
+            <span style="min-width:0;">
+              <span class="evt-toggle-title">Grupo Cultural e Desportivo da Verallia Portugal</span>
+              <span class="evt-toggle-sub">Atividades ${ano} · ainda por definir</span>
+            </span>
+          </span>
+        </div>
+        <div class="evt-vazio">O calendário de atividades de <b>${ano}</b> ainda não está na app.
+        ${ultimo ? `As últimas que cá estão são as de <b>${ultimo}</b>.` : ''}
+        Aparecem aqui assim que o Grupo publicar as datas.</div>
+      </div>`;
+    return;
+  }
 
   // determinar passados e o próximo (primeiro com data >= hoje)
   let nextIdx = -1;
-  const enriched = EVENTOS_GRUPO.map((ev, i) => {
+  const enriched = lista.map((ev, i) => {
     if(!ev.data) return {...ev, past:false, dateObj:null};
     const [y,m,d] = ev.data.split('-').map(Number);
     const dt = new Date(y, m-1, d); dt.setHours(0,0,0,0);
@@ -58,7 +95,7 @@ function renderEventosGrupo(){
           <span class="evt-toggle-icon">🏆</span>
           <span style="min-width:0;">
             <span class="evt-toggle-title">Grupo Cultural e Desportivo da Verallia Portugal</span>
-            <span class="evt-toggle-sub">Atividades 2026 · ${realizados} de ${totalComData} realizadas</span>
+            <span class="evt-toggle-sub">Atividades ${ano} · ${realizados} de ${totalComData} realizadas</span>
           </span>
         </span>
         <i class="ti ti-chevron-right evt-chev${isOpen?' open':''}" id="evt-chev"></i>

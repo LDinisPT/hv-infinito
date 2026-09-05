@@ -29,6 +29,10 @@ function initApp(){
   // Saudação "Olá nome" na topbar
   applyUserName(safeGet('userName'));
 
+  // Ano do rodapé (acompanha sozinho a passagem de ano)
+  const fy = document.getElementById('footer-year');
+  if(fy) fy.textContent = new Date().getFullYear();
+
   // Definições (separador Mais)
   const defReconfig = document.getElementById('def-reconfig');
   if(defReconfig) defReconfig.onclick = resetOnboarding;
@@ -40,8 +44,8 @@ function initApp(){
   // Navegação ano/mês (separador Mês)
   const yl = () => document.getElementById('year-lbl');
   const setYL = () => { if(yl()) yl().textContent = curYear; };
-  document.getElementById('prev-yr').onclick = ()=>{curYear--;setYL();renderCalendar();renderFeriados();renderStats();};
-  document.getElementById('next-yr').onclick = ()=>{curYear++;setYL();renderCalendar();renderFeriados();renderStats();};
+  document.getElementById('prev-yr').onclick = ()=>{curYear--;setYL();renderCalendar();renderFeriados();renderStats();renderEventosGrupo();};
+  document.getElementById('next-yr').onclick = ()=>{curYear++;setYL();renderCalendar();renderFeriados();renderStats();renderEventosGrupo();};
   document.getElementById('prev-mo').onclick = ()=>{if(curMonth===0){curMonth=11;curYear--;}else curMonth--;setYL();renderCalendar();renderFeriados();};
   document.getElementById('next-mo').onclick = ()=>{if(curMonth===11){curMonth=0;curYear++;}else curMonth++;setYL();renderCalendar();renderFeriados();};
 
